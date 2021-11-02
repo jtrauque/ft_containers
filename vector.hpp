@@ -3,6 +3,8 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include "vector_iterator.hpp"
+#include "vector_iterator_const.hpp"
 
 namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un identificateur
 	template<class T, class Alloc = std::allocator<T> > //generic template vector
@@ -16,8 +18,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef	typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
-	//		typedef	iterator_vector<T> iterator; // class iterator_vector
-	//		typedef iterator_vector_const<T> const_iterator; // class iterator vector const
+			typedef	vector_iterator<T> iterator; // class iterator_vector
+			typedef vector_iterator_const<T> const_iterator; // class iterator vector const
 	//		typedef 	reverse_iterator;
 	//		typedef 	const_reverse_iterator;
 			typedef std::ptrdiff_t	difference_type;
@@ -40,9 +42,9 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 			explicit	vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()):
 				_array(NULL), _capacity(n), _size(n), _allocator(alloc) {
-				_array = _allocator.allocate(n);
+				_array = _allocator.allocate(n); //allocate uninitialized storage
 				for (size_type i = 0; i < n, i++) {
-					_allocator.construct(_array + i, val);
+					_allocator.construct(_array + i, val); //construct an object in allocated object
 				}
 				return ;
 			}
