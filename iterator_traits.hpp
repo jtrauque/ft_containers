@@ -3,9 +3,13 @@
 
 #include <iterator>
 //https://www.cplusplus.com/reference/iterator/iterator_traits/
-//std::iterator_traits is the type trait class that provides uniform interface to the properties of LegacyIterator types. This makes it possible to implement algorithms only in terms of iterators.
+//std::iterator_traits is the type trait class that provides uniform interface to the properties of an iterator
 
-//The template can be specialized for user-defined iterators so that the information about the iterator can be retrieved even if the type does not provide the usual typedefs.
+//difference_type - a type that can be used to identify distance between iterators
+//value_type - the type of the values that can be obtained by dereferencing the iterator. This type is void for output iterators.
+//pointer - defines a pointer to the type iterated over (value_type)
+//reference - defines a reference to the type iterated over (value_type)
+//iterator_category - the category of the iterator. Must be one of iterator category tags.
 
 namespace	ft {
 
