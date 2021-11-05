@@ -187,28 +187,58 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				/* FUNCTIONS - CAPACITY */
 				bool	empty(void) const {
+					return (_size == 0 ? true : false);
 				}
 
 				size_type	size(void) const {
+					return _size;
 				}
 
 				size_type	max_size(void) const {
+					return _allocator.max_size();
 				}
 
 				void	reserve(size_type new_cap) {
+					if (new_cap > max_size()) {
+						throw std::length_error("n greater than max_size()");
+					}
+					if (new_cap > _capacity) {
+						pointer	ptr = _allocator.allocate(new_cap);
+						for (size_type i = 0; i < _size; i++) {
+							_allocator.construct(ptr + i, _array[i]); // we save the data from the old array before destroying it
+							_allocator.destroy(_array + i);
+						}
+						_allocator.deallocate(_array, _capacity);
+						_capacity = new_cap;
+						_array = ptr;
+					}
 				}
 
 				size_type	capacity(void) const {
+					return _capacity;
 				}
 
 				/* FUNCTIONS - MODIFIERS */
 				void	clear(void) {
+					if (!this->empty()) {
+						for (size_type i = 0; i < _size; i++) {
+							_allocator.destroy(_array + i);
+						}
+						_size = 0;
+					}
 				}
 				
 				iterator	insert(iterator	pos, const value_type &val) {
+					difference_type tmp = pos._ptr - _array;
+					insert(position, 1, val);
+					return interator(begin() + tmp);
 				}
 
 				void	insert(iterator	pos, size_type n, const value_type &val) {
+					difference_type tmp = pos._ptr - _array;
+					if (n <= 0) 
+						return ;
+
 				}
 
 				template<class InputIterator>
