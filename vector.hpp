@@ -102,9 +102,9 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				template<class InputIterator>
-				void	assign(InputIterator first, InputIterator last, 
+					void	assign(InputIterator first, InputIterator last, 
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = true) {
-				}
+					}
 
 				void	assign(size_type count, const value_type &val) {
 				}
@@ -137,7 +137,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				reverse_iterator	rend(void) {
 					return reverse_iterator(begin());
 				}
-				
+
 				const_reverse_iterator	rbegin(void) {
 					return const_reverse_iterator(end());
 				}
@@ -154,7 +154,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						throw std::out_of_range("out of range");
 					return _array[pos];
 				}
-				
+
 				const_reference	at(size_type	pos) const {
 					if (pos >= _size || pos < 0)
 						throw std::out_of_range("out of range");
@@ -172,15 +172,15 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				reference	front(void) {
 					return _array[0];
 				}
-				
+
 				const_reference	front(void) const {
 					return _array[0];
 				}
-				
+
 				reference	back(void) {
 					return _array[_size - 1];
 				}
-				
+
 				const_reference	back(void) const {
 					return _array[_size - 1];
 				}
@@ -227,23 +227,59 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						_size = 0;
 					}
 				}
-				
+
 				iterator	insert(iterator	pos, const value_type &val) {
 					difference_type tmp = pos._ptr - _array;
 					insert(position, 1, val);
 					return interator(begin() + tmp);
 				}
 
-				void	insert(iterator	pos, size_type n, const value_type &val) {
+				void	insert(iterator	pos, size_type count, const value_type &val) {
 					difference_type tmp = pos._ptr - _array;
-					if (n <= 0) 
+					if (count <= 0) 
 						return ;
-
+					if (_size + count > _capacity)
+						reserve(_size + count);
+					pointer it = _array + _size + count - 1;
+					pointer ite = _array + tmp + count - 1;
+					while (it != ite) {
+						_allocator.construct(it, *(it - count));
+						_allocator.destroy(it - count); 
+						// we save and destroy pos to end value to shift
+						it--;
+					}
+					_size += count;
+					for (size_type i = 0; i < count; i++) {	
+						_allocator.construct(ite, val);
+						ite++;
+					}
+					return ;
 				}
 
 				template<class InputIterator>
 					void	insert(iterator pos, InputIterator first, InputIterator last, 
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = true) {
+						difference_type tmp = pos._ptr - _array;
+						size_type n = std::distance(first, last);
+						if (n == 0)
+							return ;
+						if (_size + n > _capacity)
+							reserve(_size + n);
+						pointer it = _array + _size + n - 1;
+						pointer ite = _array + tmp + n - 1;
+						while (it != ite) {
+							_allocator.construct(it, *(it - n));
+							_allocator.destroy(it - n); 
+							// we save and destroy pos to end value to shift
+							it--;
+						}
+						_size += n;
+						for (size_type i = 0; i < n; i++) {	
+							_allocator.construct(ite, first);
+							first++;
+							ite++;
+						}
+						return ;
 					}
 
 				iterator	erase(iterator pos) {
@@ -282,7 +318,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					src._allocator = tmp_alloc;
 				}
 		};
-		
+
 	/*NON MEMBER FUNCTIONS */
 	template <class T, class Alloc>
 		bool operator==(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() == rhs.base();}
