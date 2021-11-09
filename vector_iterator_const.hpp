@@ -2,24 +2,31 @@
 #define	VECTOR_ITERATOR_CONST_HPP
 
 #include <iostream>
+#include <cstddef>
+#include <iostream>
 #include "iterator_traits.hpp"
+#include "vector_iterator.hpp"
 
 //https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
 
 namespace	ft {
 
 	template<class T>
+		class	vector_iterator;
+
+	template<class T>
 		class	vector_iterator_const	{
 			public:
 				typedef	T	value_type;
-				typedef	ptrdiff_t	difference_type;
-				typedef	value_type	&referece;
+				typedef	std::ptrdiff_t	difference_type;
+				typedef	value_type	&reference;
 				typedef	value_type	*pointer;
 				typedef	std::random_access_iterator_tag	iterator_category;
 
 				vector_iterator_const() : _ptr(NULL) {}
-				vector_iterator_const(value_type	*ptr) : _ptr(ptr) {}
-				vector_iterator_const(vector_iterator_const const & src) : _ptr(src._ptr) {}
+				vector_iterator_const(pointer ptr) : _ptr(ptr) {}
+				vector_iterator_const(vector_iterator_const const & src) { *this = src; }
+				vector_iterator_const(vector_iterator<T> const & src) : _ptr(src.getPtr()) {}
 				~vector_iterator_const() {}
 				vector_iterator_const	&operator=(vector_iterator_const	const & rhs) {
 					_ptr = rhs._ptr; 
@@ -28,9 +35,9 @@ namespace	ft {
 				value_type	*getPtr(void) const {
 					return _ptr;
 				}
-				operator	vector_iterator_const<value_type	const>(void) const {
-					return vector_iterator_const<value_type const>(_ptr);
-				}
+				/* operator	vector_iterator_const<value_type	const>(void) const { */
+				/* 	return vector_iterator_const<value_type const>(_ptr); */
+				/* } */
 
 			private:
 				value_type	*_ptr;
@@ -45,7 +52,7 @@ namespace	ft {
 					return *this;
 				}
 
-				vector_iterator_const	&operator++(difference_type n) {
+				vector_iterator_const	&operator++() {
 					_ptr++;
 					return *this;
 				}
@@ -53,7 +60,7 @@ namespace	ft {
 				vector_iterator_const	&operator++(int) {
 					vector_iterator_const it = *this;
 					++(*this);
-					return it
+					return it;
 				}
 
 				vector_iterator_const	operator-(difference_type n) const {
@@ -65,7 +72,7 @@ namespace	ft {
 					return *this;
 				}
 
-				vector_iterator_const	&operator--(difference_type n) {
+				vector_iterator_const	&operator--() {
 					_ptr--;
 					return *this;
 				}
@@ -73,7 +80,7 @@ namespace	ft {
 				vector_iterator_const	&operator--(int) {
 					vector_iterator_const it = *this;
 					--(*this);
-					return it
+					return it;
 				}
 
 				reference	operator[](difference_type n) const {
@@ -88,12 +95,12 @@ namespace	ft {
 					return *_ptr;
 				}
 
-				bool operator==(const vector_iterator_const &rhs) {return _pointer == rhs._pointer;}
-				bool operator!=(const vector_iterator_const &rhs) {return _pointer != rhs._pointer;}
-				bool operator<(const vector_iterator_const &rhs) {return _pointer < rhs._pointer;}
-				bool operator<=(const vector_iterator_const &rhs) {return _pointer <= rhs._pointer;}
-				bool operator>(const vector_iterator_const &rhs) {return _pointer > rhs._pointer;}
-				bool operator>=(const vector_iterator_const &rhs) {return _pointer >= rhs._pointer;}
+				bool operator==(const vector_iterator_const &rhs) {return _ptr == rhs._ptr;}
+				bool operator!=(const vector_iterator_const &rhs) {return _ptr != rhs._ptr;}
+				bool operator<(const vector_iterator_const &rhs) {return _ptr < rhs._ptr;}
+				bool operator<=(const vector_iterator_const &rhs) {return _ptr <= rhs._ptr;}
+				bool operator>(const vector_iterator_const &rhs) {return _ptr > rhs._ptr;}
+				bool operator>=(const vector_iterator_const &rhs) {return _ptr >= rhs._ptr;}
 
 				friend vector_iterator_const operator+(difference_type n,
 						const vector_iterator_const &rhs) {return vector_iterator_const(rhs._ptr + n);}

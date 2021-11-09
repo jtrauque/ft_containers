@@ -3,9 +3,11 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include <iterator>
 #include "vector_iterator.hpp"
 #include "vector_iterator_const.hpp"
 #include "reverse_iterator.hpp"
+#include "iterator_traits.hpp"
 #include "enable_if.hpp"
 
 namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un identificateur
@@ -27,8 +29,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				typedef ft::reverse_iterator<iterator> reverse_iterator;
 				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
-				typedef std::ptrdiff_t	difference_type;
-				typedef std::size_t	size_type;
+				typedef typename	allocator_type::difference_type	difference_type;
+				typedef	std::size_t	size_type;
 
 			private:
 				pointer	_array;
@@ -52,35 +54,34 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				explicit	vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()):
 					_array(NULL), _capacity(n), _size(n), _allocator(alloc) {
 						_array = _allocator.allocate(n); //allocate uninitialized storage
-						for (size_type i = 0; i < n, i++) {
+						for (size_type i = 0; i < n; i++) {
 							_allocator.construct(_array + i, val); //construct an object in allocated object
 						}
 						return ;
 					}
 
 				//constructor with range
-				template <class InputOperator>
-					vector(InputOperator first, InpuOperator last, const allocator_type &alloc = allocator_type(), 
-							typename ft::enable_if<!ft::is_integral<InputOperator>::value, bool>::type = true) :
-						_array(NULL), _capacity(n), _size(n), _allocator(alloc) {
-							size_type n = 0;
-							for (INputOperator it = first; it != last; it++) {
-								n++;
-							}
-							_array = _allocator.allocate(n); //allocate uninitialized storage
-							for (size_type i = 0; i < n, i++) {
-								_allocator.construct(_array + i, val); //construct an object in allocated object
-							}
-							_capacity = n;
-							_size = n;
-							return ;
+				template <class InputIterator>
+				vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, 
+						const allocator_type &alloc = allocator_type()) :
+					_array(NULL), _capacity(0), _size(0), _allocator(alloc) {
+						size_type n = std::distance(first, last);
+						_array = _allocator.allocate(n); //allocate uninitialized storage
+						std::cout << *first << std::endl;
+						for (size_type i = 0; i < n; i++) {
+							_allocator.construct(_array + i, *first); //construct an object in allocated object
+							first++;
 						}
+						_capacity = n;
+						_size = n;
+						return ;
+				}
 
 				//copy constructor
 				vector(vector const &src) :
 					_array(NULL), _capacity(src._capacity), _size(src._size), _allocator(src._allocator) {
 						_array = _allocator.allocate(_capacity); //allocate uninitialized storage
-						for (size_type i = 0; i < _capacity, i++) {
+						for (size_type i = 0; i < _capacity; i++) {
 							_allocator.construct(_array + i, src._array[i]); //construct an object in allocated object
 						}
 					}
@@ -96,20 +97,38 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					_capacity = rhs._capacity;
 					_size = rhs._size;
 					_array = _allocator.allocate(_capacity); //allocate uninitialized storage
-					for (size_type i = 0; i < _capacity, i++) {
+					for (size_type i = 0; i < _capacity; i++) {
 						_allocator.construct(_array + i, rhs._array[i]); //construct an object in allocated object
 					}
+					return *this;
 				}
 
 				template<class InputIterator>
 					void	assign(InputIterator first, InputIterator last, 
-							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = true) {
+							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type =true) {
+						size_type n = std::distance(first, last);
+						resize(n);
+						_capacity = n;
+						_size = n;
+						for (size_type i = 0; i < n && first != last; i++, first++) {
+							_allocator.construct(_array + i, *first);
+						}
+						return ;
 					}
 
 				void	assign(size_type count, const value_type &val) {
+					_allocator.deallocate(_array, _capacity);
+					_array = _allocator.allocate(count);
+					_capacity = count;
+					_size = count;
+					for (size_type i = 0; i < count; i++) {
+						_allocator.construct(_array + i, val);
+					}
+					return ;
 				}
 
 				allocator_type	get_allocator(void) const {
+					return _allocator;
 				}
 
 				/* FUNCTIONS - ITERATOR */
@@ -119,15 +138,15 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				iterator	end(void) {
-					return iterator(_array + size);
+					return iterator(_array + _size);
 				}
 
-				const_iterator	begin(void) {
+				const_iterator	begin(void) const {
 					return const_iterator(_array);
 				}
 
-				const_iterator	end(void) {
-					return const_iterator(_array + size);
+				const_iterator	end(void) const {
+					return const_iterator(_array + _size);
 				}
 
 				reverse_iterator	rbegin(void) {
@@ -138,11 +157,11 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					return reverse_iterator(begin());
 				}
 
-				const_reverse_iterator	rbegin(void) {
+				const_reverse_iterator	rbegin(void) const {
 					return const_reverse_iterator(end());
 				}
 
-				const_reverse_iterator	rend(void) {
+				const_reverse_iterator	rend(void) const {
 					return const_reverse_iterator(begin());
 				}
 
@@ -161,11 +180,11 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					return _array[pos];
 				}
 
-				reference_operator[](size_type pos) {
+				reference	operator[](size_type pos) {
 					return _array[pos];
 				}
 
-				const_reference_operator[](size_type pos) const {
+				const_reference	operator[](size_type pos) const {
 					return _array[pos];
 				}
 
@@ -230,7 +249,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				iterator	insert(iterator	pos, const value_type &val) {
 					difference_type tmp = pos._ptr - _array;
-					insert(position, 1, val);
+					insert(pos, 1, val);
 					return interator(begin() + tmp);
 				}
 
@@ -282,22 +301,64 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						return ;
 					}
 
-				iterator	erase(iterator pos) {
-				}
 
 				void	push_back(const value_type	&val) {
+					if (_capacity == 0)
+						reserve(1);
+					else if (_size == _capacity)
+						reserve(_capacity * 2);
+					_allocator.construct(_array + _size, val); // on construct a la fin de l array
+					_size++;
 				}
 
 				void	pop_back(void) {
+					_allocator.destroy(_array + _size); // on construct a la fin de l array
+					_size--;
 				}
 
 				void	resize(size_type count, value_type val = value_type()) {
+					if (count > _size)
+						reserve(count - _size);
+					for (size_type n = _size; n < count; n++) {
+						_allocator.construct(_array + n, val);
+					}
+					for (size_type n = count; count < _size; n++) {
+						_allocator.destroy(_array + n);
+					}
+					_size = count;
 				}
 
-				iterator	erase(iterator position) {
+				iterator	erase(iterator pos) {
+					if (empty() || pos == end())
+						return end();
+					_allocator.destroy(pos._ptr);
+					pointer it = pos._ptr;
+					pointer ite = end()._ptr - 1;
+					while (it != ite) {
+						_allocator.construct(it, *(it + 1)); // on decale ce au il y a apres pos pour combler le trou
+						_allocator.destroy(it + 1); 
+						it++;
+					}
+					_size--;
+					return pos;
 				}
 
 				iterator	erase(iterator first, iterator last) {
+					if (empty())
+						return end();
+					size_type n = std::distance(first, last);
+					for (pointer it = first._ptr; it != last._ptr; it++) {
+						_allocator.destroy(it); 
+					}
+					pointer it = first._ptr;
+					pointer ite = end()._ptr - n;
+					while (it != ite) {
+						_allocator.construct(it, *(it + n)); // on decale ce au il y a apres pos pour combler le trou
+						_allocator.destroy(it + n); 
+						it++;
+					}
+					_size -= n;
+					return first;
 				}
 
 
@@ -321,17 +382,17 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 	/*NON MEMBER FUNCTIONS */
 	template <class T, class Alloc>
-		bool operator==(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() == rhs.base();}
+		bool operator==(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() == rhs.base();}
 	template <class T, class Alloc>
-		bool operator!=(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() != rhs.base();}
+		bool operator!=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() != rhs.base();}
 	template <class T, class Alloc>
-		bool operator<(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() < rhs.base();}
+		bool operator<(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() < rhs.base();}
 	template <class T, class Alloc>
-		bool operator<=(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() <= rhs.base();}
+		bool operator<=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() <= rhs.base();}
 	template <class T, class Alloc>
-		bool operator>(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() > rhs.base();}
+		bool operator>(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() > rhs.base();}
 	template <class T, class Alloc>
-		bool operator>=(const vector<T, Alloc> const &lhs, const vector<T, Alloc> const &rhs) {return lhs.base() >= rhs.base();}
+		bool operator>=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() >= rhs.base();}
 }
 
-
+#endif

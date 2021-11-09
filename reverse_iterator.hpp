@@ -2,7 +2,10 @@
 #define	REVERSE_ITERATOR_HPP
 
 #include <iostream>
+#include <iterator>
 #include "iterator_traits.hpp"
+#include "vector_iterator.hpp"
+#include "vector_iterator_const.hpp"
 //https://www.cplusplus.com/reference/iterator/RandomAccessIterator/
 
 namespace	ft {
@@ -19,8 +22,8 @@ namespace	ft {
 
 				reverse_iterator() : _it(NULL) {}
 				reverse_iterator(iterator_type	it) : _it(it) {}
-				template<typename src>
-				reverse_iterator(reverse_iterator<src> const & src) : _it(src._it) {}
+				template<typename Src>
+				reverse_iterator(reverse_iterator<Src> const & src) : _it(src._it) {}
 				~reverse_iterator() {} // virtual ? 
 
 				reverse_iterator	&operator=(reverse_iterator	const & rhs) {
@@ -53,7 +56,7 @@ namespace	ft {
 					return *this;
 				}
 
-				reverse_iterator	&operator++(difference_type n) {
+				reverse_iterator	&operator++() {
 					_it--;
 					return *this;
 				}
@@ -61,7 +64,7 @@ namespace	ft {
 				reverse_iterator	&operator++(int) {
 					reverse_iterator it = *this;
 					--(*this);
-					return it
+					return it;
 				}
 
 				reverse_iterator	operator-(difference_type n) const {
@@ -73,7 +76,7 @@ namespace	ft {
 					return *this;
 				}
 
-				reverse_iterator	&operator--(difference_type n) {
+				reverse_iterator	&operator--() {
 					_it++;
 					return *this;
 				}
@@ -81,7 +84,7 @@ namespace	ft {
 				reverse_iterator	&operator--(int) {
 					reverse_iterator it = *this;
 					++(*this);
-					return it
+					return it;
 				}
 
 				reference	operator[](int n) const {
@@ -98,12 +101,12 @@ namespace	ft {
 					return *it;
 				}
 
-				bool operator==(const reverse_iterator &rhs) {return _pointer == rhs._pointer;}
-				bool operator!=(const reverse_iterator &rhs) {return _pointer != rhs._pointer;}
-				bool operator<(const reverse_iterator &rhs) {return _pointer < rhs._pointer;}
-				bool operator<=(const reverse_iterator &rhs) {return _pointer <= rhs._pointer;}
-				bool operator>(const reverse_iterator &rhs) {return _pointer > rhs._pointer;}
-				bool operator>=(const reverse_iterator &rhs) {return _pointer >= rhs._pointer;}
+				bool operator==(const reverse_iterator &rhs) {return _it == rhs._it;}
+				bool operator!=(const reverse_iterator &rhs) {return _it != rhs._it;}
+				bool operator<(const reverse_iterator &rhs) {return _it < rhs._it;}
+				bool operator<=(const reverse_iterator &rhs) {return _it <= rhs._it;}
+				bool operator>(const reverse_iterator &rhs) {return _it > rhs._it;}
+				bool operator>=(const reverse_iterator &rhs) {return _it >= rhs._it;}
 		};
 
 	//NON Member overloard
