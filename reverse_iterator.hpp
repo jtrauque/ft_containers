@@ -21,13 +21,14 @@ namespace	ft {
 				typedef	typename	iterator_traits<Iterator>::iterator_category	iterator_category;
 
 				reverse_iterator() : _it(NULL) {}
-				reverse_iterator(iterator_type	it) : _it(it) {}
+				explicit reverse_iterator(iterator_type	it) : _it(it) {}
 				template<typename Src>
-				reverse_iterator(reverse_iterator<Src> const & src) : _it(src._it) {}
+				reverse_iterator(reverse_iterator<Src> const & src) : _it(src.base()) {}
 				~reverse_iterator() {} // virtual ? 
 
-				reverse_iterator	&operator=(reverse_iterator	const & rhs) {
-					_it = rhs._it; 
+				template<typename Src>
+				reverse_iterator	&operator=(reverse_iterator<Src>	const & rhs) {
+					_it = rhs.base(); 
 					return *this;
 				}
 

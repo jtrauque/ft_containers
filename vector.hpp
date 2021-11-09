@@ -248,13 +248,13 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				iterator	insert(iterator	pos, const value_type &val) {
-					difference_type tmp = pos._ptr - _array;
+					difference_type tmp = pos.getPtr() - _array;
 					insert(pos, 1, val);
-					return interator(begin() + tmp);
+					return iterator(begin() + tmp);
 				}
 
 				void	insert(iterator	pos, size_type count, const value_type &val) {
-					difference_type tmp = pos._ptr - _array;
+					difference_type tmp = pos.getPtr() - _array;
 					if (count <= 0) 
 						return ;
 					if (_size + count > _capacity)
@@ -269,16 +269,14 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					}
 					_size += count;
 					for (size_type i = 0; i < count; i++) {	
-						_allocator.construct(ite, val);
-						ite++;
+						_allocator.construct(_array + tmp + i, val);
 					}
 					return ;
 				}
 
 				template<class InputIterator>
-					void	insert(iterator pos, InputIterator first, InputIterator last, 
-							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = true) {
-						difference_type tmp = pos._ptr - _array;
+					void	insert(iterator pos, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last) {
+						difference_type tmp = pos.getPtr() - _array;
 						size_type n = std::distance(first, last);
 						if (n == 0)
 							return ;
@@ -294,7 +292,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						}
 						_size += n;
 						for (size_type i = 0; i < n; i++) {	
-							_allocator.construct(ite, first);
+							_allocator.construct(ite, *first);
 							first++;
 							ite++;
 						}
@@ -322,8 +320,9 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					for (size_type n = _size; n < count; n++) {
 						_allocator.construct(_array + n, val);
 					}
-					for (size_type n = count; count < _size; n++) {
+					for (size_type n = count; n < _size; n++) {
 						_allocator.destroy(_array + n);
+
 					}
 					_size = count;
 				}
@@ -331,9 +330,9 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				iterator	erase(iterator pos) {
 					if (empty() || pos == end())
 						return end();
-					_allocator.destroy(pos._ptr);
-					pointer it = pos._ptr;
-					pointer ite = end()._ptr - 1;
+					_allocator.destroy(pos.getPtr());
+					pointer it = pos.getPtr();
+					pointer ite = end().getPtr() - 1;
 					while (it != ite) {
 						_allocator.construct(it, *(it + 1)); // on decale ce au il y a apres pos pour combler le trou
 						_allocator.destroy(it + 1); 
@@ -347,11 +346,11 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					if (empty())
 						return end();
 					size_type n = std::distance(first, last);
-					for (pointer it = first._ptr; it != last._ptr; it++) {
+					for (pointer it = first.getPtr(); it != last.getPtr(); it++) {
 						_allocator.destroy(it); 
 					}
-					pointer it = first._ptr;
-					pointer ite = end()._ptr - n;
+					pointer it = first.getPtr();
+					pointer ite = end().getPtr() - n;
 					while (it != ite) {
 						_allocator.construct(it, *(it + n)); // on decale ce au il y a apres pos pour combler le trou
 						_allocator.destroy(it + n); 
@@ -382,17 +381,28 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 	/*NON MEMBER FUNCTIONS */
 	template <class T, class Alloc>
-		bool operator==(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() == rhs.base();}
+		bool operator==(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {
+			if (lhs.size() != rhs.size())
+				return false;
+			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
 	template <class T, class Alloc>
-		bool operator!=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() != rhs.base();}
+		bool operator!=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return !(lhs == rhs);}
 	template <class T, class Alloc>
-		bool operator<(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() < rhs.base();}
+		bool operator<(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) { 
+			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+			}
 	template <class T, class Alloc>
-		bool operator<=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() <= rhs.base();}
+		bool operator<=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs < rhs || lhs == rhs;}
 	template <class T, class Alloc>
-		bool operator>(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() > rhs.base();}
+		bool operator>(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return rhs < lhs;}
 	template <class T, class Alloc>
-		bool operator>=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs.base() >= rhs.base();}
+		bool operator>=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs > rhs || lhs == rhs;}
+	
+	template <class T, class Alloc>
+		void	swap(vector<T, Alloc> const &lhs, vector<T, Alloc>const &rhs) {lhs.swap(rhs);}
+
+
 }
 
 #endif
