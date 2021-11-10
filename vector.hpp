@@ -81,12 +81,12 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				vector(vector const &src) :
 					_array(NULL), _capacity(src._capacity), _size(src._size), _allocator(src._allocator) {
 						_array = _allocator.allocate(_capacity); //allocate uninitialized storage
-						for (size_type i = 0; i < _capacity; i++) {
+						for (size_type i = 0; i < _size; i++) {
 							_allocator.construct(_array + i, src._array[i]); //construct an object in allocated object
 						}
 					}
 
-				~vector(void) {
+				virtual ~vector(void) {
 					this->clear();
 					_allocator.deallocate(_array, _capacity);
 				}
@@ -292,7 +292,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						}
 						_size += n;
 						for (size_type i = 0; i < n; i++) {	
-							_allocator.construct(ite, *first);
+							_allocator.construct(_array + tmp + i, *first);
 							first++;
 							ite++;
 						}
@@ -315,8 +315,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				void	resize(size_type count, value_type val = value_type()) {
-					if (count > _size)
-						reserve(count - _size);
+					if (count > _capacity)
+						reserve(count);
 					for (size_type n = _size; n < count; n++) {
 						_allocator.construct(_array + n, val);
 					}
@@ -384,7 +384,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 		bool operator==(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {
 			if (lhs.size() != rhs.size())
 				return false;
-			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+			return equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 	template <class T, class Alloc>
 		bool operator!=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return !(lhs == rhs);}
