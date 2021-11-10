@@ -17,10 +17,10 @@ namespace	ft {
 	template<class T>
 		class	vector_iterator_const	{
 			public:
-				typedef	T	value_type;
+				typedef	const T	value_type;
 				typedef	std::ptrdiff_t	difference_type;
-				typedef	value_type	&reference;
-				typedef	value_type	*pointer;
+				typedef	const value_type	&reference;
+				typedef	const value_type	*pointer;
 				typedef	std::random_access_iterator_tag	iterator_category;
 
 				vector_iterator_const() : _ptr(NULL) {}
