@@ -106,13 +106,6 @@ namespace	ft {
 					it--;
 					return *it;
 				}
-
-				/* bool operator==(const reverse_iterator &rhs) {return _it == rhs._it;} */
-				/* bool operator!=(const reverse_iterator &rhs) {return _it != rhs._it;} */
-				/* bool operator<(const reverse_iterator &rhs) {return _it < rhs._it;} */
-				/* bool operator<=(const reverse_iterator &rhs) {return _it <= rhs._it;} */
-				/* bool operator>(const reverse_iterator &rhs) {return _it > rhs._it;} */
-				/* bool operator>=(const reverse_iterator &rhs) {return _it >= rhs._it;} */
 		};
 
 	//NON Member overloard

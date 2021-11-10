@@ -67,7 +67,6 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					_array(NULL), _capacity(0), _size(0), _allocator(alloc) {
 						size_type n = std::distance(first, last);
 						_array = _allocator.allocate(n); //allocate uninitialized storage
-						std::cout << *first << std::endl;
 						for (size_type i = 0; i < n; i++) {
 							_allocator.construct(_array + i, *first); //construct an object in allocated object
 							first++;
@@ -275,7 +274,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				template<class InputIterator>
-					void	insert(iterator pos, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last) {
+					void	insert(iterator pos, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+							InputIterator last) {
 						difference_type tmp = pos.getPtr() - _array;
 						size_type n = std::distance(first, last);
 						if (n == 0)
@@ -401,8 +401,6 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 	
 	template <class T, class Alloc>
 		void	swap(vector<T, Alloc> const &lhs, vector<T, Alloc>const &rhs) {lhs.swap(rhs);}
-
-
 }
 
 #endif

@@ -32,12 +32,10 @@ namespace	ft {
 					_ptr = rhs._ptr; 
 					return *this;
 				}
+				
 				value_type	*getPtr(void) const {
 					return _ptr;
 				}
-				/* operator	vector_iterator_const<value_type	const>(void) const { */
-				/* 	return vector_iterator_const<value_type const>(_ptr); */
-				/* } */
 
 			private:
 				value_type	*_ptr;
@@ -102,10 +100,10 @@ namespace	ft {
 				bool operator>(const vector_iterator_const &rhs) const {return _ptr > rhs._ptr;}
 				bool operator>=(const vector_iterator_const &rhs) const {return _ptr >= rhs._ptr;}
 
-				friend vector_iterator_const operator+(difference_type n,
+				friend vector_iterator_const operator+(difference_type n,  //
 						const vector_iterator_const &rhs) {return vector_iterator_const(rhs._ptr + n);}
 
-				friend difference_type operator-(const vector_iterator_const &lhs,
+				friend difference_type operator-(const vector_iterator_const &lhs,  //
 						const vector_iterator_const &rhs) {return lhs._ptr - rhs._ptr;}
 		};
 

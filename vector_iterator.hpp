@@ -23,7 +23,7 @@ namespace	ft {
 
 				vector_iterator() : _ptr(NULL) {}
 				vector_iterator(value_type	*ptr) : _ptr(ptr) {}
-				vector_iterator(vector_iterator const & src) : _ptr(src.getPtr()) { *this = src; }
+				vector_iterator(vector_iterator const & src) { *this = src; }
 				virtual ~vector_iterator() {}
 				vector_iterator	&operator=(vector_iterator	const & rhs) {
 					_ptr = rhs._ptr; 
@@ -32,9 +32,6 @@ namespace	ft {
 				value_type	*getPtr(void) const {
 					return _ptr;
 				}
-				/* operator	vector_iterator<value_type	const>(void) const { */
-				/* 	return vector_iterator<value_type const>(_ptr); */
-				/* } */
 
 			private:
 				value_type	*_ptr;
@@ -99,25 +96,12 @@ namespace	ft {
 				bool operator>(const ft::vector_iterator_const<T> &rhs) const {return _ptr > rhs.getPtr();}
 				bool operator>=(const ft::vector_iterator_const<T> &rhs) const {return _ptr >= rhs.getPtr();}
 
-				friend vector_iterator operator+(difference_type n,
+				friend vector_iterator operator+(difference_type n, //
 						const vector_iterator &rhs) {return vector_iterator(rhs.getPtr() + n);}
 
-				friend difference_type operator-(const vector_iterator &lhs,
+				friend difference_type operator-(const vector_iterator &lhs, //
 						const vector_iterator &rhs) {return lhs.getPtr() - rhs.getPtr();}
 		};
-
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator==(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() == rhs.getPtr();} */
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator!=(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() != rhs.getPtr();} */
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator<(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() < rhs.getPtr();} */
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator<=(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() <= rhs.getPtr();} */
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator>(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() > rhs.getPtr();} */
-/* 	template <typename Iter1, typename Iter2> */
-/* 		bool operator>=(const vector_iterator<Iter1> &lhs, const vector_iterator<Iter1> &rhs) {return lhs.getPtr() >= rhs.getPtr();} */
 }
 
 #endif
