@@ -24,6 +24,8 @@ namespace	ft {
 			typedef	iterator_map_const<value_type> const_iterator;
 			typedef	typename	ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	typename	ft::reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef typename allocator_type::template rebind<node>::other node_allocator; 
+			typedef	node<value_type> node;
 
 			//https://en.cppreference.com/w/cpp/container/map/value_compare
 			//std::map::value_compare is a function object that compares objects of type std::map::value_type (key-value pairs) by comparing of the first components of the pairs.
@@ -38,7 +40,13 @@ namespace	ft {
 					bool	operator()(value_type const &lhs, value_type const &rhs) const { return _comp(lhs.first, rhs.first); }
 			};
 
+			protected:
+				node_allocator	_alloc_node;
+				node*	_root;
+				size_type _size;
+				key_compare	_comp;
 
+			public:
 	};
 }
 
