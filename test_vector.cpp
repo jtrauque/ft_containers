@@ -483,7 +483,7 @@ void constructor()
 	return;
 }
 
-int main()
+int main2()
 {
 	constructor();
 	operator_equal(); // operator=
