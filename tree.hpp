@@ -9,6 +9,7 @@ namespace	ft {
 				node*	parent;
 				node*	left;
 				node*	right;
+				int color;
 
 				node(void) : parent(NULL), left(NULL), right(NULL) {}
 				node(node const &src) : parent(src.parent), left(src.left), right(src.right) {}

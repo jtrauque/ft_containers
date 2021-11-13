@@ -2,6 +2,7 @@
 #define MAP_HPP
 
 #include "map_utils.hpp"
+#include "map_iterator.hpp"
 
 //https://en.cppreference.com/w/cpp/container/map
 namespace	ft {
@@ -20,8 +21,8 @@ namespace	ft {
 			typedef	typename	allocator_type::const_reference	const_reference;
 			typedef	typename	allocator_type::pointer	pointer;
 			typedef	typename	allocator_type::const_pointer	const_pointer;
-			typedef	iterator_map<value_type> iterator;
-			typedef	iterator_map_const<value_type> const_iterator;
+			typedef	map_iterator<value_type> iterator;
+			typedef	map_iterator_const<value_type> const_iterator;
 			typedef	typename	ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	typename	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef typename allocator_type::template rebind<node>::other node_allocator; 
@@ -47,6 +48,49 @@ namespace	ft {
 				key_compare	_comp;
 
 			public:
+				//default constructor
+				explicit	map(key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
+					_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {}
+				//range constructor
+				template<class InputIterator>
+					map(InputIterator first, InputIterator last, key_compare const comp = key_compare(),
+						allocator_type const &alloc = allocator_type()) :
+						_alloc_node(alloc), _root(NULL), _sie(0), _comp(comp) { insert(first, last); } //
+				map(map const & src) : _alloc_node(src._alloc_node), _root(NULL), _size(0), _comp(src._comp) { *this = src; }
+				~map(void) { clearNode(_root); }  //
+
+				//https://en.cppreference.com/w/cpp/container/map/insert
+				pair<iterator, bool>	insert(value_type const &value) {
+				}
+
+				iterator	insert(iterator pos, value_type const &value) {
+				}
+
+				template<class InputIterator>
+					void	insert(iterator pos, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+							InputIterator last) {
+					}
+
+			protected:
+
+				node	*newNode(value_type	&value, node *parent) {
+					node *newNode = _alloc_node.allocate(1);
+					/* _alloc_node.construct(newNode, node(value, NULL, NULL, parent, false)); */
+					_alloc_node.construct(newNode, value);
+					_size++;
+					return newNode;
+				}
+
+				node	*insertNode(value_type	const &value, node* current) {
+					if (!current) {
+						return newNode(value, current);
+					}
+					else {
+						
+					}
+				}
+
+				clearNode(node *node);
 	};
 }
 
