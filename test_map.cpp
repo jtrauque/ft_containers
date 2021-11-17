@@ -21,16 +21,17 @@ std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::
 template <typename T_MAP>
 void	printSize(T_MAP const &mp, bool print_content = 1)
 {
+	(void)print_content;
 	std::cout << "size: " << mp.size() << std::endl;
-	std::cout << "max_size: " << mp.max_size() << std::endl;
-	if (print_content)
-	{
-		typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
-		std::cout << std::endl << "Content is:" << std::endl;
-		for (; it != ite; ++it)
-			std::cout << "- " << printPair(it, false) << std::endl;
-	}
-	std::cout << "###############################################" << std::endl;
+	/* std::cout << "max_size: " << mp.max_size() << std::endl; */
+	/* if (print_content) */
+	/* { */
+	/* 	typename T_MAP::const_iterator it = mp.begin(), ite = mp.end(); */
+	/* 	std::cout << std::endl << "Content is:" << std::endl; */
+	/* 	for (; it != ite; ++it) */
+	/* 		std::cout << "- " << printPair(it, false) << std::endl; */
+	/* } */
+	/* std::cout << "###############################################" << std::endl; */
 }
 
 struct ft_more {
@@ -223,39 +224,39 @@ void constructor()
 /* } */
 
 
-void insert()
-{
-	NAMESPACE::map<char,int> mymap;
+/* void insert() */
+/* { */
+/* 	NAMESPACE::map<char,int> mymap; */
 
-	// first insert function version (single parameter):
-	mymap.insert ( NAMESPACE::pair<char,int>('b',100) );
-	mymap.insert ( NAMESPACE::pair<char,int>('z',200) );
+/* 	// first insert function version (single parameter): */
+/* 	mymap.insert ( NAMESPACE::pair<char,int>('b',100) ); */
+/* 	mymap.insert ( NAMESPACE::pair<char,int>('z',200) ); */
 
-	NAMESPACE::pair<NAMESPACE::map<char,int>::iterator,bool> ret;
-	ret = mymap.insert ( NAMESPACE::pair<char,int>('z',500) );
-	if (ret.second==false) {
-		std::cout << "element 'z' already existed";
-		std::cout << " with a value of " << ret.first->second << '\n';
-	}
+/* 	NAMESPACE::pair<NAMESPACE::map<char,int>::iterator,bool> ret; */
+/* 	ret = mymap.insert ( NAMESPACE::pair<char,int>('z',500) ); */
+/* 	if (ret.second==false) { */
+/* 		std::cout << "element 'z' already existed"; */
+/* 		std::cout << " with a value of " << ret.first->second << '\n'; */
+/* 	} */
 
-	// second insert function version (with hint position):
-	NAMESPACE::map<char,int>::iterator it = mymap.begin();
-	mymap.insert (it, NAMESPACE::pair<char,int>('c',300));
-	mymap.insert (it, NAMESPACE::pair<char,int>('d',400));
+/* 	// second insert function version (with hint position): */
+/* 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); */
+/* 	mymap.insert (it, NAMESPACE::pair<char,int>('c',300)); */
+/* 	mymap.insert (it, NAMESPACE::pair<char,int>('d',400)); */
 
-	// third insert function version (range insertion):
-	NAMESPACE::map<char,int> anothermap;
-	anothermap.insert(mymap.begin(),mymap.find('c'));
+/* 	// third insert function version (range insertion): */
+/* 	NAMESPACE::map<char,int> anothermap; */
+/* 	anothermap.insert(mymap.begin(),mymap.find('c')); */
 
-	// showing contents:
-	std::cout << "mymap contains:\n";
-	for (it=mymap.begin(); it!=mymap.end(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
+/* 	// showing contents: */
+/* 	std::cout << "mymap contains:\n"; */
+/* 	for (it=mymap.begin(); it!=mymap.end(); ++it) */
+/* 		std::cout << it->first << " => " << it->second << '\n'; */
 
-	std::cout << "anothermap contains:\n";
-	for (it=anothermap.begin(); it!=anothermap.end(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
-}
+/* 	std::cout << "anothermap contains:\n"; */
+/* 	for (it=anothermap.begin(); it!=anothermap.end(); ++it) */
+/* 		std::cout << it->first << " => " << it->second << '\n'; */
+/* } */
 /* void iterator_validity() */
 /* { */
 /* 	NAMESPACE::map<char,int> mymap; */

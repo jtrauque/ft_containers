@@ -53,6 +53,7 @@ namespace	ft {
 
 			protected:
 				node_allocator	_alloc_node;
+				allocator_type	_allocator;
 				node*	_root;
 				size_type _size;
 				key_compare	_comp;
@@ -72,7 +73,7 @@ namespace	ft {
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
 					size_type oldSize = _size;
-					node *tmp = insertNode(value, NULL);
+					node *tmp = insertNode(value, _root);
 					iterator it = iterator(tmp);
 					return ft::make_pair<iterator, bool>(it, _size != oldSize);
 
@@ -80,7 +81,7 @@ namespace	ft {
 
 				iterator	insert(iterator pos, value_type const &value) {
 					(void)pos;
-					node	*tmp = insertNode(value, NULL);
+					node	*tmp = insertNode(value, _root);
 					return (iterator(tmp));
 				}
 
@@ -200,7 +201,8 @@ namespace	ft {
 				node	*newNode(value_type	const &value, node *parent) {
 					node *tmp = _alloc_node.allocate(1);
 					/* _alloc_node.construct(newNode, node(value, NULL, NULL, parent, false)); */
-					_alloc_node.construct(tmp, value);
+					_alloc_node.construct(tmp, node());
+					_allocator.construct(&tmp->value, value);
 					tmp->parent = parent;
 					tmp->left = NULL;
 					tmp->right = NULL;
