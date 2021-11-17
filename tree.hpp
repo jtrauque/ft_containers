@@ -5,7 +5,7 @@ namespace	ft {
 	template<typename T>
 		class	node {
 			public:
-				V content;
+				T value;
 				node*	parent;
 				node*	left;
 				node*	right;

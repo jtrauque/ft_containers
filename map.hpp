@@ -3,13 +3,18 @@
 
 #include "map_utils.hpp"
 #include "map_iterator.hpp"
+#include <iterator>
+#include <iostream>
+#include <memory>
+#include "enable_if.hpp"
+#include "tree.hpp"
 
-#define 1 RED
-#define 0 BLACK
+#define RED	1
+#define BLACK 0
 
 //https://en.cppreference.com/w/cpp/container/map
 namespace	ft {
-	template<class Key, class T, class Compare = ft::less<key>, class Allocator = std::allocator<ft::pair<const Key, T> >
+	template<class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
 
 		class	map {
 			public:
@@ -28,8 +33,8 @@ namespace	ft {
 				typedef	map_iterator_const<value_type> const_iterator;
 				typedef	typename	ft::reverse_iterator<iterator> reverse_iterator;
 				typedef	typename	ft::reverse_iterator<const_iterator> const_reverse_iterator;
-				typedef typename allocator_type::template rebind<node>::other node_allocator; 
 				typedef	node<value_type> node;
+				typedef typename allocator_type::template rebind<node>::other node_allocator; 
 
 				//https://en.cppreference.com/w/cpp/container/map/value_compare
 				//std::map::value_compare is a function object that compares objects of type std::map::value_type (key-value pairs) by comparing of the first components of the pairs.
@@ -42,6 +47,8 @@ namespace	ft {
 						value_compare(Compare c) : _comp(c) {}
 
 						bool	operator()(value_type const &lhs, value_type const &rhs) const { return _comp(lhs.first, rhs.first); }
+					protected:
+						Compare	_comp;
 				};
 
 			protected:
@@ -52,41 +59,154 @@ namespace	ft {
 
 			public:
 				//default constructor
-				explicit	map(key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
+				explicit	map(const key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
 					_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {}
 				//range constructor
 				template<class InputIterator>
 					map(InputIterator first, InputIterator last, key_compare const comp = key_compare(),
 							allocator_type const &alloc = allocator_type()) :
-						_alloc_node(alloc), _root(NULL), _sie(0), _comp(comp) { insert(first, last); } //
+						_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) { insert(first, last); } //
 				map(map const & src) : _alloc_node(src._alloc_node), _root(NULL), _size(0), _comp(src._comp) { *this = src; }
-				~map(void) { clearNode(_root); }  //
+				~map(void) { clearTree(_root); }  //
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
+					size_type oldSize = _size;
+					node *tmp = insertNode(value, NULL);
+					iterator it = iterator(tmp);
+					return ft::make_pair<iterator, bool>(it, _size != oldSize);
 
 				}
 
 				iterator	insert(iterator pos, value_type const &value) {
+					(void)pos;
+					node	*tmp = insertNode(value, NULL);
+					return (iterator(tmp));
 				}
 
 				template<class InputIterator>
-					void	insert(iterator pos, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+					void	insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 							InputIterator last) {
+						while (first != last) {
+							insert(*first);
+							first++;
+						}
+					}	
+				
+				map	&operator=(map const &rhs) {
+					clear();
+					_comp = rhs._comp;
+					for(const_iterator it = rhs.begin(); it != rhs.end(); it++) {
+						insert(*it);
 					}
+					return *this;
+				}
+
+				allocator_type	get_allocator(void) const {
+					return _alloc_node;
+				}
+				
+				//https://en.cppreference.com/w/cpp/container/map/operator_at
+
+				mapped_type	&operator[](key_type const &key) {
+					node	*tmp = searchKey(key, _root);
+					if (tmp)
+						return tmp->value.second;
+					insert(value_type(key, mapped_type()));
+					return searchKey(key, _root)->value.second;
+				}
+
+				iterator	begin(void) {
+					if (_size == 0)
+						return iterator(_root);
+					node *first = _root;
+					while (first && first->left)
+						first = first->left;
+					return iterator(first);
+				}
+
+				const_iterator	begin(void) const {
+					if (_size == 0)
+						return const_iterator(_root);
+					node *first = _root;
+					while (first && first->left)
+						first = first->left;
+					return const_iterator(first);
+				}
+
+				iterator	end(void) {
+					if (_size == 0)
+						return iterator(_root);
+					node *last = _root;
+					while (last && last->right)
+						last = last->right;
+					return iterator(last);
+				}
+
+				const_iterator	end(void) const {
+					if (_size == 0)
+						return const_iterator(_root);
+					node *last = _root;
+					while (last && last->right)
+						last = last->right;
+					return const_iterator(last);
+				}
+				bool	empty(void) const {
+					return _size == 0;
+				}
+
+				size_type	size(void) const {
+					return _size;
+				}
+
+				size_type	max_size(void) const {
+					return _alloc_node.max_size();
+				}
+
+				void	clear(void) {
+					clearTree(_root);
+					_root = _alloc_node.allocate(1);
+					_alloc_node.construct(_root, node());
+					_root->left = NULL;
+					_root->right = NULL;
+					_root->color = BLACK;
+					_size = 0;	
+				}
 
 			protected:
 
-				node	*newNode(value_type	&value, node *parent) {
-					node *newNode = _alloc_node.allocate(1);
+				void	clearTree(node	*current) {
+					if (current->left)
+						clearTree(current->left);
+					if (current->right)
+						clearTree(current->right);
+					if (current) {
+						_alloc_node.destroy(current);
+						_alloc_node.deallocate(current, 1);
+					}
+				}
+
+				node	*searchKey(key_type	const &key, node	*current) {
+					if (!current)
+						return NULL;
+					if (_comp(key, current->value.first) == true)
+						searchKey(key, current->left);
+					else if (_comp(current->value.first, key) == true)
+						searchKey(key, current->right);
+					else 
+						return current;
+				}
+
+				node	*newNode(value_type	const &value, node *parent) {
+					node *tmp = _alloc_node.allocate(1);
 					/* _alloc_node.construct(newNode, node(value, NULL, NULL, parent, false)); */
-					_alloc_node.construct(newNode, value);
-					newNode->parent = parent;
-					newNode->left = NULL;
-					newNode->right = NULL;
+					_alloc_node.construct(tmp, value);
+					tmp->parent = parent;
+					tmp->left = NULL;
+					tmp->right = NULL;
 					_size++;
-					newNode.color = RED;
-					return newNode;
+					tmp->color = RED;
+					return tmp;
 				}
 
 				void	insertFix(node* current) {
@@ -190,7 +310,7 @@ namespace	ft {
 				}
 
 
-				clearNode(node *node);
+				/* clearNode(node *node) */
 		};
 }
 
