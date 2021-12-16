@@ -93,7 +93,7 @@ namespace	ft {
 							first++;
 						}
 					}	
-				
+
 				map	&operator=(map const &rhs) {
 					clear();
 					_comp = rhs._comp;
@@ -106,7 +106,7 @@ namespace	ft {
 				allocator_type	get_allocator(void) const {
 					return _alloc_node;
 				}
-				
+
 				//https://en.cppreference.com/w/cpp/container/map/operator_at
 
 				mapped_type	&operator[](key_type const &key) {
@@ -172,6 +172,29 @@ namespace	ft {
 					_root->right = NULL;
 					_root->color = BLACK;
 					_size = 0;	
+				}
+	
+				void	erase(iterator position) {
+					node	*tmp = position._current;
+					if (tmp) 
+						delete_node(tmp->value.first, position);
+				}
+
+				void	erase(iterator first, iterator last) {
+					while (first != last) {
+						node	*tmp = searchNode(first._current);
+						if (tmp)
+							delete_node(tmp->value.first, first);
+						first++;
+					}
+				}
+
+				size_type	erase(const key_type	&k) {
+					node	*tmp = searchKey(k, _root);
+					size_type	iniSize = this->size();
+					if (tmp)
+						delete_node(tmp->value.first, position);
+					return initSize - this->size();
 				}
 
 			protected:
