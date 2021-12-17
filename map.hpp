@@ -177,27 +177,43 @@ namespace	ft {
 				void	erase(iterator position) {
 					node	*tmp = position._current;
 					if (tmp) 
-						delete_node(tmp->value.first, position);
+						deleteNode(tmp->value.first, position);
 				}
 
 				void	erase(iterator first, iterator last) {
 					while (first != last) {
 						node	*tmp = searchNode(first._current);
 						if (tmp)
-							delete_node(tmp->value.first, first);
+							deleteNode(tmp->value.first, first);
 						first++;
 					}
 				}
 
 				size_type	erase(const key_type	&k) {
 					node	*tmp = searchKey(k, _root);
-					size_type	iniSize = this->size();
+					size_type	initSize = this->size();
 					if (tmp)
-						delete_node(tmp->value.first, position);
+						deleteNode(tmp->value.first, position);
 					return initSize - this->size();
 				}
 
 			protected:
+				
+				void	deleteNode(key_type	const &key, iterator pos) {
+					node	*tmp = searchKey(key, pos._current);
+					node	*up = tmp->parent;
+					if (tmp->left)
+						node	*downL = tmp->left;
+					if (tmp->right)
+						node	*downR = tmp->right;
+					_alloc_node.destroy(tmp);
+					_alloc_node.deallocate(tmp, 1);
+					if (downL)
+						up->left = downL;
+					if (downR)
+						up->right = downR;
+					insertFix(_root);	
+				}
 
 				void	clearTree(node	*current) {
 					if (current->left)
