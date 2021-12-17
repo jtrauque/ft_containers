@@ -3,6 +3,7 @@
 
 #include "iterator_traits.hpp"
 #include "tree.hpp"
+#include "reverse_iterator.hpp"
 
 namespace	ft {
 

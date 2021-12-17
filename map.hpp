@@ -11,6 +11,11 @@
 
 #define RED	1
 #define BLACK 0
+#define NC "\e[0m"
+#define REDC "\e[0;31m"
+#define GRN "\e[0;32m"
+#define CYN "\e[0;36m"
+#define REDB "\e[41m"
 
 //https://en.cppreference.com/w/cpp/container/map
 namespace	ft {
@@ -72,22 +77,28 @@ namespace	ft {
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
+					std::cout << GRN "InsertPair Function" NC << std::endl;
 					size_type oldSize = _size;
-					node *tmp = insertNode(value, _root);
+					insertNode(value, NULL);
+					std::cout << _root->value.first << std::endl;
+					node	*tmp = searchKey(value.first, _root);
 					iterator it = iterator(tmp);
 					return ft::make_pair<iterator, bool>(it, _size != oldSize);
 
 				}
 
 				iterator	insert(iterator pos, value_type const &value) {
+					std::cout << GRN "InsertIterator Function" NC << std::endl;
 					(void)pos;
-					node	*tmp = insertNode(value, _root);
+					insertNode(value, _root);
+					node	*tmp = searchKey(value.first, _root);
 					return (iterator(tmp));
 				}
 
 				template<class InputIterator>
 					void	insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 							InputIterator last) {
+					std::cout << GRN "Insert several Iterators Function" NC << std::endl;
 						while (first != last) {
 							insert(*first);
 							first++;
@@ -173,18 +184,18 @@ namespace	ft {
 					_root->color = BLACK;
 					_size = 0;	
 				}
-	
+
 				void	erase(iterator position) {
 					node	*tmp = position._current;
 					if (tmp) 
-						deleteNode(tmp->value.first, position);
+						deleteNode(tmp->value.first);
 				}
 
 				void	erase(iterator first, iterator last) {
 					while (first != last) {
 						node	*tmp = searchNode(first._current);
 						if (tmp)
-							deleteNode(tmp->value.first, first);
+							deleteNode(tmp->value.first);
 						first++;
 					}
 				}
@@ -193,19 +204,21 @@ namespace	ft {
 					node	*tmp = searchKey(k, _root);
 					size_type	initSize = this->size();
 					if (tmp)
-						deleteNode(tmp->value.first, position);
+						deleteNode(tmp->value.first);
 					return initSize - this->size();
 				}
 
 			protected:
-				
-				void	deleteNode(key_type	const &key, iterator pos) {
-					node	*tmp = searchKey(key, pos._current);
+
+				void	deleteNode(key_type	const &key) {
+					node	*tmp = searchKey(key, _root);
 					node	*up = tmp->parent;
+					node	*downL;
+					node	*downR;
 					if (tmp->left)
-						node	*downL = tmp->left;
+						downL = tmp->left;
 					if (tmp->right)
-						node	*downR = tmp->right;
+						downR = tmp->right;
 					_alloc_node.destroy(tmp);
 					_alloc_node.deallocate(tmp, 1);
 					if (downL)
@@ -227,14 +240,22 @@ namespace	ft {
 				}
 
 				node	*searchKey(key_type	const &key, node	*current) {
-					if (!current)
+					std::cout << GRN "SearchKey Function" NC << std::endl;
+					//std::cout << current->value.first << std::endl;
+					if (!current) {
+						std::cout << "No tree on the line, no match" << std::endl;
 						return NULL;
-					if (_comp(key, current->value.first) == true)
+					}
+					if (_comp(key, current->value.first) == true) {
+						std::cout << "search Left" << std::endl;
 						searchKey(key, current->left);
-					else if (_comp(current->value.first, key) == true)
+					}
+					else if (_comp(current->value.first, key) == true) {
+						std::cout << "search Right" << std::endl;
 						searchKey(key, current->right);
-					else 
-						return current;
+					}
+					std::cout << CYN "at the end of the search we are at :" << current->value.first << NC << std::endl;
+					return current;
 				}
 
 				node	*newNode(value_type	const &value, node *parent) {
@@ -247,6 +268,7 @@ namespace	ft {
 					tmp->right = NULL;
 					_size++;
 					tmp->color = RED;
+					std::cout << "Our new Node first value is :" << tmp->value.first << " end out second is:" << tmp->value.second << std::endl;
 					return tmp;
 				}
 
@@ -324,12 +346,15 @@ namespace	ft {
 					current->parent = tmp;
 				}
 
-				node	*insertNode(value_type	const &value, node* current) {
+				void	insertNode(value_type	const &value, node* current) {
+					std::cout << GRN "InsertNode Function" NC << std::endl;
 					if (!current) {
-						return newNode(value, current);
+						std::cout << "New Tree is growing" << std::endl;
+						_root = newNode(value, NULL);
 					}
 					else {
 						while (current) {
+							std::cout << "Lets find the right branch to our Tree" << std::endl;
 							if (value > current->value) {
 								if (!current->right)
 									break;
@@ -349,9 +374,6 @@ namespace	ft {
 
 					}
 				}
-
-
-				/* clearNode(node *node) */
 		};
 }
 
