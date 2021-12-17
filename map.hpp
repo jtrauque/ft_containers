@@ -14,6 +14,9 @@
 #define NC "\e[0m"
 #define REDC "\e[0;31m"
 #define GRN "\e[0;32m"
+#define YELLOW "\e[0;33m"
+#define BLUE "\e[0;34m"
+#define PINK "\e[0;35m"
 #define CYN "\e[0;36m"
 #define REDB "\e[41m"
 
@@ -73,7 +76,7 @@ namespace	ft {
 							allocator_type const &alloc = allocator_type()) :
 						_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) { insert(first, last); } //
 				map(map const & src) : _alloc_node(src._alloc_node), _root(NULL), _size(0), _comp(src._comp) { *this = src; }
-				~map(void) { clearTree(_root); }  //
+				~map(void) {  std::cout << "Destructeur" << std::endl; clearTree(_root); }  //
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
@@ -98,7 +101,7 @@ namespace	ft {
 				template<class InputIterator>
 					void	insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 							InputIterator last) {
-					std::cout << GRN "Insert several Iterators Function" NC << std::endl;
+						std::cout << GRN "Insert several Iterators Function" NC << std::endl;
 						while (first != last) {
 							insert(*first);
 							first++;
@@ -121,9 +124,13 @@ namespace	ft {
 				//https://en.cppreference.com/w/cpp/container/map/operator_at
 
 				mapped_type	&operator[](key_type const &key) {
+					std::cout << YELLOW "Operator[] Function" NC << std::endl;
 					node	*tmp = searchKey(key, _root);
-					if (tmp)
+					if (tmp){
+						std::cout << PINK "Operator[] found" NC << std::endl;
 						return tmp->value.second;
+					}
+					std::cout << PINK "Operator[] not found" NC << std::endl;
 					insert(value_type(key, mapped_type()));
 					return searchKey(key, _root)->value.second;
 				}
@@ -228,15 +235,27 @@ namespace	ft {
 					insertFix(_root);	
 				}
 
+
+
 				void	clearTree(node	*current) {
-					if (current->left)
-						clearTree(current->left);
-					if (current->right)
-						clearTree(current->right);
-					if (current) {
-						_alloc_node.destroy(current);
-						_alloc_node.deallocate(current, 1);
+					std::cout << GRN "ClearTree Function" NC << std::endl;
+					node	*tmp = searchRoot(current);
+					if (tmp->left)
+						clearTree(tmp->left);
+					if (tmp->right)
+						clearTree(tmp->right);
+					if (tmp) {
+						std::cout << "PLOP" << std::endl;
+						_alloc_node.destroy(tmp);
+						_alloc_node.deallocate(tmp, 1);
 					}
+				}
+
+				node	*searchRoot(node *current) {
+					node	*tmp = current;
+					while (tmp->parent)
+						tmp = tmp->parent;
+					return tmp;
 				}
 
 				node	*searchKey(key_type	const &key, node	*current) {
@@ -246,16 +265,17 @@ namespace	ft {
 						std::cout << "No tree on the line, no match" << std::endl;
 						return NULL;
 					}
-					if (_comp(key, current->value.first) == true) {
+					if (_comp(key, current->value.first) == true) { // if key < first -> go left
 						std::cout << "search Left" << std::endl;
 						searchKey(key, current->left);
 					}
-					else if (_comp(current->value.first, key) == true) {
+					else if (_comp(current->value.first, key) == true) { // if first < key -> go right
 						std::cout << "search Right" << std::endl;
 						searchKey(key, current->right);
 					}
-					std::cout << CYN "at the end of the search we are at :" << current->value.first << NC << std::endl;
-					return current;
+					else if (current->value.first == key)
+						return current;
+					return NULL;
 				}
 
 				node	*newNode(value_type	const &value, node *parent) {
