@@ -41,25 +41,35 @@ struct ft_more {
 };
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <string>
 void constructor()
 {
 	// (1) Default constructor
         NAMESPACE::map<std::string, int> map1;
-        map1["something"] = 69;
-        map1["anything"] = 199;
-        map1["that thing"] = 50;
-        std::cout << "map1 = "; printSize(map1);
-	std::cout << map1["something"] << std::endl;
+      //  map1["something"] = 69;
+     //   map1["anything"] = 199;
+      //  map1["that thing"] = 50;
+     //   std::cout << "map1 = "; printSize(map1);
+//	std::cout << map1["something"] << std::endl;
+        map1["a"] = 1;
+        map1["b"] = 2;
+        map1["c"] = 3;
+        /* std::cout << "map1 = "; printSize(map1); */
+
+
+		map1.printTree();
+
+		std::cout << "COUCOU" << std::to_string(5).size() << std::endl;
 
 	// with comp
-	NAMESPACE::map<int, std::string, ft_more> map_cmp;
-	map_cmp[42] = "fgzgxfn";
-	map_cmp[25] = "funny";
-	map_cmp[80] = "hey";
-	map_cmp[12] = "no";
-	map_cmp[27] = "bee";
-	map_cmp[90] = "8";
-	printSize(map_cmp);
+	/* NAMESPACE::map<int, std::string, ft_more> map_cmp; */
+	/* map_cmp[42] = "fgzgxfn"; */
+	/* map_cmp[25] = "funny"; */
+	/* map_cmp[80] = "hey"; */
+	/* map_cmp[12] = "no"; */
+	/* map_cmp[27] = "bee"; */
+	/* map_cmp[90] = "8"; */
+	/* printSize(map_cmp); */
 
 
 /* 	std::cout << (map_cmp[42] < map_cmp[90]) << std::endl; */
