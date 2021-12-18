@@ -67,6 +67,9 @@ namespace	ft {
 				key_compare	_comp;
 
 			public:
+				void printTree() {
+					if (_root != NULL) _root->printTree();
+				}
 				//default constructor
 				explicit	map(const key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
 					_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {}
@@ -82,20 +85,17 @@ namespace	ft {
 				pair<iterator, bool>	insert(value_type const &value) {
 					std::cout << GRN "InsertPair Function" NC << std::endl;
 					size_type oldSize = _size;
-					insertNode(value, NULL);
-					std::cout << _root->value.first << std::endl;
-					node	*tmp = searchKey(value.first, _root);
-					iterator it = iterator(tmp);
-					return ft::make_pair<iterator, bool>(it, _size != oldSize);
-
+					return ft::make_pair<iterator, bool>(insert(0, value), _size != oldSize);
 				}
 
 				iterator	insert(iterator pos, value_type const &value) {
 					std::cout << GRN "InsertIterator Function" NC << std::endl;
+					size_type oldSize = _size;
 					(void)pos;
-					insertNode(value, _root);
+					insertNode(value);
+					std::cout << _root->value.first << std::endl;
 					node	*tmp = searchKey(value.first, _root);
-					return (iterator(tmp));
+					return iterator(tmp);
 				}
 
 				template<class InputIterator>
@@ -239,7 +239,7 @@ namespace	ft {
 
 				void	clearTree(node	*current) {
 					std::cout << GRN "ClearTree Function" NC << std::endl;
-					node	*tmp = searchRoot(current);
+					node	*tmp = (current);
 					if (tmp->left)
 						clearTree(tmp->left);
 					if (tmp->right)
@@ -267,15 +267,13 @@ namespace	ft {
 					}
 					if (_comp(key, current->value.first) == true) { // if key < first -> go left
 						std::cout << "search Left" << std::endl;
-						searchKey(key, current->left);
+						return searchKey(key, current->left);
 					}
 					else if (_comp(current->value.first, key) == true) { // if first < key -> go right
 						std::cout << "search Right" << std::endl;
-						searchKey(key, current->right);
+						return searchKey(key, current->right);
 					}
-					else if (current->value.first == key)
-						return current;
-					return NULL;
+					return current;
 				}
 
 				node	*newNode(value_type	const &value, node *parent) {
@@ -294,10 +292,10 @@ namespace	ft {
 
 				void	insertFix(node* current) {
 					node*	tmp;
-					while (current->parent->color == RED) {
-						if (current->parent == current->parent->parent->right) {
+					while (current->parent &&current->parent->parent&& current->parent->color == RED) {
+						if (current->parent->parent && current->parent == current->parent->parent->right) {
 							tmp = current->parent->parent->left;
-							if (tmp->color == RED) {
+							if (tmp && tmp->color == RED) {
 								tmp->color = BLACK;
 								current->parent->color = BLACK;
 								current->parent->parent->color = RED;
@@ -311,9 +309,9 @@ namespace	ft {
 								current->parent->parent->color = RED;
 								leftRotate(current->parent->parent);
 							}
-						} else {
+						} else if (current->parent->parent) {
 							tmp = current->parent->parent->right;
-							if (tmp->color == RED) {
+							if (tmp && tmp->color == RED) {
 								tmp->color = BLACK;
 								current->parent->color = BLACK;
 								current->parent->parent->color = RED;
@@ -340,7 +338,7 @@ namespace	ft {
 					if (tmp->left)
 						tmp->left->parent = current;
 					tmp->parent = current->parent;
-					if (current->parent)
+					if (!current->parent)
 						_root = tmp;
 					else if (current == current->parent->left)
 						current->parent->left = tmp;
@@ -356,7 +354,7 @@ namespace	ft {
 					if (tmp->right)
 						tmp->right->parent = current;
 					tmp->parent = current->parent;
-					if (current->parent)
+					if (!current->parent)
 						_root = tmp;
 					else if (current == current->parent->right)
 						current->parent->right = tmp;
@@ -366,31 +364,32 @@ namespace	ft {
 					current->parent = tmp;
 				}
 
-				void	insertNode(value_type	const &value, node* current) {
+				void	insertNode(value_type	const &value) {
 					std::cout << GRN "InsertNode Function" NC << std::endl;
-					if (!current) {
-						std::cout << "New Tree is growing" << std::endl;
+					if (!_root) {
 						_root = newNode(value, NULL);
 					}
 					else {
+						node *current = _root;
 						while (current) {
 							std::cout << "Lets find the right branch to our Tree" << std::endl;
 							if (value > current->value) {
-								if (!current->right)
+								if (!current->right) {
+									current->right = newNode(value, current);
+									insertFix(current->right);
 									break;
+								}
 								current = current->right;
 							}
 							else {
-								if (!current->left)
+								if (!current->left) {
+									current->left = newNode(value,current);
+									insertFix(current->left);
 									break;
+								}
 								current = current->left;
 							}
 						}
-						if (value < current->value && !current->left)
-							current->left = newNode(value, current);
-						else 
-							current->right = newNode(value, current);
-						insertFix(current);
 
 					}
 				}
