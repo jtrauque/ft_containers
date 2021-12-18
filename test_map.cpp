@@ -49,6 +49,7 @@ void constructor()
         map1["anything"] = 199;
         map1["that thing"] = 50;
         std::cout << "map1 = "; printSize(map1);
+	std::cout << map1["something"] << std::endl;
 
 	// with comp
 	NAMESPACE::map<int, std::string, ft_more> map_cmp;

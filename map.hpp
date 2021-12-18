@@ -96,6 +96,7 @@ namespace	ft {
 					insertNode(value, _root);
 					node	*tmp = searchKey(value.first, _root);
 					return (iterator(tmp));
+					//return insert(value).first;
 				}
 
 				template<class InputIterator>
@@ -130,7 +131,7 @@ namespace	ft {
 						std::cout << PINK "Operator[] found" NC << std::endl;
 						return tmp->value.second;
 					}
-					std::cout << PINK "Operator[] not found" NC << std::endl;
+					std::cout << PINK "Operator[" << key << "] not found" NC << std::endl;
 					insert(value_type(key, mapped_type()));
 					return searchKey(key, _root)->value.second;
 				}
@@ -216,7 +217,6 @@ namespace	ft {
 				}
 
 			protected:
-
 				void	deleteNode(key_type	const &key) {
 					node	*tmp = searchKey(key, _root);
 					node	*up = tmp->parent;
@@ -239,7 +239,7 @@ namespace	ft {
 
 				void	clearTree(node	*current) {
 					std::cout << GRN "ClearTree Function" NC << std::endl;
-					node	*tmp = searchRoot(current);
+					node	*tmp = (current);
 					if (tmp->left)
 						clearTree(tmp->left);
 					if (tmp->right)
@@ -267,15 +267,13 @@ namespace	ft {
 					}
 					if (_comp(key, current->value.first) == true) { // if key < first -> go left
 						std::cout << "search Left" << std::endl;
-						searchKey(key, current->left);
+						return searchKey(key, current->left);
 					}
 					else if (_comp(current->value.first, key) == true) { // if first < key -> go right
 						std::cout << "search Right" << std::endl;
-						searchKey(key, current->right);
+						return searchKey(key, current->right);
 					}
-					else if (current->value.first == key)
-						return current;
-					return NULL;
+					return current;
 				}
 
 				node	*newNode(value_type	const &value, node *parent) {
@@ -294,7 +292,7 @@ namespace	ft {
 
 				void	insertFix(node* current) {
 					node*	tmp;
-					while (current->parent->color == RED) {
+					while (current->parent && current->parent->parent && current->parent->color == RED) {
 						if (current->parent == current->parent->parent->right) {
 							tmp = current->parent->parent->left;
 							if (tmp->color == RED) {
@@ -340,7 +338,7 @@ namespace	ft {
 					if (tmp->left)
 						tmp->left->parent = current;
 					tmp->parent = current->parent;
-					if (current->parent)
+					if (!current->parent)
 						_root = tmp;
 					else if (current == current->parent->left)
 						current->parent->left = tmp;
@@ -356,7 +354,7 @@ namespace	ft {
 					if (tmp->right)
 						tmp->right->parent = current;
 					tmp->parent = current->parent;
-					if (current->parent)
+					if (!current->parent)
 						_root = tmp;
 					else if (current == current->parent->right)
 						current->parent->right = tmp;
@@ -368,28 +366,33 @@ namespace	ft {
 
 				void	insertNode(value_type	const &value, node* current) {
 					std::cout << GRN "InsertNode Function" NC << std::endl;
-					if (!current) {
+					if (!_root) {
 						std::cout << "New Tree is growing" << std::endl;
 						_root = newNode(value, NULL);
 					}
 					else {
+						current = _root;
 						while (current) {
 							std::cout << "Lets find the right branch to our Tree" << std::endl;
 							if (value > current->value) {
-								if (!current->right)
+								if (!current->right) {
+									current->right = newNode(value, current);
 									break;
+								}
 								current = current->right;
 							}
 							else {
-								if (!current->left)
+								if (!current->left) {
+									current->left = newNode(value, current);
 									break;
+								}
 								current = current->left;
 							}
 						}
-						if (value < current->value && !current->left)
-							current->left = newNode(value, current);
-						else 
-							current->right = newNode(value, current);
+					//	if (value < current->value && !current->left)
+					//		current->left = newNode(value, current);
+					//	else 
+					//		current->right = newNode(value, current);
 						insertFix(current);
 
 					}
