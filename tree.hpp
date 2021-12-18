@@ -444,8 +444,9 @@ static void	init_calc(node *tree, t_tree_display *me, t_tree_display *l,
 	bzero(l, sizeof(t_tree_display));
 	bzero(r, sizeof(t_tree_display));
 	me->depth = 1;
-	me->label_width = tree->value.first.size() + //strlen(value.size()"TOTO");
-		std::to_string(tree->value.second).size() + 1;
+		me->label_width = tree->value.first.size() + //strlen(value.size()"TOTO");
+	
+	std::to_string(tree->value.second).size() + 1;
 	if (me->label_width > MAX_WORD_WIDTH)
 		me->trunc = 1;
 	me->label_width = min(me->label_width, MAX_WORD_WIDTH) + WORD_ADDED_WIDTH;

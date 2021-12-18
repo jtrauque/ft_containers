@@ -9,7 +9,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-template <typename T>
+	template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
 {
 	o << "key: " << iterator->first << " | value: " << iterator->second;
@@ -18,7 +18,7 @@ std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::
 	return ("");
 }
 
-template <typename T_MAP>
+	template <typename T_MAP>
 void	printSize(T_MAP const &mp, bool print_content = 1)
 {
 	(void)print_content;
@@ -45,22 +45,25 @@ struct ft_more {
 void constructor()
 {
 	// (1) Default constructor
-        NAMESPACE::map<std::string, int> map1;
-      //  map1["something"] = 69;
-     //   map1["anything"] = 199;
-      //  map1["that thing"] = 50;
-     //   std::cout << "map1 = "; printSize(map1);
-//	std::cout << map1["something"] << std::endl;
-        map1["a"] = 1;
-        map1["b"] = 2;
-        map1["c"] = 3;
-        /* std::cout << "map1 = "; printSize(map1); */
+	NAMESPACE::map<std::string, int> map1;
+	//  map1["something"] = 69;
+	//   map1["anything"] = 199;
+	//  map1["that thing"] = 50;
+	//   std::cout << "map1 = "; printSize(map1);
+	//	std::cout << map1["something"] << std::endl;
+	map1["c"] = 3;
+	map1["a"] = 1;
+	map1["b"] = 2;
+	map1["g"] = 7;
+	map1["d"] = 4;
+	map1["e"] = 5;
+	map1["f"] = 6;
+	map1["z"] = 8;
+	/* std::cout << "map1 = "; printSize(map1); */
 
-
-		map1.printTree();
-
-		std::cout << "COUCOU" << std::to_string(5).size() << std::endl;
-
+	map1.printTree();
+	map1.erase("g");
+	map1.printTree();
 	// with comp
 	/* NAMESPACE::map<int, std::string, ft_more> map_cmp; */
 	/* map_cmp[42] = "fgzgxfn"; */
@@ -72,17 +75,17 @@ void constructor()
 	/* printSize(map_cmp); */
 
 
-/* 	std::cout << (map_cmp[42] < map_cmp[90]) << std::endl; */
+	/* 	std::cout << (map_cmp[42] < map_cmp[90]) << std::endl; */
 
-/*         // (2) Range constructor */
-/*         NAMESPACE::map<std::string, int> iter(map1.find("anything"), map1.end()); */
-/*         std::cout << "\niter = "; printSize(iter); */
-/*         std::cout << "map1 = "; printSize(map1); */
+	/*         // (2) Range constructor */
+	/*         NAMESPACE::map<std::string, int> iter(map1.find("anything"), map1.end()); */
+	/*         std::cout << "\niter = "; printSize(iter); */
+	/*         std::cout << "map1 = "; printSize(map1); */
 
-/*         // (3) Copy constructor */
-/*         NAMESPACE::map<std::string, int> copied(map1); */
-/*         std::cout << "\ncopied = "; printSize(copied); */
-/*         std::cout << "map1 = "; printSize(map1); */
+	/*         // (3) Copy constructor */
+	/*         NAMESPACE::map<std::string, int> copied(map1); */
+	/*         std::cout << "\ncopied = "; printSize(copied); */
+	/*         std::cout << "map1 = "; printSize(map1); */
 }
 
 /* void operator_equal() // operator = */

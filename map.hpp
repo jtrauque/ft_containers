@@ -90,7 +90,7 @@ namespace	ft {
 
 				iterator	insert(iterator pos, value_type const &value) {
 					std::cout << GRN "InsertIterator Function" NC << std::endl;
-					size_type oldSize = _size;
+				//	size_type oldSize = _size;
 					(void)pos;
 					insertNode(value);
 					std::cout << _root->value.first << std::endl;
@@ -208,33 +208,100 @@ namespace	ft {
 				}
 
 				size_type	erase(const key_type	&k) {
-					node	*tmp = searchKey(k, _root);
+					std::cout << PINK "ERASE Function" NC << std::endl;
 					size_type	initSize = this->size();
-					if (tmp)
-						deleteNode(tmp->value.first);
+					deleteNode(k);
 					return initSize - this->size();
 				}
 
 			protected:
 				void	deleteNode(key_type	const &key) {
 					node	*tmp = searchKey(key, _root);
+					if (!tmp)
+						return ;
 					node	*up = tmp->parent;
-					node	*downL;
-					node	*downR;
+					node	*downL = NULL;
+					node	*downR = NULL;
 					if (tmp->left)
 						downL = tmp->left;
 					if (tmp->right)
 						downR = tmp->right;
 					_alloc_node.destroy(tmp);
 					_alloc_node.deallocate(tmp, 1);
-					if (downL)
+					if (up->left == tmp) {
 						up->left = downL;
-					if (downR)
+						if (up->left)
+							deleteFix(up->left);
+					}
+					else if (up->right == tmp) {
 						up->right = downR;
-					insertFix(_root);	
+						if (up->right)
+							deleteFix(up->right);
+					}
 				}
+				
+				void	deleteFix(node* current) {
+					node*	tmp;
 
+					while (current && current->parent && current != searchRoot() && current->color == BLACK) {
+						if (current == current->parent->left) { 
+						// case 1 : if the right child of parent of x is RED
+							tmp = current->parent->right;
+							if (tmp && tmp->color == RED) {
+								tmp->color = BLACK;
+								current->parent->color = RED;
+								leftRotate(current->parent);
+								tmp = current->parent->right;
+							}
+							if (tmp && tmp->left->color == BLACK && tmp->right->color == BLACK) {
+							// case 2 : if the color of both the right and the leftChild is BLACK
+								tmp->color = RED;
+								current = current->parent;
+							} else {
+								if (tmp->right->color == BLACK) {
+								// case 3 : if the color of the rightChild of w is BLACK
+									tmp->left->color = BLACK;
+									tmp->color = RED;
+									rightRotate(tmp);
+									tmp = current->parent->right;
+								}
+								// case 4 :If any of the above cases do not occur
+								tmp->color = current->parent->color;
+								current->parent->color = BLACK;
+								tmp->right->color = BLACK;
+								leftRotate(current->parent);
+								current = searchRoot();
+							}
+						} else {
+							//the same as above with right changed to left and vice versa 
+							tmp = current->parent->left;
+							if (tmp && tmp->color == RED) {
+								tmp->color = BLACK;
+								current->parent->color = RED;
+								rightRotate(current->parent);
+								tmp = current->parent->left;
+							}
 
+							if (tmp && tmp->right->color == BLACK && tmp->left->color == BLACK) { //
+								tmp->color = RED;
+								current = current->parent;
+							} else {
+								if (tmp->left->color == BLACK) {
+									tmp->right->color = BLACK;
+									tmp->color = RED;
+									leftRotate(tmp);
+									tmp = current->parent->left;
+								}
+								tmp->color = current->parent->color;
+								current->parent->color = BLACK;
+								tmp->left->color = BLACK;
+								rightRotate(current->parent);
+								current = searchRoot();
+							}
+						}
+					}
+					current->color = BLACK;
+				}
 
 				void	clearTree(node	*current) {
 					std::cout << GRN "ClearTree Function" NC << std::endl;
@@ -244,14 +311,13 @@ namespace	ft {
 					if (tmp->right)
 						clearTree(tmp->right);
 					if (tmp) {
-						std::cout << "PLOP" << std::endl;
 						_alloc_node.destroy(tmp);
 						_alloc_node.deallocate(tmp, 1);
 					}
 				}
 
-				node	*searchRoot(node *current) {
-					node	*tmp = current;
+				node	*searchRoot() {
+					node	*tmp = _root;
 					while (tmp->parent)
 						tmp = tmp->parent;
 					return tmp;
@@ -292,24 +358,28 @@ namespace	ft {
 				void	insertFix(node* current) {
 					node*	tmp;
 
-					while (current->parent &&current->parent->parent&& current->parent->color == RED) {
-						if (current->parent->parent && current->parent == current->parent->parent->right) {
+					while (current->parent && current->parent->parent && current->parent->color == RED) {
+						if (current->parent == current->parent->parent->right) {
 							tmp = current->parent->parent->left;
 							if (tmp && tmp->color == RED) {
+							// Case 1 : if the color of the left child of grandPa is RED
 								tmp->color = BLACK;
 								current->parent->color = BLACK;
 								current->parent->parent->color = RED;
 								current = current->parent->parent;
 							} else {
 								if (current == current->parent->left) {
+							// Case 2 : if the node is the left child of the parent
 									current = current->parent;
 									rightRotate(current);
 								}
+							// Case 3 : if none of the above
 								current->parent->color = BLACK;
 								current->parent->parent->color = RED;
 								leftRotate(current->parent->parent);
 							}
-						} else if (current->parent->parent) {
+						} else { 
+							// the same as above with left changed to right and vice versa 
 							tmp = current->parent->parent->right;
 							if (tmp && tmp->color == RED) {
 								tmp->color = BLACK;
@@ -317,7 +387,7 @@ namespace	ft {
 								current->parent->parent->color = RED;
 								current = current->parent->parent;
 							} else {
-								if (current == current->parent->left) {
+								if (current == current->parent->right) {
 									current = current->parent;
 									leftRotate(current);
 								}
@@ -333,7 +403,8 @@ namespace	ft {
 				}
 
 				void	leftRotate(node *current) {
-					node*	tmp = current->right;
+					node	*tmp  = current->right;
+					printTree();
 					current->right = tmp->left;
 					if (tmp->left)
 						tmp->left->parent = current;
@@ -350,7 +421,8 @@ namespace	ft {
 
 				void	rightRotate(node *current) {
 					node*	tmp = current->left;
-					current->right = tmp->right;
+					printTree();
+					current->left = tmp->right; //
 					if (tmp->right)
 						tmp->right->parent = current;
 					tmp->parent = current->parent;
