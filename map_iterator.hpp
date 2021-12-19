@@ -34,21 +34,24 @@ namespace	ft {
 				~map_iterator(void) {}
 
 				map_iterator	&operator++(void) {
-					if (_current->right) {
-						_current = _current->right;
-						while (_current->left)
-							_current = _current->left;
-					}
-					else {
-						node *tmp = _current; // on preserve la valeur de depart
-						_current = _current->parent; //on remonte d un crant 
-						while (_current && _current->left != tmp) { // tant qu il n y a pas de droite on monte
-							tmp = _current;
-							_current = _current->parent;
+					if (_current) {
+						if (_current->right) {
+							_current = _current->right;
+							while (_current->left)
+								_current = _current->left;
+						}
+						else {
+							node *tmp = _current; // on preserve la valeur de depart
+							_current = _current->parent; //on remonte d un crant 
+							while (_current && _current->left != tmp) { // tant qu il n y a pas de droite on monte
+								tmp = _current;
+								_current = _current->parent;
+							}
 						}
 					}
+					return *this;
 				}
-				
+
 				map_iterator	operator++(int) { 
 					map_iterator tmp = *this;
 					++(*this);
@@ -56,19 +59,22 @@ namespace	ft {
 				}
 
 				map_iterator	&operator--(void) {
-					if (_current->left) {
-						_current = _current->left;
-						while (_current && _current->right)
-							_current = _current->right;
-					}
-					else {
-						node *tmp = _current; // on preserve la valeur de depart
-						_current = _current->parent; //on remonte d un crant 
-						while (_current && (_current->right != tmp)) { // tant qu il n y a pas de droite on monte
-							tmp = _current;
-							_current = _current->parent;
+					if (_current) {
+						if (_current->left) {
+							_current = _current->left;
+							while (_current && _current->right)
+								_current = _current->right;
+						}
+						else {
+							node *tmp = _current; // on preserve la valeur de depart
+							_current = _current->parent; //on remonte d un crant 
+							while (_current && (_current->right != tmp)) { // tant qu il n y a pas de droite on monte
+								tmp = _current;
+								_current = _current->parent;
+							}
 						}
 					}
+					return *this;
 				}
 
 				map_iterator	operator--(int) { 
@@ -78,10 +84,10 @@ namespace	ft {
 				}
 
 				reference	operator*() const { return _current->value; }
-				reference	operator->() const { return &(operator*()); }
+				pointer	operator->() const { return &(operator*()); }
 				node	*getNode(void) const { return _current; }
-				bool	operator==(const map_iterator_const<T> &rhs) const { return _current == rhs.getNode(); }
-				bool	operator!=(const map_iterator_const<T> &rhs) const { return _current != rhs.getNode(); }	
+				bool	operator==(const map_iterator<T> &rhs) const { return _current == rhs.getNode(); }
+				bool	operator!=(const map_iterator<T> &rhs) const { return _current != rhs.getNode(); }	
 		};
 
 	template<typename T>
@@ -121,8 +127,9 @@ namespace	ft {
 							_current = _current->parent;
 						}
 					}
+					return *this;
 				}
-				
+
 				map_iterator_const	operator++(int) { 
 					map_iterator_const tmp = *this;
 					++(*this);
@@ -152,10 +159,10 @@ namespace	ft {
 				}
 
 				reference	operator*() const { return _current->value; }
-				reference	operator->() const { return &(operator*()); }
+				pointer	operator->() const { return &(operator*()); }
 				node	*getNode(void) const { return _current; }
-				bool	operator==(const map_iterator_const<T> &rhs) const { return _current == rhs.getNode(); }
-				bool	operator!=(const map_iterator_const<T> &rhs) const { return _current != rhs.getNode(); }	
+				bool	operator==(const map_iterator_const &rhs) const { return _current == rhs.getNode(); }
+				bool	operator!=(const map_iterator_const &rhs) const { return _current != rhs.getNode(); }	
 		};
 
 }

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 /* #include "tree/tree.h" */
-
+/*
 typedef struct s_tree_display {
 	int		block_width;
 	int		block_delta;
@@ -157,7 +157,7 @@ int	buffer_connect_leaf(t_buf *b, int is_l, int len, int *cumul)
 		|| buffer_append_mul(b, E_JUNCTION, len - 2)
 		|| buffer_append(b, E_JUNCTION_LOW_R));
 }
-
+*/
 namespace	ft {
 	template<typename T>
 		class	node {
@@ -166,7 +166,7 @@ namespace	ft {
 				node*	parent;
 				node*	left;
 				node*	right;
-				t_tree_display	dsp;
+			//	t_tree_display	dsp;
 				int color;
 
 				node(void) : parent(NULL), left(NULL), right(NULL) {}
@@ -201,9 +201,9 @@ namespace	ft {
 					return getSibling(P);
 				}
 
-				void printTree() {
-					_print_tree(this, 1, 1);
-				}
+			//	void printTree() {
+			//		_print_tree(this, 1, 1);
+			//	}
 
 
 
@@ -213,7 +213,7 @@ namespace	ft {
 
 
 
-
+/*
 
 
 
@@ -253,17 +253,13 @@ static int	print_connect(node *tree, t_buf *b, int *printed)
 
 static int	print_label(node *tree, t_buf *b, int *printed)
 {
-	/* const char	c = '0' + tree->i; */
 	int			ret;
 
 	ret = buffer_append_mul(b, E_PAD, tree->dsp.label_delta)
-		/* || buffer_append_raw(b, &c, 1) */
 		|| buffer_append(b, E_PREFIX)
 		|| buffer_append_raw(b, tree->color == 1 ? "\033[31m" : "\033[34m", sizeof("\033[31m") - 1)
 		|| buffer_append_raw(b, (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),//"TOTO",
 			tree->dsp.label_width - WORD_ADDED_WIDTH - tree->dsp.trunc)
-		/* || buffer_append_raw(b, ":", 1) */
-		/* || buffer_append_raw(b, std::to_string(tree->value.second).c_str(), std::to_string(tree->value.second).size()) */
 		;
 	dprintf(2, " [%s] %d \n", (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),
 			tree->dsp.label_width - WORD_ADDED_WIDTH - tree->dsp.trunc);
@@ -470,7 +466,7 @@ int	_calc_depth(node *tree, int depth, t_tree_display *me)
 	label_adjust(me);
 	tree->dsp = *me;
 	return (max(depth, max(leaf[0], leaf[1])));
-}
+}*/
 
 
 
