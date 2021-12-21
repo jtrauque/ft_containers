@@ -246,7 +246,7 @@ namespace	ft {
 					while (first != last) {
 					//	node	*tmp = searchKey(first.getNode()->value.first, _root);
 					//	if (tmp)
-						std::cout << BLUE "erase - first = " << first.getNode()->value.first << NC <<std::endl;
+					//	std::cout << BLUE "erase - first = " << first.getNode()->value.first << NC <<std::endl;
 						tmp = first;
 						tmp++;
 						erase(first);
@@ -385,15 +385,19 @@ namespace	ft {
 					if (tmp->parent)
 						std::cout << "here up = "  << tmp->parent << std::endl;
 					if (up && up->left == tmp) {
-					std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << up->left->value.first << NC << std::endl;
+				//	std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << up->left->value.first << NC << std::endl;
 						up->left = downL;
+						if (downL)
+							downL->parent = up;
 						printTree();
 						if (up->left)
 							deleteFix(up->left);
 					}
 					else if (up && up->right == tmp) {
-					std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << downR->value.first << NC << std::endl;
+				//	std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << downR->value.first << NC << std::endl;
 						up->right = downR;
+						if (downR)
+							downR->parent = up;
 						if (up->right)
 							deleteFix(up->right);
 					}

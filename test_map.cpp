@@ -297,7 +297,6 @@ void rbegin()
  	mymap["f"]=60;
 	std::cout << "---------------------------------------------------------------" << std::endl; 
 	mymap.printTree();
-
  	it=mymap.find("b"); 
  	mymap.erase (it);                   // erasing by iterator */
 	mymap.printTree();

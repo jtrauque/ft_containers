@@ -34,6 +34,7 @@ namespace	ft {
 				~map_iterator(void) {}
 
 				map_iterator	&operator++(void) {
+					std::cout << "current iterator : " << _current->parent->value.first << std::endl;
 					if (_current && (_current->left || _current->right)) {
 						if (_current && _current->right) {
 							_current = _current->right;
