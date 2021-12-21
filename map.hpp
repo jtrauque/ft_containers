@@ -67,9 +67,9 @@ namespace	ft {
 				key_compare	_comp;
 
 			public:
-				//	void printTree() {
-				//		if (_root != NULL) _root->printTree();
-				//	}
+				void printTree() {
+					if (_root != NULL) _root->printTree();
+				}
 				//default constructor
 				explicit	map(const key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
 					_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {
@@ -87,7 +87,10 @@ namespace	ft {
 					std::cout << REDC "map copy constructeur" NC << std::endl;
 					*this = src; 
 				}
-				~map(void) {  std::cout << "Destructeur" << std::endl; clearTree(_root); }  //
+				~map(void) {  std::cout << "Destructeur" << std::endl;
+					std::cout << "root = " << _root << std::endl;
+					if (_root) {clearTree(_root);} 
+				}  //
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
@@ -131,7 +134,7 @@ namespace	ft {
 				//https://en.cppreference.com/w/cpp/container/map/operator_at
 
 				mapped_type	&operator[](key_type const &key) {
-					std::cout << YELLOW "Operator[] Function" NC << std::endl;
+					std::cout << YELLOW "Operator[] Function :" << key <<  NC << std::endl;
 					node	*tmp = searchKey(key, _root);
 					if (tmp){
 						std::cout << PINK "Operator[] found" NC << std::endl;
@@ -146,8 +149,10 @@ namespace	ft {
 					if (_size == 0)
 						return iterator(_root);
 					node *first = _root;
+					//	std::cout << "begin function : " << first->value.first << std::endl;
 					while (first && first->left)
 						first = first->left;
+					//	std::cout << YELLOW "begin function : " << first->value.first << NC << std::endl;
 					return iterator(first);
 				}
 
@@ -207,7 +212,7 @@ namespace	ft {
 					return const_iterator(last);
 				}
 				bool	empty(void) const {
-					return _size == 0;
+					return (_size == 0 ? true : false);
 				}
 
 				size_type	size(void) const {
@@ -229,17 +234,23 @@ namespace	ft {
 				}
 
 				void	erase(iterator position) {
-					node	*tmp = position._current;
+					std::cout << PINK "ERASE IT Function" NC << std::endl;
+					node	*tmp = position.getNode();
 					if (tmp) 
 						deleteNode(tmp->value.first);
 				}
 
 				void	erase(iterator first, iterator last) {
+					std::cout << PINK "ERASE 2 IT Function" NC << std::endl;
+					iterator tmp;
 					while (first != last) {
-						node	*tmp = searchNode(first._current);
-						if (tmp)
-							deleteNode(tmp->value.first);
-						first++;
+					//	node	*tmp = searchKey(first.getNode()->value.first, _root);
+					//	if (tmp)
+						std::cout << BLUE "erase - first = " << first.getNode()->value.first << NC <<std::endl;
+						tmp = first;
+						tmp++;
+						erase(first);
+						first = tmp;
 					}
 				}
 
@@ -282,7 +293,7 @@ namespace	ft {
 				iterator	find(const key_type &k) {
 					node	*tmp = searchKey(k, _root);
 					if (tmp)
-						return iterator(tmp);
+					return iterator(tmp);
 					return end();
 				}
 
@@ -352,35 +363,82 @@ namespace	ft {
 				}
 
 			protected:
+				
 				void	deleteNode(key_type	const &key) {
+					std::cout << REDC "Delete Function :" << key << NC << std::endl;
 					node	*tmp = searchKey(key, _root);
+					//tmp->printTree();
+					std::cout << "one" << std::endl;
 					if (!tmp)
 						return ;
 					node	*up = tmp->parent;
 					node	*downL = NULL;
 					node	*downR = NULL;
+					std::cout << "two" << std::endl;
 					if (tmp->left)
 						downL = tmp->left;
 					if (tmp->right)
 						downR = tmp->right;
-					_alloc_node.destroy(tmp);
-					_alloc_node.deallocate(tmp, 1);
-					if (up->left == tmp) {
+					std::cout << "three" << std::endl;
+					printTree();
+					std::cout << "here tmp = " << tmp->value.first << tmp << std::endl;
+					if (tmp->parent)
+						std::cout << "here up = "  << tmp->parent << std::endl;
+					if (up && up->left == tmp) {
+					std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << up->left->value.first << NC << std::endl;
 						up->left = downL;
+						printTree();
 						if (up->left)
 							deleteFix(up->left);
 					}
-					else if (up->right == tmp) {
+					else if (up && up->right == tmp) {
+					std::cout << BLUE "papa |" << up->value.first<< "| adopte :" << downR->value.first << NC << std::endl;
 						up->right = downR;
 						if (up->right)
 							deleteFix(up->right);
 					}
+					else {	
+						if (downL) {
+							node	*newValue = downL;
+							while (newValue && newValue->right)
+								newValue = newValue->right;
+							_root = newValue;
+							std::cout << "root downL : " << _root->value.first << std::endl;
+							if (downR)
+								_root->right = downR;
+							_root->parent = NULL;
+							std::cout << CYN "Delete Function dL :" << _root->value.first << NC << std::endl;
+						}
+						else if (downR) {
+							node	*newValue = tmp->right;
+							while (newValue && newValue->left)
+								newValue = newValue->left;
+							downR->parent = NULL;
+							_root = newValue;
+							std::cout << CYN "Delete Function dR :" << _root->value.first << _root->parent << NC << std::endl;
+						}
+						else
+							_root = NULL;
+					 
+						if (_root) {
+							printTree();
+							deleteFix(_root);
+						}
+					}
+					_alloc_node.destroy(tmp);
+					_alloc_node.deallocate(tmp, 1);
+					std::cout << "tmp = " << tmp << std::endl;
+				//	std::cout << "root = " << _root << std::endl;
+					_size--;
+					std::cout << "four" << std::endl;
 				}
 
 				void	deleteFix(node* current) {
+					std::cout << REDC "Delete FIX Function :" << NC << std::endl;
+							printTree();
 					node*	tmp;
 
-					while (current && current->parent && current != searchRoot() && current->color == BLACK) {
+					while (current && current->parent && current->color == BLACK) {
 						if (current == current->parent->left) { 
 							tmp = current->parent->right;
 							if (tmp && tmp->color == RED) {
@@ -437,7 +495,38 @@ namespace	ft {
 							}
 						}
 					}
+				//	if (!current->parent && (!current->left || !current->right))
+				//		deleteFixRoot(current);
 					current->color = BLACK;
+				}
+				/*
+				int	nbNodeLeft(node* current) {
+					int nb = 0;
+					if (!current || !current->left)
+						return 0;
+					while (current && current->left) {
+						current = current->left;
+						nb++;
+					}
+					return nb;
+				}
+			
+				int	nbNodeRight(node* current) {
+					int nb = 0;
+					if (!current || !current->right)
+						return 0;
+					while (current && current->right) {
+						current = current->right;
+						nb++;
+					}
+					return nb;
+				}*/
+
+				void	deleteFixRoot(node   *current) {
+					if (!current->left)
+						leftRotate(current);
+					else if (!current->right)
+						rightRotate(current);
 				}
 
 				void	clearTree(node	*current) {
@@ -457,7 +546,7 @@ namespace	ft {
 
 				node	*searchRoot() {
 					node	*tmp = _root;
-					while (tmp->parent)
+					while (tmp && tmp->parent)
 						tmp = tmp->parent;
 					return tmp;
 				}
@@ -589,6 +678,7 @@ namespace	ft {
 								if (!current->right) {
 									current->right = newNode(value, current);
 									insertFix(current->right);
+					std::cout << "here tmp = " << current->right->value.first << current->right << std::endl;
 									break;
 								}
 								current = current->right;
@@ -597,6 +687,7 @@ namespace	ft {
 								if (!current->left) {
 									current->left = newNode(value,current);
 									insertFix(current->left);
+					std::cout << "here tmp = " << current->left->value.first << current->left << std::endl;
 									break;
 								}
 								current = current->left;

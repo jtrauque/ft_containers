@@ -34,19 +34,25 @@ namespace	ft {
 				~map_iterator(void) {}
 
 				map_iterator	&operator++(void) {
-					if (_current) {
-						if (_current->right) {
+					if (_current && (_current->left || _current->right)) {
+						if (_current && _current->right) {
 							_current = _current->right;
-							while (_current->left)
+							while (_current && _current->left)
 								_current = _current->left;
 						}
 						else {
-							node *tmp = _current; // on preserve la valeur de depart
+						/*	node *tmp = _current; // on preserve la valeur de depart
 							_current = _current->parent; //on remonte d un crant 
-							while (_current && _current->left != tmp) { // tant qu il n y a pas de droite on monte
+							while (tmp && _current && _current->left != tmp) { // tant qu il n y a pas de droite on monte
 								tmp = _current;
 								_current = _current->parent;
+							}*/
+							node	*parent = _current->parent;
+							while(parent && parent->right == _current) {
+								_current = parent;
+								parent = parent->parent;
 							}
+							
 						}
 					}
 					return *this;

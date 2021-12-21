@@ -40,7 +40,7 @@ struct ft_more {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
-
+/*
 #include <string>
 void constructor()
 {
@@ -59,7 +59,7 @@ void constructor()
 	map1["e"] = 5;
 	map1["f"] = 6;
 	map1["z"] = 8;
-	/* std::cout << "map1 = "; printSize(map1); */
+ std::cout << "map1 = "; printSize(map1); 
 	std::cout << "map1 = "; printSize(map1); 
 
 	//	map1.printTree();
@@ -78,12 +78,12 @@ void constructor()
 
 	std::cout << (map_cmp[42] < map_cmp[90]) << std::endl; 
 
-	/*         // (2) Range constructor */
+	         // (2) Range constructor 
 	NAMESPACE::map<std::string, int> iter(map1.find("a"), map1.end()); 
 	std::cout << "\niter = "; printSize(iter);
 	std::cout << "map1 = "; printSize(map1); 
 
-	/*         // (3) Copy constructor */
+	         // (3) Copy constructor 
 	         NAMESPACE::map<std::string, int> copied(map1); 
 	         std::cout << "\ncopied = "; printSize(copied); 
 		std::cout << copied["z"] << std::endl;
@@ -115,7 +115,7 @@ void constructor()
  	mymap['a'] = 200; 
  	mymap['c'] = 300; 
 
-/* 	// show content: */
+ 	// show content: 
  	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n'; 
  } 
@@ -128,7 +128,7 @@ void constructor()
  	mymap['a'] = 200; 
  	mymap['c'] = 300; 
 
-/* 	// show content: */
+ 	// show content: 
  	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n'; 
  } 
@@ -141,191 +141,177 @@ void rbegin()
  	mymap['y'] = 200; 
  	mymap['z'] = 300; 
 
-/* 	// show content: */
+ 	// show content: 
  	NAMESPACE::map<char,int>::reverse_iterator rit; 
  	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit) 
  		std::cout << rit->first << " => " << rit->second << '\n'; 
  } 
 
-/* void rend() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
+ void rend() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
 
-/* 	mymap['x'] = 100; */
-/* 	mymap['y'] = 200; */
-/* 	mymap['z'] = 300; */
+ 	mymap['x'] = 100; 
+ 	mymap['y'] = 200; 
+ 	mymap['z'] = 300; 
 
-/* 	// show content: */
-/* 	NAMESPACE::map<char,int>::reverse_iterator rit; */
-/* 	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit) */
-/* 		std::cout << rit->first << " => " << rit->second << '\n'; */
-/* } */
-
-
-/* void empty() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-
-/* 	mymap['a']=10; */
-/* 	mymap['b']=20; */
-/* 	mymap['c']=30; */
-
-/* 	while (!mymap.empty()) */
-/* 	{ */
-/* 		std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n'; */
-/* 		mymap.erase(mymap.begin()); */
-/* 	} */
-/* } */
-
-/* void size() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	mymap['a']=101; */
-/* 	mymap['b']=202; */
-/* 	mymap['c']=302; */
-
-/* 	std::cout << "mymap.size() is " << mymap.size() << '\n'; */
-/* } */
-
-/* void max_size() */
-/* { */
-/* 	int i; */
-/* 	NAMESPACE::map<int,int> mymap; */
-
-/* 	if (mymap.max_size()>1000) */
-/* 	{ */
-/* 		for (i=0; i<1000; i++) mmap[i]=0; */
-/* 		std::cout << "The map contains 1000 elements.\n"; */
-/* 	} */
-/* 	else std::cout << "The map could not hold 1000 elements.\n"; */
-/* } */
-
-/* void operator_hook() // operator [] */
-/* { */
-/* 	NAMESPACE::map<char,std::string> mymap; */
-
-/* 	mymap['a']="an element"; */
-/* 	mymap['b']="another element"; */
-/* 	mymap['c']=mymap['b']; */
-
-/* 	std::cout << "mymap['a'] is " << mymap['a'] << '\n'; */
-/* 	std::cout << "mymap['b'] is " << mymap['b'] << '\n'; */
-/* 	std::cout << "mymap['c'] is " << mymap['c'] << '\n'; */
-/* 	std::cout << "mymap['d'] is " << mymap['d'] << '\n'; */
-
-/* 	std::cout << "mymap now contains " << mymap.size() << " elements.\n"; */
-/* } */
-
-/* void at() */
-/* { */
-/* 	NAMESPACE::map<int, int> mp; */
-/* 	for (int i = 0; i < 10; i++) */
-/* 		mp[i] = i * 3; */
-
-/* 	for (int i = 0; i < 10; i++) */
-/* 		std::cout << mp.at(i) << std::endl; */
-
-/* 	try */
-/* 	{ */
-/* 		mp.at(mp.size() + 1); */
-/* 	} */
-/* 	catch(std::out_of_range &le) */
-/* 	{ */
-/* 		std::cout << "out of range : "  << le.what() << std::endl; */
-/* 	} */
-
-/* 	catch(std::exception &e) */
-/* 	{ */
-/* 		std::cout << "error : " << e.what() << std::endl; */
-/* 	} */
-/* } */
+ 	// show content: 
+ 	NAMESPACE::map<char,int>::reverse_iterator rit; 
+ 	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit) 
+ 		std::cout << rit->first << " => " << rit->second << '\n'; 
+ } 
 
 
-/* void insert() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
+ void empty() 
+ { 
+ 	NAMESPACE::map<std::string,int> mymap; 
 
-/* 	// first insert function version (single parameter): */
-/* 	mymap.insert ( NAMESPACE::pair<char,int>('b',100) ); */
-/* 	mymap.insert ( NAMESPACE::pair<char,int>('z',200) ); */
+ 	mymap["a"]=1; 
+ 	mymap["b"]=2; 
+ 	mymap["c"]=3; 
 
-/* 	NAMESPACE::pair<NAMESPACE::map<char,int>::iterator,bool> ret; */
-/* 	ret = mymap.insert ( NAMESPACE::pair<char,int>('z',500) ); */
-/* 	if (ret.second==false) { */
-/* 		std::cout << "element 'z' already existed"; */
-/* 		std::cout << " with a value of " << ret.first->second << '\n'; */
-/* 	} */
+ 	while (!mymap.empty()) 
+ 	{ 
+		std::cout << PINK "MYMAP EMPTY" NC << mymap.size() << std::endl;
+	//	std::cout << "c = " << mymap["c"] << std::endl;
+ 		std::cout << mymap.begin()->first 
+		<< " => " << mymap.begin()->second << '\n';
+		std::cout << "PLOP" << std::endl; 
+ 		mymap.erase(mymap.begin()); 
+		std::cout << "PLOP 2" << std::endl; 
+ 	} 
+	std::cout << "OUT" << std::endl; 
+ } 
 
-/* 	// second insert function version (with hint position): */
-/* 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); */
-/* 	mymap.insert (it, NAMESPACE::pair<char,int>('c',300)); */
-/* 	mymap.insert (it, NAMESPACE::pair<char,int>('d',400)); */
+ void size() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
+ 	mymap['a']=101; 
+ 	mymap['b']=202; 
+ 	mymap['c']=302; 
 
-/* 	// third insert function version (range insertion): */
-/* 	NAMESPACE::map<char,int> anothermap; */
-/* 	anothermap.insert(mymap.begin(),mymap.find('c')); */
+ 	std::cout << "mymap.size() is " << mymap.size() << '\n'; 
+ } 
 
-/* 	// showing contents: */
-/* 	std::cout << "mymap contains:\n"; */
-/* 	for (it=mymap.begin(); it!=mymap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
+ void max_size()
+ {
+ 	int i;
+ 	NAMESPACE::map<int,int> mymap; 
 
-/* 	std::cout << "anothermap contains:\n"; */
-/* 	for (it=anothermap.begin(); it!=anothermap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* } */
-/* void iterator_validity() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	mymap.insert ( NAMESPACE::pair<char,int>('b',100) ); */
-/* 	mymap.insert ( NAMESPACE::pair<char,int>('c', 50) ); */
-/* 	mymap.insert ( NAMESPACE::pair<char,int>('d', 510) ); */
+ 	if (mymap.max_size()>1000) 
+ 	{ 
+ 		for (i=0; i<1000; i++) mymap[i]=0; 
+ 		std::cout << "The map contains 1000 elements.\n"; 
+ 	} 
+ 	else std::cout << "The map could not hold 1000 elements.\n"; 
+ } 
 
-/* 	NAMESPACE::map<char,int>::iterator it1 = ++(mymap.begin()); */
-/* 	NAMESPACE::map<char,int>::iterator it2 = ++(++(mymap.begin())); */
+ void operator_hook() // operator [] 
+ { 
+ 	NAMESPACE::map<char,std::string> mymap; 
 
-/* 	mymap.insert (NAMESPACE::pair<char,int>('z',300)); */
+ 	mymap['a']="an element"; 
+ 	mymap['b']="another element"; 
+ 	mymap['c']=mymap['b']; 
 
-/* 	NAMESPACE::map<char,int>::iterator it11 = ++(mymap.begin()); */
-/* 	NAMESPACE::map<char,int>::iterator it22 = ++(++(mymap.begin())); */
+ 	std::cout << "mymap['a'] is " << mymap['a'] << '\n'; 
+ 	std::cout << "mymap['b'] is " << mymap['b'] << '\n'; 
+ 	std::cout << "mymap['c'] is " << mymap['c'] << '\n'; 
+ 	std::cout << "mymap['d'] is " << mymap['d'] << '\n'; 
 
-/* 	if (it1 == it11 && it2 == it22) */
-/* 		std::cout << "it insert validity OK" << std::endl; */
+ 	std::cout << "mymap now contains " << mymap.size() << " elements.\n"; 
+ } 
 
-/* 	mymap.erase ('z'); */
 
-/* 	it11 = ++(mymap.begin()); */
-/* 	it22 = ++(++(mymap.begin())); */
+ void insert() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
 
-/* 	if (it1 == it11 && it2 == it22) */
-/* 		std::cout << "it erase validity OK" << std::endl; */
-/* } */
+ 	// first insert function version (single parameter): 
+ 	mymap.insert ( NAMESPACE::pair<char,int>('b',100) ); 
+ 	mymap.insert ( NAMESPACE::pair<char,int>('z',200) ); 
 
-/* void erase() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	NAMESPACE::map<char,int>::iterator it; */
+ 	NAMESPACE::pair<NAMESPACE::map<char,int>::iterator,bool> ret; 
+ 	ret = mymap.insert ( NAMESPACE::pair<char,int>('z',500) ); 
+ 	if (ret.second==false) { 
+ 		std::cout << "element 'z' already existed"; 
+ 		std::cout << " with a value of " << ret.first->second << '\n'; 
+ 	} 
 
-/* 	// insert some values: */
-/* 	mymap['a']=10; */
-/* 	mymap['b']=20; */
-/* 	mymap['c']=30; */
-/* 	mymap['d']=40; */
-/* 	mymap['e']=50; */
-/* 	mymap['f']=60; */
+ 	// second insert function version (with hint position): 
+ 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); 
+ 	mymap.insert (it, NAMESPACE::pair<char,int>('c',300)); 
+ 	mymap.insert (it, NAMESPACE::pair<char,int>('d',400)); 
 
-/* 	it=mymap.find('b'); */
-/* 	mymap.erase (it);                   // erasing by iterator */
+ 	// third insert function version (range insertion): 
+ 	NAMESPACE::map<char,int> anothermap; 
+ 	anothermap.insert(mymap.begin(),mymap.find('c')); 
 
-/* 	mymap.erase ('c');                  // erasing by key */
+ 	// showing contents: 
+ 	std::cout << "mymap contains:\n"; 
+ 	for (it=mymap.begin(); it!=mymap.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
 
-/* 	it=mymap.find ('e'); */
-/* 	mymap.erase ( it, mymap.end() );    // erasing by range */
+ 	std::cout << "anothermap contains:\n"; 
+ 	for (it=anothermap.begin(); it!=anothermap.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ } 
+ void iterator_validity() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
+ 	mymap.insert ( NAMESPACE::pair<char,int>('b',100) ); 
+ 	mymap.insert ( NAMESPACE::pair<char,int>('c', 50) ); 
+ 	mymap.insert ( NAMESPACE::pair<char,int>('d', 510) ); 
 
-/* 	// show content: */
-/* 	for (it=mymap.begin(); it!=mymap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* } */
+ 	NAMESPACE::map<char,int>::iterator it1 = ++(mymap.begin()); 
+ 	NAMESPACE::map<char,int>::iterator it2 = ++(++(mymap.begin())); 
+
+ 	mymap.insert (NAMESPACE::pair<char,int>('z',300)); 
+
+ 	NAMESPACE::map<char,int>::iterator it11 = ++(mymap.begin()); 
+	NAMESPACE::map<char,int>::iterator it22 = ++(++(mymap.begin())); 
+
+ 	if (it1 == it11 && it2 == it22) 
+ 		std::cout << "it insert validity OK" << std::endl;
+
+ 	mymap.erase ('z'); 
+
+ 	it11 = ++(mymap.begin()); 
+ 	it22 = ++(++(mymap.begin())); 
+
+ 	if (it1 == it11 && it2 == it22) 
+ 		std::cout << "it erase validity OK" << std::endl; 
+ }*/ 
+
+ void erase() 
+ { 
+ 	NAMESPACE::map<std::string,int> mymap; 
+ 	NAMESPACE::map<std::string,int>::iterator it; 
+
+ 	// insert some values: */
+ 	mymap["a"]=10; 
+ 	mymap["b"]=20; 
+ 	mymap["c"]=30; 
+ 	mymap["d"]=40; 
+	mymap["e"]=50; 
+ 	mymap["f"]=60;
+	std::cout << "---------------------------------------------------------------" << std::endl; 
+	mymap.printTree();
+
+ 	it=mymap.find("b"); 
+ 	mymap.erase (it);                   // erasing by iterator */
+	mymap.printTree();
+ 	mymap.erase ("c");                  // erasing by key */
+
+	mymap.printTree();
+ 	it=mymap.find ("e"); 
+ 	mymap.erase ( it, mymap.end() );    // erasing by range */
+	mymap.printTree();
+
+ 	// show content: */
+ 	for (it=mymap.begin(); it!=mymap.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ } 
 
 /* void swap() */
 /* { */
@@ -605,23 +591,22 @@ void rbegin()
 
 int main()
 {
-	constructor();
-        operator_equal(); // operator = 
+//	constructor();
+     //   operator_equal(); // operator = 
 
-	 begin(); 
-	 end(); 
-	 rbegin(); 
-	/* rend(); */
+//	 begin(); 
+//	 end(); 
+//	 rbegin(); 
+//	 rend(); 
 
-	/* empty(); */
-	/* size(); */
-	/* max_size(); */
+//	 empty(); 
+//	 size(); 
+//	 max_size(); 
 
-	/* operator_hook(); // operator [] */
-	/* at(); */
-
-	/* insert(); */
-	/* erase(); */
+//	 operator_hook(); // operator [] 
+//
+//	 insert(); 
+	 erase(); 
 	/* swap(); */
 	/* clear(); */
 
@@ -639,6 +624,6 @@ int main()
 	/* relationnal_ope(); */
 	/* swap_non_member(); */
 
-	/* iterator_validity(); */
+//	 iterator_validity(); 
 
 }
