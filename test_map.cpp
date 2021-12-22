@@ -297,14 +297,14 @@ void rbegin()
  	mymap["f"]=60;
 	std::cout << "---------------------------------------------------------------" << std::endl; 
 	mymap.printTree();
- 	it=mymap.find("b"); 
- 	mymap.erase (it);                   // erasing by iterator */
-	mymap.printTree();
- 	mymap.erase ("c");                  // erasing by key */
+ //	it=mymap.find("b"); 
+ //	mymap.erase (it);                   // erasing by iterator */
+//	mymap.printTree();
+ 	mymap.erase ("d");                  // erasing by key */
 
-	mymap.printTree();
- 	it=mymap.find ("e"); 
- 	mymap.erase ( it, mymap.end() );    // erasing by range */
+//	mymap.printTree();
+ //	it=mymap.find ("e"); 
+ //	mymap.erase ( it, mymap.end() );    // erasing by range */
 	mymap.printTree();
 
  	// show content: */
