@@ -512,10 +512,6 @@ namespace	ft {
 						nextNode->color = BLACK;
 						return ;
 					}
-					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK) && !delNode->parent) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-						return ;
-					}
 					else if (delNode->color == RED && nextNode->color == BLACK) { //case 0
 						nextNode->color = RED;
 						if (nextNode->right) {
@@ -523,16 +519,18 @@ namespace	ft {
 						}
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 					}
-					if (delNode->color == RED)
-						delNode->color = BLACK;
-					if (delNode->color == BLACK && nextNode->color == BLACK && delNode->parent) {
+					if (nextNode->right && nextNode->right->color == RED) {
+						nextNode->right->color = BLACK;
+						return ;
+					}
+					if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK) && delNode->parent) {
 						node	*brother = delNode->getSibling(delNode);
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 						if (!brother) {
 						std::cout << BLUE << __LINE__ << NC << std::endl;
-
 							return ;
 						}
+						std::cout << BLUE << __LINE__ << brother->value.first << NC << std::endl;
 						if (brother->color == RED) {
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 							brother->color = BLACK;
@@ -592,6 +590,10 @@ namespace	ft {
 							}
 
 						}
+					}
+					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK) && !delNode->parent) {
+						std::cout << BLUE << __LINE__ << NC << std::endl;
+						return ;
 					}
 				}
 				/* void	deleteFix(node* current) { */
