@@ -190,6 +190,8 @@ namespace	ft {
 
 				node	*getSibling(node* N) {
 					node* P = getParent(N);
+					if (!P)
+						return NULL;
 					if (P->right == this)
 						return P->left;
 					else 
