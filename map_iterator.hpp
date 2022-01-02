@@ -46,12 +46,12 @@ namespace	ft {
 						while (_current->parent && _current->parent->right == _current)
 							_current = _current->parent;
 						if (_current->parent && _current->parent->left == _current) {
-							_current = _current->parent;
-							if (_current->right) {
-								_current = _current->right;
-								while (_current->left)
-									_current = _current->left;	
-							}
+							_current = _current->parent; // root became ++ si no right
+							/* if (_current->right) { */
+							/* 	_current = _current->right; */
+							/* 	while (_current->left) */
+							/* 		_current = _current->left; */	
+							/* } */
 						} 
 						else {
 							_current = NULL;
