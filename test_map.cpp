@@ -307,7 +307,7 @@ void rbegin()
  //	mymap.erase ( it, mymap.end() );    // erasing by range */
 	mymap.erase ("e");                  // erasing by key */
 	mymap.printTree();
- mymap.erase ("f");                  // erasing by key */
+ mymap.erase ("b");                  // erasing by key */
 	mymap.printTree();
 
  	// show content: */

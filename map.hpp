@@ -379,9 +379,60 @@ namespace	ft {
 						return;
 					std::cout << REDC "Delete Function :"  << tmp->value.first << NC << std::endl;
 					if (tmp == _root) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						if (!tmp->right && !tmp->left)
 							_root = NULL; 
+						else if (!tmp->right && tmp->left) {
+							std::cout << BLUE << __LINE__ << NC << std::endl;
+							_root = tmp->left;
+							tmp->left->parent = tmp->parent;
+							deleteFix(tmp, tmp->left, tmp->left);
+						}
+						else if (tmp->right && !tmp->left) {
+							std::cout << BLUE << __LINE__ << NC << std::endl;
+							_root = tmp->right;
+							tmp->left->parent = tmp->parent;
+							deleteFix(tmp, tmp->right, tmp->right);
+						}
+						else {
+							std::cout << BLUE << __LINE__ << NC << std::endl;
+							node	*next = findNextNode(tmp);
+							_root = next;
+							if (next)
+								std::cout << next->value.first << std::endl <<std::endl;
+							node	*childR = next->right;
+							next->left = tmp->left;
+							if (next->left) {
+								std::cout << BLUE << __LINE__ << next->left->value.first << NC << std::endl;
+								//if tmp->left != NULL tmp->left take tmp
+								next->left->parent = next; //
+							}
+							if (next->right && next->parent != tmp) {
+								next->right->parent = next->parent;
+								next->parent->left = next->right;
+							}
+							if (tmp->right != next) {
+								next->right = tmp->right;
+								tmp->right->parent = next;
+							}
+							if (next->right)
+								std::cout << __LINE__ << "   " << next->right->value.first << std::endl <<std::endl;
+							std::cout << next << std::endl;
+							std::cout << next->left << std::endl;
+							std::cout << next->right << std::endl;
+							std::cout << "------------------" << std::endl;
+							std::cout << _root << std::endl;
+							std::cout << _root->left << std::endl;
+							std::cout << _root->right << std::endl;
+							/* std::cout << _root->value.first << std::endl; */
+							/* std::cout << _root->left->value.first << std::endl; */
+							/* std::cout << _root->right->value.first << std::endl; */
+							next->parent = tmp->parent;
+							deleteFix(tmp, next, childR);
+						}
+						_alloc_node.destroy(tmp);
+						_alloc_node.deallocate(tmp, 1);
+						_size--;
 						//do that
 						return ;
 					}
@@ -389,19 +440,19 @@ namespace	ft {
 					// if right childof = tmp right else childt
 					// if tmp has no children -> tmp became null
 					if (!tmp->right && !tmp->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						*childOf = NULL;
 						deleteFix(tmp, NULL, NULL);
 					}
 					else if (tmp->right && !tmp->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has only a right child, the child take tmp's place
 						*childOf = tmp->right;
 						tmp->right->parent = tmp->parent;
 						deleteFix(tmp, tmp->right, tmp->right);
 					}
 					else if (!tmp->right && tmp->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has only a left child, the child take tmp's place
 						/* deleteFix(*childOf); */
 						*childOf = tmp->left;
@@ -409,19 +460,17 @@ namespace	ft {
 						deleteFix(tmp, tmp->left, tmp->left);
 					}
 					else {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has both children the 
 						node	*next = findNextNode(tmp);
 						*childOf = next;
 						node	*childR = next->right;
-						/* deleteFix(*childOf); */
 						//next cannot have left children as it has to be the most lefty to be the closest to tmp
 						next->left = tmp->left;
 						if (next->left) {
 							std::cout << BLUE << __LINE__ << NC << std::endl;
 							//if tmp->left != NULL tmp->left take tmp
 							next->left->parent = next; //
-							/* deleteFix(next->left->parent); */
 						}
 						/* if (tmp->parent->right == tmp) { */
 						/* 	if (next->right && next->parent != tmp) { */
@@ -436,7 +485,8 @@ namespace	ft {
 							next->right->parent = next->parent;
 							next->parent->left = next->right;
 						}
-						/* next->right = tmp->right; */
+						if (tmp->right != next)
+							next->right = tmp->right;
 						next->parent = tmp->parent;
 						deleteFix(tmp, next, childR);
 						/* else { */
@@ -455,7 +505,7 @@ namespace	ft {
 					_alloc_node.destroy(tmp);
 					_alloc_node.deallocate(tmp, 1);
 					_size--;
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+					std::cout << BLUE << __LINE__ << NC << std::endl;
 				}
 
 
@@ -516,7 +566,7 @@ namespace	ft {
 				void	fixCases(node *x, node *w) {
 					std::cout << REDC "Delete FIX CASES Function :" << NC << std::endl;
 					if (x && x->color == RED) { // case 0
-							std::cout << BLUE << __LINE__ << NC << std::endl;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						x->color = BLACK;
 						return ;
 					}
@@ -534,8 +584,8 @@ namespace	ft {
 						}
 					}
 					if ((!x || x->color == BLACK) && (w && w->color == BLACK
-							&& (!w->left || w->left->color == BLACK)
-							&& (!w->right || w->right->color == BLACK))) { // case 2
+								&& (!w->left || w->left->color == BLACK)
+								&& (!w->right || w->right->color == BLACK))) { // case 2
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 						if (w)
 							w->color = RED;
@@ -544,13 +594,19 @@ namespace	ft {
 						if (x && x->color == RED)
 							x->color = BLACK;
 						else if ((!x || x->color == BLACK) && x->parent) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
+							std::cout << BLUE << __LINE__ << NC << std::endl;
 							fixCases(x, w);
 						}
 						else if ((!x || x->color == BLACK) && !x->parent)
 							return ;
 					}
 					if ((!x || x->color == BLACK) && (!w || w->color == BLACK)) {
+						std::cout << BLUE << __LINE__ << NC << std::endl;
+						if (x)
+							std::cout << x->value.first << std::endl;
+						if (w)
+							std::cout << w->value.first << std::endl;
+						std::cout << std::endl;
 						if (x && x == x->parent->left && w && w->left && w->left->color == RED
 								&& (!w->right || w->right->color == BLACK)) { // case 3
 							std::cout << BLUE << __LINE__ << NC << std::endl;
@@ -595,13 +651,14 @@ namespace	ft {
 					}
 					else if (delNode->color == BLACK && nextNode->color == RED) {
 						nextNode->color = BLACK;
+						std::cout << BLUE << __LINE__ << NC << std::endl;
 						return ;
 					}
 					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK)
 							&& x && x->parent)
 						;
 					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK)
-							&& !x->parent) {
+							&& searchRoot() == x) {
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 						return ;
 					}
@@ -611,72 +668,6 @@ namespace	ft {
 					fixCases(x, w);
 
 				}
-				/* void	deleteFix(node* current) { */
-				/* 	std::cout << REDC "Delete FIX Function :" << NC << std::endl; */
-				/* 	printTree(); */
-				/* 	node*	tmp; */
-
-				/* 	while (current && current->parent && current->color == BLACK) { */
-				/* 		if (current == current->parent->left) { */ 
-				/* 			tmp = current->parent->right; */
-				/* 			if (tmp && tmp->color == RED) { */
-				/* 				// case 1 : if the right child is RED */
-				/* 				tmp->color = BLACK; */
-				/* 				current->parent->color = RED; */
-				/* 				leftRotate(current->parent); */
-				/* 				tmp = current->parent->right; */
-				/* 			} */
-				/* 			if (tmp && tmp->left->color == BLACK && tmp->right->color == BLACK) { */
-				/* 				// case 2 : if the color of both the right and the leftChild is BLACK */
-				/* 				tmp->color = RED; */
-				/* 				current = current->parent; */
-				/* 			} else { */
-				/* 				if (tmp->right->color == BLACK) { */
-				/* 					// case 3 : if the color of the rightChild is BLACK */
-				/* 					tmp->left->color = BLACK; */
-				/* 					tmp->color = RED; */
-				/* 					rightRotate(tmp); */
-				/* 					tmp = current->parent->right; */
-				/* 				} */
-				/* 				// case 4 :If any of the above cases do not occur */
-				/* 				tmp->color = current->parent->color; */
-				/* 				current->parent->color = BLACK; */
-				/* 				tmp->right->color = BLACK; */
-				/* 				leftRotate(current->parent); */
-				/* 				current = searchRoot(); */
-				/* 			} */
-				/* 		} else { */
-				/* 			//the same as above with right changed to left and vice versa */ 
-				/* 			tmp = current->parent->left; */
-				/* 			if (tmp && tmp->color == RED) { */
-				/* 				tmp->color = BLACK; */
-				/* 				current->parent->color = RED; */
-				/* 				rightRotate(current->parent); */
-				/* 				tmp = current->parent->left; */
-				/* 			} */
-
-				/* 			if (tmp && tmp->right->color == BLACK && tmp->left->color == BLACK) { // */
-				/* 				tmp->color = RED; */
-				/* 				current = current->parent; */
-				/* 			} else { */
-				/* 				if (tmp->left->color == BLACK) { */
-				/* 					tmp->right->color = BLACK; */
-				/* 					tmp->color = RED; */
-				/* 					leftRotate(tmp); */
-				/* 					tmp = current->parent->left; */
-				/* 				} */
-				/* 				tmp->color = current->parent->color; */
-				/* 				current->parent->color = BLACK; */
-				/* 				tmp->left->color = BLACK; */
-				/* 				rightRotate(current->parent); */
-				/* 				current = searchRoot(); */
-				/* 			} */
-				/* 		} */
-				/* 	} */
-				/* 	//	if (!current->parent && (!current->left || !current->right)) */
-				/* 	//		deleteFixRoot(current); */
-				/* 	current->color = BLACK; */
-				/* } */
 				/*
 				   int	nbNodeLeft(node* current) {
 				   int nb = 0;
