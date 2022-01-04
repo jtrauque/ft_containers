@@ -373,94 +373,79 @@ namespace	ft {
 					return tmp;		
 				}
 
+				void	deleteRoot(node *tmp) {
+					if (!tmp->right && !tmp->left)
+						_root = NULL; 
+					else if (!tmp->right && tmp->left) {
+						_root = tmp->left;
+						tmp->left->parent = tmp->parent;
+						deleteFix(tmp, tmp->left, tmp->left);
+					}
+					else if (tmp->right && !tmp->left) {
+						_root = tmp->right;
+						tmp->left->parent = tmp->parent;
+						deleteFix(tmp, tmp->right, tmp->right);
+					}
+					else {
+						std::cout << BLUE << __LINE__ << NC << std::endl;
+						node	*next = findNextNode(tmp);
+						_root = next;
+						node	*childR;
+						if (next != tmp->right)
+							childR = tmp->right;
+						else 
+							childR = next->right;
+						next->left = tmp->left;
+						if (next->left) {
+							//if tmp->left != NULL tmp->left take tmp
+							next->left->parent = next; //
+						}
+						if (next->right && next->parent != tmp) {
+							next->right->parent = next->parent;
+							next->parent->left = next->right;
+						}
+						else
+							next->parent->left = NULL;
+						if (tmp->right != next) {
+							next->right = tmp->right;
+							tmp->right->parent = next;
+						}
+						next->parent = tmp->parent;
+						deleteFix(tmp, next, childR);
+					}
+					_alloc_node.destroy(tmp);
+					_alloc_node.deallocate(tmp, 1);
+					_size--;
+				}
+
 				void 	deleteNode(node *tmp) {
 					std::cout << REDC "Delete Function :"  << NC << std::endl;
 					if (!tmp)
 						return;
 					if (tmp == _root) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-						if (!tmp->right && !tmp->left)
-							_root = NULL; 
-						else if (!tmp->right && tmp->left) {
-							_root = tmp->left;
-							tmp->left->parent = tmp->parent;
-							deleteFix(tmp, tmp->left, tmp->left);
-						}
-						else if (tmp->right && !tmp->left) {
-							_root = tmp->right;
-							tmp->left->parent = tmp->parent;
-							deleteFix(tmp, tmp->right, tmp->right);
-						}
-						else {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
-							node	*next = findNextNode(tmp);
-							_root = next;
-							node	*childR;
-							if (next != tmp->right)
-								childR = tmp->right;
-							else 
-								childR = next->right;
-							next->left = tmp->left;
-							if (next->left) {
-								//if tmp->left != NULL tmp->left take tmp
-								next->left->parent = next; //
-							}
-							if (next->right && next->parent != tmp) {
-								next->right->parent = next->parent;
-								next->parent->left = next->right;
-							}
-							else
-								next->parent->left = NULL;
-							if (tmp->right != next) {
-								next->right = tmp->right;
-								tmp->right->parent = next;
-							}
-							next->parent = tmp->parent;
-							std::cout << next << std::endl;
-							std::cout << next->left << std::endl;
-							std::cout << next->right << std::endl;
-							std::cout << "------------------" << std::endl;
-							std::cout << _root << std::endl;
-							std::cout << _root->left << std::endl;
-							std::cout << _root->right << std::endl;
-							std::cout << _root->right->left << std::endl;
-							/* exit(1); */
-							/* std::cout << _root->value.first << std::endl; */
-							/* std::cout << _root->left->value.first << std::endl; */
-							/* std::cout << _root->right->value.first << std::endl; */
-							deleteFix(tmp, next, childR);
-						}
-						_alloc_node.destroy(tmp);
-						_alloc_node.deallocate(tmp, 1);
-						_size--;
-						//do that
+						deleteRoot(tmp);
 						return ;
 					}
 					node	**childOf = tmp->parent->right == tmp ? &tmp->parent->right : &tmp->parent->left;
 					// if right childof = tmp right else childt
 					// if tmp has no children -> tmp became null
 					if (!tmp->right && !tmp->left) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						*childOf = NULL;
-						deleteFix(tmp, NULL, NULL);
+						deleteFix(tmp, tmp->parent, NULL);
 					}
 					else if (tmp->right && !tmp->left) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has only a right child, the child take tmp's place
 						*childOf = tmp->right;
 						tmp->right->parent = tmp->parent;
 						deleteFix(tmp, tmp->right, tmp->right);
 					}
 					else if (!tmp->right && tmp->left) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has only a left child, the child take tmp's place
-						/* deleteFix(*childOf); */
 						*childOf = tmp->left;
 						tmp->left->parent = tmp->parent;
 						deleteFix(tmp, tmp->left, tmp->left);
 					}
 					else {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						//if tmp has both children the 
 						node	*next = findNextNode(tmp);
 						*childOf = next;
@@ -472,15 +457,6 @@ namespace	ft {
 							//if tmp->left != NULL tmp->left take tmp
 							next->left->parent = next; //
 						}
-						/* if (tmp->parent->right == tmp) { */
-						/* 	if (next->right && next->parent != tmp) { */
-						/* 		next->right->parent = next->parent; */
-						/* 		next->parent = next->right; */
-						/* 	} */
-						/* 	tmp->parent->right = next; */
-						/* 	next->parent = tmp->parent; */
-						/* 	next->left = tmp->left; */
-						/* } */
 						if (next->right && next->parent != tmp) {
 							next->right->parent = next->parent;
 							next->parent->left = next->right;
@@ -489,80 +465,12 @@ namespace	ft {
 							next->right = tmp->right;
 						next->parent = tmp->parent;
 						deleteFix(tmp, next, childR);
-						/* else { */
-						/* 	if (next->right && next->parent != tmp) { */
-						/* 		next->right->parent = next->parent; */
-						/* 		next->parent = next->right; */
-						/* 	} */
-						/* 	tmp->parent->left = next; */
-						/* 	next->parent = tmp->parent; */
-						/* 	next->left = tmp->left; */
-						/* 	//next->right = tmp->right; */
-						/* } */
 					}
-					/* if (_root) */
-					/* 	deleteFix(_root); */
 					_alloc_node.destroy(tmp);
 					_alloc_node.deallocate(tmp, 1);
 					_size--;
-					std::cout << BLUE << __LINE__ << NC << std::endl;
 				}
 
-
-				/*	void	deleteNode(node *tmp) {
-					std::cout << REDC "Delete Function :"  << NC << std::endl;
-					if (!tmp)
-					return ;
-					node	*up = tmp->parent;
-					node *downL = tmp->left;
-					node *downR = tmp->right;
-
-					if (up && up->left == tmp) {
-					up->left = downL;
-					if (downL)
-					downL->parent = up;
-					printTree();
-					if (up->left)
-					deleteFix(up->left);
-					}
-					else if (up && up->right == tmp) {
-					up->right = downR;
-					if (downR)
-					downR->parent = up;
-					if (up->right)
-					deleteFix(up->right);
-					}
-					else {	
-					if (downL) {
-					node	*newValue = downL;
-					while (newValue && newValue->right)
-					newValue = newValue->right;
-					_root = newValue;
-					if (downR) {
-					_root->right = downR;
-					downR->parent = _root;
-					}
-					_root->parent = NULL;
-					}
-					else if (downR) {
-					node	*newValue = tmp->right;
-					while (newValue && newValue->left)
-					newValue = newValue->left;
-					_root->parent = NULL;
-					_root = newValue;
-					}
-					else
-					_root = NULL;
-
-					if (_root) {
-					printTree();
-					deleteFix(_root);
-					}
-					}
-					_alloc_node.destroy(tmp);
-					_alloc_node.deallocate(tmp, 1);
-					_size--;
-					}*/
 				void	fixCases(node *x, node *w) {
 					std::cout << REDC "Delete FIX CASES Function :" << NC << std::endl;
 					if (x && x->color == RED) { // case 0
@@ -663,39 +571,8 @@ namespace	ft {
 						return ;
 					}
 					node	*w = x->getSibling(x);
-					/* if (!w || !x) */
-					/* 	return ; */
 					fixCases(x, w);
 
-				}
-				/*
-				   int	nbNodeLeft(node* current) {
-				   int nb = 0;
-				   if (!current || !current->left)
-				   return 0;
-				   while (current && current->left) {
-				   current = current->left;
-				   nb++;
-				   }
-				   return nb;
-				   }
-
-				   int	nbNodeRight(node* current) {
-				   int nb = 0;
-				   if (!current || !current->right)
-				   return 0;
-				   while (current && current->right) {
-				   current = current->right;
-				   nb++;
-				   }
-				   return nb;
-				   }*/
-
-				void	deleteFixRoot(node   *current) {
-					if (!current->left)
-						leftRotate(current);
-					else if (!current->right)
-						rightRotate(current);
 				}
 
 				void	clearTree(node	*current) {

@@ -297,18 +297,18 @@ void rbegin()
  	mymap["f"]=60;
 	std::cout << "---------------------------------------------------------------" << std::endl; 
 	mymap.printTree();
- //	it=mymap.find("b"); 
-//	mymap.erase (it);                   // erasing by iterator */
-//	mymap.printTree();
- 	mymap.erase ("d");                  // erasing by key */
+ 	it=mymap.find("b"); 
+	mymap.erase (it);                   // erasing by iterator */
+	mymap.printTree();
+ 	mymap.erase ("f");                  // erasing by key */
 
 	mymap.printTree();
-//	it=mymap.find ("e"); 
- //	mymap.erase ( it, mymap.end() );    // erasing by range */
-	mymap.erase ("e");                  // erasing by key */
+	it=mymap.find ("e"); 
+ 	mymap.erase ( it, mymap.end() );    // erasing by range */
+//	mymap.erase ("e");                  // erasing by key */
 	mymap.printTree();
- mymap.erase ("b");                  // erasing by key */
-	mymap.printTree();
+// mymap.erase ("b");                  // erasing by key */
+//	mymap.printTree();
 
  	// show content: */
  	for (it=mymap.begin(); it!=mymap.end(); ++it) 
