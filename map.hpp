@@ -377,19 +377,16 @@ namespace	ft {
 					std::cout << REDC "Delete Function :"  << NC << std::endl;
 					if (!tmp)
 						return;
-					std::cout << REDC "Delete Function :"  << tmp->value.first << NC << std::endl;
 					if (tmp == _root) {
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 						if (!tmp->right && !tmp->left)
 							_root = NULL; 
 						else if (!tmp->right && tmp->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							_root = tmp->left;
 							tmp->left->parent = tmp->parent;
 							deleteFix(tmp, tmp->left, tmp->left);
 						}
 						else if (tmp->right && !tmp->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							_root = tmp->right;
 							tmp->left->parent = tmp->parent;
 							deleteFix(tmp, tmp->right, tmp->right);
@@ -398,12 +395,13 @@ namespace	ft {
 							std::cout << BLUE << __LINE__ << NC << std::endl;
 							node	*next = findNextNode(tmp);
 							_root = next;
-							if (next)
-								std::cout << next->value.first << std::endl <<std::endl;
-							node	*childR = next->right;
+							node	*childR;
+							if (next != tmp->right)
+								childR = tmp->right;
+							else 
+								childR = next->right;
 							next->left = tmp->left;
 							if (next->left) {
-								std::cout << BLUE << __LINE__ << next->left->value.first << NC << std::endl;
 								//if tmp->left != NULL tmp->left take tmp
 								next->left->parent = next; //
 							}
@@ -411,12 +409,13 @@ namespace	ft {
 								next->right->parent = next->parent;
 								next->parent->left = next->right;
 							}
+							else
+								next->parent->left = NULL;
 							if (tmp->right != next) {
 								next->right = tmp->right;
 								tmp->right->parent = next;
 							}
-							if (next->right)
-								std::cout << __LINE__ << "   " << next->right->value.first << std::endl <<std::endl;
+							next->parent = tmp->parent;
 							std::cout << next << std::endl;
 							std::cout << next->left << std::endl;
 							std::cout << next->right << std::endl;
@@ -424,10 +423,11 @@ namespace	ft {
 							std::cout << _root << std::endl;
 							std::cout << _root->left << std::endl;
 							std::cout << _root->right << std::endl;
+							std::cout << _root->right->left << std::endl;
+							/* exit(1); */
 							/* std::cout << _root->value.first << std::endl; */
 							/* std::cout << _root->left->value.first << std::endl; */
 							/* std::cout << _root->right->value.first << std::endl; */
-							next->parent = tmp->parent;
 							deleteFix(tmp, next, childR);
 						}
 						_alloc_node.destroy(tmp);
