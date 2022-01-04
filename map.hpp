@@ -431,7 +431,7 @@ namespace	ft {
 					// if tmp has no children -> tmp became null
 					if (!tmp->right && !tmp->left) {
 						*childOf = NULL;
-						deleteFix(tmp, tmp->parent, NULL);
+						deleteFix(tmp, NULL, NULL);
 					}
 					else if (tmp->right && !tmp->left) {
 						//if tmp has only a right child, the child take tmp's place
@@ -461,9 +461,13 @@ namespace	ft {
 							next->right->parent = next->parent;
 							next->parent->left = next->right;
 						}
-						if (tmp->right != next)
+						if (tmp->right != next) {
 							next->right = tmp->right;
+							tmp->right->parent = next;
+						}
 						next->parent = tmp->parent;
+						if (childR)
+							std::cout << childR->value.first << std::endl;
 						deleteFix(tmp, next, childR);
 					}
 					_alloc_node.destroy(tmp);
@@ -557,7 +561,7 @@ namespace	ft {
 						nextNode->color = RED;
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 					}
-					else if (delNode->color == BLACK && nextNode->color == RED) {
+					else if (delNode->color == BLACK && nextNode && nextNode->color == RED) {
 						nextNode->color = BLACK;
 						std::cout << BLUE << __LINE__ << NC << std::endl;
 						return ;
