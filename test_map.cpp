@@ -40,8 +40,9 @@ struct ft_more {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
-/*
 #include <string>
+
+/*
 void constructor()
 {
 	// (1) Default constructor
@@ -256,6 +257,7 @@ void rbegin()
  	for (it=anothermap.begin(); it!=anothermap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n'; 
  } 
+
  void iterator_validity() 
  { 
  	NAMESPACE::map<char,int> mymap; 
@@ -281,14 +283,14 @@ void rbegin()
 
  	if (it1 == it11 && it2 == it22) 
  		std::cout << "it erase validity OK" << std::endl; 
- }*/ 
+ }
 
  void erase() 
  { 
  	NAMESPACE::map<std::string,int> mymap; 
  	NAMESPACE::map<std::string,int>::iterator it; 
 
- 	// insert some values: */
+ 	// insert some values: 
  	mymap["a"]=10; 
  	mymap["b"]=20; 
  	mymap["c"]=30; 
@@ -298,177 +300,186 @@ void rbegin()
 	std::cout << "---------------------------------------------------------------" << std::endl; 
 	mymap.printTree();
  	it=mymap.find("b"); 
-	mymap.erase (it);                   // erasing by iterator */
+	mymap.erase (it);                   // erasing by iterator 
 	mymap.printTree();
- 	mymap.erase ("f");                  // erasing by key */
+ 	mymap.erase ("f");                  // erasing by key 
 
 	mymap.printTree();
 	it=mymap.find ("e"); 
- 	mymap.erase ( it, mymap.end() );    // erasing by range */
-	mymap.erase ("e");                  // erasing by key */
+ 	mymap.erase ( it, mymap.end() );    // erasing by range 
+	mymap.erase ("e");                  // erasing by key 
 	mymap.printTree();
-// mymap.erase ("b");                  // erasing by key */
+// mymap.erase ("b");                  // erasing by key 
 //	mymap.printTree();
 
- 	// show content: */
+ 	// show content: 
  	for (it=mymap.begin(); it!=mymap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n'; 
  } 
 
-/* void swap() */
-/* { */
-/* 	NAMESPACE::map<char,int> foo,bar; */
+ void swap() 
+ { 
+ 	NAMESPACE::map<char,int> foo,bar; 
 
-/* 	foo['x']=100; */
-/* 	foo['y']=200; */
+	foo['x']=100; 
+ 	foo['y']=200; 
 
-/* 	bar['a']=11; */
-/* 	bar['b']=22; */
-/* 	bar['c']=33; */
+ 	bar['a']=11; 
+ 	bar['b']=22; 
+ 	bar['c']=33; 
 
-/* 	NAMESPACE::map<char,int>::iterator it_foo = foo.begin(); */
-/* 	NAMESPACE::map<char,int>::iterator it_bar = bar.begin(); */
+ 	NAMESPACE::map<char,int>::iterator it_foo = foo.begin();
+ 	NAMESPACE::map<char,int>::iterator it_bar = bar.begin(); 
 
-/* 	foo.swap(bar); */
-
-
-/* 	if (foo.begin() == it_bar) */
-/* 		std::cout << "IT_BAR OK" << std::endl; */
-/* 	if (bar.begin() == it_foo) */
-/* 		std::cout << "IT_FOO OK" << std::endl; */
-
-/* 	std::cout << "foo contains:\n"; */
-/* 	for (NAMESPACE::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-
-/* 	std::cout << "bar contains:\n"; */
-/* 	for (NAMESPACE::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* } */
-
-/* void clear() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-
-/* 	mymap['x']=100; */
-/* 	mymap['y']=200; */
-/* 	mymap['z']=300; */
-
-/* 	std::cout << "mymap contains:\n"; */
-/* 	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-
-/* 	mymap.clear(); */
-/* 	mymap['a']=1101; */
-/* 	mymap['b']=2202; */
-
-/* 	std::cout << "mymap contains:\n"; */
-/* 	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* } */
+ 	foo.swap(bar); 
 
 
-/* void key_comp() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
+ 	if (foo.begin() == it_bar) 
+ 		std::cout << "IT_BAR OK" << std::endl; 
+ 	if (bar.begin() == it_foo) 
+ 		std::cout << "IT_FOO OK" << std::endl; 
 
-/* 	NAMESPACE::map<char,int>::key_compare mycomp = mymap.key_comp(); */
+ 	std::cout << "foo contains:\n"; 
+ 	for (NAMESPACE::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
 
-/* 	mymap['a']=100; */
-/* 	mymap['b']=200; */
-/* 	mymap['c']=300; */
+ 	std::cout << "bar contains:\n"; 
+ 	for (NAMESPACE::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ } 
 
-/* 	std::cout << "mymap contains:\n"; */
+ void clear() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
 
-/* 	char highest = mymap.rbegin()->first;     // key value of last element */
+ 	mymap['x']=100; 
+ 	mymap['y']=200; 
+	mymap['z']=300; 
 
-/* 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); */
-/* 	do { */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* 	} while ( mycomp((*it++).first, highest) ); */
+ 	std::cout << "mymap contains:\n"; 
+	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
+		std::cout << it->first << " => " << it->second << '\n'; 
 
-/* 	std::cout << '\n'; */
-/* } */
+ 	mymap.clear(); 
+ 	mymap['a']=1101; 
+	mymap['b']=2202; 
 
-/* void value_comp() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-
-/* 	mymap['x']=1001; */
-/* 	mymap['y']=2002; */
-/* 	mymap['z']=3003; */
-
-/* 	std::cout << "mymap contains:\n"; */
-
-/* 	NAMESPACE::pair<char,int> highest = *mymap.rbegin();          // last element */
-
-/* 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); */
-/* 	do { */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* 	} while ( mymap.value_comp()(*it++, highest) ); */
-/* } */
+ 	std::cout << "mymap contains:\n"; 
+ 	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ } 
 
 
-/* void find() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	NAMESPACE::map<char,int>::iterator it; */
+ void key_comp() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
 
-/* 	mymap['a']=50; */
-/* 	mymap['b']=100; */
-/* 	mymap['c']=150; */
-/* 	mymap['d']=200; */
+ 	NAMESPACE::map<char,int>::key_compare mycomp = mymap.key_comp(); 
 
-/* 	it = mymap.find('b'); */
-/* 	if (it != mymap.end()) */
-/* 		mymap.erase (it); */
+ 	mymap['a']=100; 
+ 	mymap['b']=200; 
+ 	mymap['c']=300; 
 
-/* 	// print content: */
-/* 	std::cout << "elements in mymap:" << '\n'; */
-/* 	std::cout << "a => " << mymap.find('a')->second << '\n'; */
-/* 	std::cout << "c => " << mymap.find('c')->second << '\n'; */
-/* 	std::cout << "d => " << mymap.find('d')->second << '\n'; */
-/* } */
+ 	std::cout << "mymap contains:\n"; 
 
-/* void count() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	char c; */
+ 	char highest = mymap.rbegin()->first;     // key value of last element 
 
-/* 	mymap ['a']=101; */
-/* 	mymap ['c']=202; */
-/* 	mymap ['f']=303; */
+ 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); 
+	do { 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ 	} while ( mycomp((*it++).first, highest) ); 
 
-/* 	for (c='a'; c<'h'; c++) */
-/* 	{ */
-/* 		std::cout << c; */
-/* 		if (mymap.count(c)>0) */
-/* 			std::cout << " is an element of mymap.\n"; */
-/* 		else */
-/* 			std::cout << " is not an element of mymap.\n"; */
-/* 	} */
-/* } */
+ 	std::cout << '\n'; 
+ } 
 
-/* void lower_bound() */
-/* { */
-/* 	NAMESPACE::map<char,int> mymap; */
-/* 	NAMESPACE::map<char,int>::iterator itlow,itup; */
+ void value_comp() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
 
-/* 	mymap['a']=20; */
-/* 	mymap['b']=40; */
-/* 	mymap['c']=60; */
-/* 	mymap['d']=80; */
-/* 	mymap['e']=100; */
+ 	mymap['x']=1001; 
+ 	mymap['y']=2002; 
+ 	mymap['z']=3003; 
 
-/* 	itlow=mymap.lower_bound ('b');  // itlow points to b */
-/* 	itup=mymap.upper_bound ('d');   // itup points to e (not d!) */
+ 	std::cout << "mymap contains:\n"; 
 
-/* 	mymap.erase(itlow,itup);        // erases [itlow,itup) */
+ 	NAMESPACE::pair<char,int> highest = *mymap.rbegin();          // last element 
 
-/* 	// print content: */
-/* 	for (NAMESPACE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) */
-/* 		std::cout << it->first << " => " << it->second << '\n'; */
-/* } */
+ 	NAMESPACE::map<char,int>::iterator it = mymap.begin(); 
+ 	do { 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ 	} while ( mymap.value_comp()(*it++, highest) ); 
+ } 
+
+
+ void find() 
+ { 
+ 	NAMESPACE::map<std::string,int> mymap; 
+ 	NAMESPACE::map<std::string,int>::iterator it; 
+
+ 	mymap["a"]=50; 
+ 	mymap["b"]=100; 
+ 	mymap["c"]=150; 
+ 	mymap["d"]=200; 
+	mymap.printTree();
+//	mymap.erase("b");
+ 	it = mymap.find("b"); 
+ 	if (it != mymap.end()) 
+ 		mymap.erase (it); 
+	mymap.printTree();
+
+ 	// print content: 
+ 	std::cout << "elements in mymap:" << '\n'; 
+ 	std::cout << "a => " << mymap.find("a")->second << '\n'; 
+ 	std::cout << "c => " << mymap.find("c")->second << '\n'; 
+ 	std::cout << "d => " << mymap.find("d")->second << '\n'; 
+ } 
+
+ void count() 
+ { 
+ 	NAMESPACE::map<char,int> mymap; 
+ 	char c; 
+
+ 	mymap ['a']=101; 
+ 	mymap ['c']=202; 
+ 	mymap ['f']=303; 
+
+ 	for (c='a'; c<'h'; c++) 
+ 	{ 
+ 		std::cout << c; 
+ 		if (mymap.count(c)>0) 
+ 			std::cout << " is an element of mymap.\n"; 
+		else 
+ 			std::cout << " is not an element of mymap.\n"; 
+ 	} 
+ } 
+*/
+void lower_bound() 
+ { 
+ 	NAMESPACE::map<std::string,int> mymap; 
+ 	NAMESPACE::map<std::string,int>::iterator itlow,itup; 
+
+ 	mymap["a"]=20; 
+ 	mymap["b"]=40; 
+ 	mymap["c"]=60; 
+ 	mymap["d"]=80; 
+ 	mymap["e"]=100; 
+	mymap.printTree();
+
+ 	itlow=mymap.lower_bound ("b");  // itlow points to b */
+ 	itup=mymap.upper_bound ("c");   // itup points to e (not d!) */
+
+ //	mymap.erase("b");        // erases [itlow,itup) */
+//	mymap.printTree();
+ //	mymap.erase("c");        // erases [itlow,itup) */
+//	mymap.printTree();
+ //	mymap.erase("d");        // erases [itlow,itup) */
+ 	mymap.erase(itlow,itup);        // erases [itlow,itup) */
+	mymap.printTree();
+
+ 	// print content: */
+ 	for (NAMESPACE::map<std::string,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
+ 		std::cout << it->first << " => " << it->second << '\n'; 
+ } 
 
 /* void upper_bound() */
 /* { */
@@ -594,13 +605,13 @@ void rbegin()
 int main()
 {
 //	constructor();
-     //   operator_equal(); // operator = 
+   //     operator_equal(); // operator = 
 
 //	 begin(); 
 //	 end(); 
 //	 rbegin(); 
 //	 rend(); 
-
+//
 //	 empty(); 
 //	 size(); 
 //	 max_size(); 
@@ -608,16 +619,16 @@ int main()
 //	 operator_hook(); // operator [] 
 //
 //	 insert(); 
-	 erase(); 
-	/* swap(); */
-	/* clear(); */
+//	swap(); 
+//	 clear(); 
 
-	/* key_comp(); */
-	/* value_comp(); */
+//	key_comp(); 
+//	value_comp();
+//	 erase(); 
 
-	/* find(); */
-	/* count(); */
-	/* lower_bound(); */
+//	find(); 
+//	 count(); 
+	lower_bound(); 
 	/* upper_bound(); */
 	/* equal_range(); */
 
