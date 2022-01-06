@@ -391,9 +391,9 @@ namespace	ft {
 						node	*next = findNextNode(tmp);
 						_root = next;
 						node	*childR;
-						if (next != tmp->right)
-							childR = tmp->right;
-						else 
+						/* if (next != tmp->right) */
+						/* 	childR = tmp->right; */
+						/* else */ 
 							childR = next->right;
 						next->left = tmp->left;
 						if (next->left) {
