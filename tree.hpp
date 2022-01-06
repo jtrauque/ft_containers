@@ -188,8 +188,8 @@ namespace	ft {
 					return getParent(getParent(N));
 				}
 
-				node	*getSibling(node* N) {
-					node* P = getParent(N);
+				node	*getSibling(node* P) {
+					//node* P = getParent(N);
 					if (!P)
 						return NULL;
 					if (P->right == this)
