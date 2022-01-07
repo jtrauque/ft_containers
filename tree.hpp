@@ -1,9 +1,9 @@
 #ifndef TREE_HPP
 #define TREE_HPP
-
 #include <stdio.h>
 /* #include "tree/tree.h" */
 
+/*
 typedef struct s_tree_display {
 	int		block_width;
 	int		block_delta;
@@ -157,7 +157,7 @@ int	buffer_connect_leaf(t_buf *b, int is_l, int len, int *cumul)
 		|| buffer_append_mul(b, E_JUNCTION, len - 2)
 		|| buffer_append(b, E_JUNCTION_LOW_R));
 }
-
+*/
 namespace	ft {
 	template<typename T>
 		class	node {
@@ -166,7 +166,7 @@ namespace	ft {
 				node*	parent;
 				node*	left;
 				node*	right;
-				t_tree_display	dsp;
+				/* t_tree_display	dsp; */
 				int color;
 
 				node(void) : parent(NULL), left(NULL), right(NULL) {}
@@ -210,7 +210,7 @@ namespace	ft {
 
 
 
-
+/*
 
 
 
@@ -361,7 +361,7 @@ int	_print_tree(node *tree, int pretty, int fd)
 
 
 
-
+*/
 
 
 static int	min(int a, int b)
@@ -377,7 +377,7 @@ static int	max(int a, int b)
 		return (a);
 	return (b);
 }
-
+/*
 static void	label_adjust(t_tree_display *me)
 {
 	me->label_delta = me->pos - me->label_width / 2 - 1;
@@ -472,7 +472,7 @@ int	_calc_depth(node *tree, int depth, t_tree_display *me)
 
 
 
-
+*/
 
 
 

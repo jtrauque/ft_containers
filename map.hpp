@@ -20,6 +20,9 @@
 #define CYN "\e[0;36m"
 #define REDB "\e[41m"
 
+#define DEBUG 
+//std::cout << REDC << __FILE__ << " " << CYN << __FUNCTION__  << " " << __LINE__ << NC << std::endl;
+
 //https://en.cppreference.com/w/cpp/container/map
 namespace	ft {
 	template<class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
@@ -63,55 +66,64 @@ namespace	ft {
 				node_allocator	_alloc_node;
 				allocator_type	_allocator;
 				node*	_root;
+				node*	_end;
 				size_type _size;
 				key_compare	_comp;
 
 			public:
-				void printTree() {
-					if (_root != NULL) _root->printTree();
-				}
+				/* void printTree() { */
+				/* 	if (_root != NULL) _root->printTree(); */
+				/* } */
 				//default constructor
 				explicit	map(const key_compare &comp = key_compare(), allocator_type const &alloc = allocator_type()) :
-					_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {
-						std::cout << "map constructeur standard" << std::endl;
+					_alloc_node(alloc), _root(NULL), _end(NULL), _size(0), _comp(comp) {
+						/* std::cout << "map constructeur standard" << std::endl; */
+						_end = newNode(value_type(Key(), mapped_type()), NULL);
+						_root = _end;
 					}
 				//range constructor
 				template<class InputIterator>
 					map(InputIterator first, InputIterator last, key_compare const comp = key_compare(),
 							allocator_type const &alloc = allocator_type()) :
-						_alloc_node(alloc), _root(NULL), _size(0), _comp(comp) {
-							std::cout << "map constructeur itererator" << std::endl;
+						_alloc_node(alloc), _root(NULL), _end(NULL), _size(0), _comp(comp) {
+							/* std::cout << "map constructeur itererator" << std::endl; */
+							_end = newNode(value_type(Key(), mapped_type()), NULL);
+							_root = _end;
 							insert(first, last); 
 						} //
-				map(map const & src) : _alloc_node(src._alloc_node), _root(NULL), _size(0), _comp(src._comp) {
-					std::cout << REDC "map copy constructeur" NC << std::endl;
+				map(map const & src) : _alloc_node(src._alloc_node), _root(NULL), _end(NULL), _size(0), _comp(src._comp) {
+					/* std::cout << REDC "map copy constructeur" NC << std::endl; */
 					*this = src; 
 				}
-				~map(void) {  std::cout << "Destructeur" << std::endl;
-					std::cout << "root = " << _root << std::endl;
-					if (_root) {clearTree(_root);} 
+				~map(void) {  
+					/* std::cout << "Destructeur" << std::endl; */
+					if (_root) {
+						clearTree(_root);
+						_alloc_node.destroy(_end);
+						_alloc_node.deallocate(_end, 1);
+
+					} 
 				}  //
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				pair<iterator, bool>	insert(value_type const &value) {
-					std::cout << GRN "InsertPair Function" NC << std::endl;
+					/* std::cout << GRN "InsertPair Function" NC << std::endl; */
 					size_type oldSize = _size;
 					return ft::make_pair<iterator, bool>(insert(0, value), _size != oldSize);
 				}
 
 				iterator	insert(iterator pos, value_type const &value) {
-					std::cout << GRN "InsertIterator Function" NC << std::endl;
+					/* std::cout << GRN "InsertIterator Function" NC << std::endl; */
 					//	size_type oldSize = _size;
 					(void)pos;
 					insertNode(value);
-					std::cout << _root->value.first << std::endl;
 					node	*tmp = searchKey(value.first, _root);
 					return iterator(tmp);
 				}
 
 				template<class InputIterator>
 					void	insert(InputIterator first, InputIterator last) {
-						std::cout << GRN "Insert several Iterators Function" NC << std::endl;
+						/* std::cout << GRN "Insert several Iterators Function" NC << std::endl; */
 						while (first != last) {
 							insert(*first);
 							first++;
@@ -120,10 +132,16 @@ namespace	ft {
 
 				map	&operator=(map const &rhs) {
 					clear();
+					_end = NULL;
+					_alloc_node.destroy(_end);
+					_alloc_node.deallocate(_end, 1);
 					_comp = rhs._comp;
-					for(const_iterator it = rhs.begin(); it != rhs.end(); it++) {
+					const_iterator it = rhs.begin();
+					while (it != rhs.end()) {
 						insert(*it);
+						it++;
 					}
+					insert(*it);
 					return *this;
 				}
 
@@ -134,14 +152,18 @@ namespace	ft {
 				//https://en.cppreference.com/w/cpp/container/map/operator_at
 
 				mapped_type	&operator[](key_type const &key) {
-					std::cout << YELLOW "Operator[] Function :" << key <<  NC << std::endl;
+					/* std::cout << YELLOW "Operator[] Function :" << key <<  NC << std::endl; */
 					node	*tmp = searchKey(key, _root);
 					if (tmp){
-						std::cout << PINK "Operator[] found" NC << std::endl;
+						DEBUG;
 						return tmp->value.second;
 					}
-					std::cout << PINK "Operator[" << key << "] not found" NC << std::endl;
+						DEBUG;
 					insert(value_type(key, mapped_type()));
+					/* std::cout << _root << std::endl; */
+					/* std::cout << _root->left << std::endl; */
+					/* std::cout << _root->right << std::endl; */
+						DEBUG;
 					return searchKey(key, _root)->value.second;
 				}
 
@@ -149,7 +171,6 @@ namespace	ft {
 					if (_size == 0)
 						return iterator(_root);
 					node *first = _root;
-					//	std::cout << "begin function : " << first->value.first << std::endl;
 					while (first && first->left)
 						first = first->left;
 					//	std::cout << YELLOW "begin function : " << first->value.first << NC << std::endl;
@@ -167,56 +188,56 @@ namespace	ft {
 
 				reverse_iterator	rbegin(void) {
 					if (_size == 0)
-						return iterator(_root);
-					node *last = _root;
-					while (last && last->right)
-						last = last->right;
-					return reverse_iterator(last);
+						return reverse_iterator(_root);
+					/* node *last = _root; */
+					/* while (last && last->right) */
+					/* 	last = last->right; */
+					return reverse_iterator(--end());
 				}
 
 				const_reverse_iterator	rbegin(void) const {
 					if (_size == 0)
 						return iterator(_root);
-					node *last = _root;
-					while (last && last->right)
-						last = last->right;
-
-					return const_reverse_iterator(last);
+					/* node *last = _root; */
+					/* while (last && last->right) */
+					/* 	last = last->right; */
+					return const_reverse_iterator(--end());
 				}
 
 				reverse_iterator	rend(void) {
-					return reverse_iterator(begin());
+					return reverse_iterator(--begin());
 				}
 
 				const_reverse_iterator	rend(void) const {
-					return const_reverse_iterator(begin());
+					return const_reverse_iterator(--begin());
 				}
 
 				iterator	end(void) {
-					std::cout << YELLOW "End Function" NC << std::endl;
+					/* std::cout << YELLOW "End Function" NC << std::endl; */
 					if (_size == 0)
 						return iterator(_root);
 					node *last = _root;
-					while (last)
+					while (last && last->right)
 						last = last->right;
 					return iterator(last);
 				}
 
 				const_iterator	end(void) const {
-					std::cout << YELLOW "End const Function" NC << std::endl;
+					/* std::cout << YELLOW "End const Function" NC << std::endl; */
 					if (_size == 0)
 						return const_iterator(_root);
 					node *last = _root;
-					while (last)
+					while (last && last->right)
 						last = last->right;
 					return const_iterator(last);
 				}
+
 				bool	empty(void) const {
-					return (_size == 0 ? true : false);
+					return (_size == 1 ? true : false);
 				}
 
 				size_type	size(void) const {
-					return _size;
+					return _size - 1;
 				}
 
 				size_type	max_size(void) const {
@@ -224,50 +245,32 @@ namespace	ft {
 				}
 
 				void	clear(void) {
+					/* printTree(); */
 					clearTree(_root);
-					_root = _alloc_node.allocate(1);
-					_alloc_node.construct(_root, node());
-					_root->left = NULL;
-					_root->right = NULL;
-					_root->color = BLACK;
-					_size = 0;	
+					/* _root = NULL; */
+					/* printTree(); */
+					/* _end = NULL; */
+					_size = 1;	
 				}
 
 				void	erase(iterator position) {
-					std::cout << PINK "ERASE IT Function" NC << std::endl;
+					/* std::cout << PINK "ERASE IT Function" NC << std::endl; */
 					deleteNode(position.getNode());
 				}
 
 				void	erase(iterator first, iterator last) {
-					std::cout << PINK "ERASE 2 IT Function" NC << std::endl;
+					/* std::cout << PINK "ERASE 2 IT Function" NC << std::endl; */
 					iterator tmp;
 					while (first != last) {
 						tmp = first;
 						tmp++;
-						if (!first.getNode())
-							return ;
-						std::cout << first.getNode() << std::endl;
 						erase(first);
 						first = tmp;
 					}
-					map<key_type, mapped_type> tmp(first, last);
-					/*iterator it = tmp.begin();
-					iterator ite = tmp.end();
-					iterator plop;
-					while (it != ite) {
-						plop = first;
-						plop++;
-						if (!first.getNode())
-							return ;
-						std::cout << first.getNode() << std::endl;
-						erase(first);
-						first = plop;
-
-					}*/
 				}
 
 				size_type	erase(const key_type	&k) {
-					std::cout << PINK "ERASE Function" NC << std::endl;
+					/* std::cout << PINK "ERASE Function" NC << std::endl; */
 					size_type	initSize = this->size();
 					deleteNode(searchKey(k, _root));
 					return initSize - this->size();
@@ -278,6 +281,7 @@ namespace	ft {
 					node_allocator	tmp_node_alloc = x._alloc_node;
 					allocator_type	tmp_alloc = x._allocator;
 					node*	tmp_node = x._root;
+					node*	tmp_end_node = x._end;
 					size_type tmp_size = x._size;
 					key_compare	tmp_comp = x._comp;
 
@@ -286,12 +290,14 @@ namespace	ft {
 					x._root = _root;
 					x._size = _size;
 					x._comp = _comp;
+					x._end = _end;
 
 					_alloc_node = tmp_node_alloc;
 					_allocator = tmp_alloc;
 					_root = tmp_node;
 					_size = tmp_size;
 					_comp = tmp_comp;
+					_end = tmp_end_node;
 				}
 
 				key_compare	key_comp(void) const {
@@ -345,9 +351,10 @@ namespace	ft {
 				}
 
 				iterator	upper_bound(const key_type &k) {
+					/* std::cout << PINK "upper bound Function" NC << std::endl; */
 					iterator it = begin();
 					while (it != end()) {
-						if (it->first != k || !_comp(it->first, k))
+						if (it->first != k && !_comp(it->first, k))
 							return it;
 						it++;
 					}
@@ -358,7 +365,7 @@ namespace	ft {
 				const_iterator	upper_bound(const key_type &k) const {
 					const_iterator it = begin();
 					while (it != end()) {
-						if (it->first != k || !_comp(it->first, k))
+						if (it->first != k && !_comp(it->first, k))
 							return const_iterator(it);
 						it++;
 					}
@@ -404,7 +411,6 @@ namespace	ft {
 						deleteFix(tmp, tmp->right, tmp->right, tmp);
 					}
 					else {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						node	*next = findNextNode(tmp);
 						_root = next;
 
@@ -412,7 +418,7 @@ namespace	ft {
 						/* if (next != tmp->right) */
 						/* 	childR = tmp->right; */
 						/* else */
-						 
+
 						node	*parentN;
 						if (next->parent != tmp)
 							parentN = next->parent;
@@ -443,10 +449,9 @@ namespace	ft {
 				}
 
 				void 	deleteNode(node *tmp) {
-					std::cout << REDC "Delete Function :" << NC << std::endl;
+					/* std::cout << REDC "Delete Function :" << NC << std::endl; */
 					if (!tmp)
 						return;
-					std::cout << REDC "Delete Function :" << tmp->value.first << NC << std::endl;
 					if (tmp == _root) {
 						deleteRoot(tmp);
 						return ;
@@ -479,7 +484,6 @@ namespace	ft {
 						//next cannot have left children as it has to be the most lefty to be the closest to tmp
 						next->left = tmp->left;
 						if (next->left) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							//if tmp->left != NULL tmp->left take tmp
 							next->left->parent = next; //
 						}
@@ -492,8 +496,6 @@ namespace	ft {
 							tmp->right->parent = next;
 						}
 						next->parent = tmp->parent;
-						if (childR)
-							std::cout << childR->value.first << std::endl;
 						deleteFix(tmp, next, childR, parent);
 					}
 					_alloc_node.destroy(tmp);
@@ -502,15 +504,12 @@ namespace	ft {
 				}
 
 				void	fixCases(node *x, node *w) {
-					std::cout << REDC "Delete FIX CASES Function :" << NC << std::endl;
+					/* std::cout << REDC "Delete FIX CASES Function :" << NC << std::endl; */
 					if (x && x->color == RED) { // case 0
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 						x->color = BLACK;
 						return ;
 					}
 					if ((!x || x->color == BLACK) && w && w->color == RED) { // case 1
-						std::cout << BLUE << __LINE__ << "  " << w->value.first << NC << std::endl;
-						std::cout << w->parent << std::endl;
 						w->color = BLACK;
 						w->parent->color = RED;
 						if (w == w->parent->right) {
@@ -525,9 +524,6 @@ namespace	ft {
 					if ((!x || x->color == BLACK) && (w && w->color == BLACK
 								&& (!w->left || w->left->color == BLACK)
 								&& (!w->right || w->right->color == BLACK))) { // case 2
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-						std::cout << x << std::endl;
-						std::cout << w << std::endl;
 						if (w)
 							w->color = RED;
 						if (x)
@@ -535,27 +531,15 @@ namespace	ft {
 						if (x && x->color == RED)
 							x->color = BLACK;
 						else if ((x && x->color == BLACK) || !x) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							fixCases(x, w);
 						}
 						else if ((!x || x->color == BLACK) && !x->parent)
 							return ;
 					}
 					if ((!x || x->color == BLACK) && (!w || w->color == BLACK)) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-						std::cout << x << std::endl;
-						std::cout << w << std::endl;
-						if (x)
-							std::cout << x->value.first << std::endl;
-						if (w) {
-							std::cout << w->value.first << std::endl;
-							std::cout << w->parent << std::endl;
-						}
-						std::cout << std::endl;
 						if ((!x || (x && x == x->parent->left)) && w && w == w->parent->right 
 								&& w->left && w->left->color == RED
 								&& (!w->right || w->right->color == BLACK)) { // case 3
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							w->left->color = BLACK;
 							w->color = RED;
 							rightRotate(w);
@@ -564,7 +548,6 @@ namespace	ft {
 						else if ((!x || x == x->parent->right) && w && w == w->parent->left
 								&& w->right && w->right->color == RED
 								&& (!w->left || w->left->color == BLACK)) {
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							w->right->color = BLACK;
 							w->color = RED;
 							leftRotate(w);
@@ -572,14 +555,12 @@ namespace	ft {
 						}
 
 						if ((!x || x == x->parent->left) && w && w->right && w->right->color == RED) { // case 4
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							w->color = w->parent->color;
 							w->parent->color = BLACK;
 							w->right->color = BLACK;
 							leftRotate(w->parent);
 						}
 						else if ((!x || x == x->parent->right) && w && w->left && w->left->color == RED) { 
-							std::cout << BLUE << __LINE__ << NC << std::endl;
 							w->color = w->parent->color;
 							w->parent->color = BLACK;
 							w->left->color = BLACK;
@@ -589,19 +570,17 @@ namespace	ft {
 				}
 
 				void	deleteFix(node* delNode, node* nextNode, node* x, node* xP) {
-					std::cout << REDC "Delete FIX Function :" << x << std::endl;
+					/* std::cout << REDC "Delete FIX Function :" << x << std::endl; */
 					if (delNode->color == RED && (!nextNode || nextNode->color == RED)) {
-					printTree();
+						/* printTree(); */
 						return ;
 					}
 					else if (delNode->color == RED && nextNode->color == BLACK) { 
 						nextNode->color = RED;
-						std::cout << BLUE << __LINE__ << NC << std::endl;
 					}
 					else if (delNode->color == BLACK && nextNode && nextNode->color == RED) {
 						nextNode->color = BLACK;
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-					printTree();
+						/* printTree(); */
 						return ;
 					}
 					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK)
@@ -609,25 +588,21 @@ namespace	ft {
 						;
 					else if (delNode->color == BLACK && (!nextNode || nextNode->color == BLACK)
 							&& searchRoot() == x) {
-						std::cout << BLUE << __LINE__ << NC << std::endl;
-					printTree();
+						/* printTree(); */
 						return ;
 					}
 					node	*w;
-					std::cout << xP << std::endl;
-					if (xP)
-						std::cout << xP->value.first << std::endl;
 					if (xP == NULL)
 						w = NULL;
 					else	
 						w = x->getSibling(xP);
 					fixCases(x, w);
-					printTree();
+					/* printTree(); */
 
 				}
 
 				void	clearTree(node	*current) {
-					std::cout << GRN "ClearTree Function" NC << std::endl;
+					/* std::cout << GRN "ClearTree Function" NC << std::endl; */
 					node	*tmp = current;
 					if (!tmp)
 						return ;
@@ -635,9 +610,16 @@ namespace	ft {
 						clearTree(tmp->left);
 					if (tmp->right)
 						clearTree(tmp->right);
-					if (tmp) {
+					if (tmp != _end) {
 						_alloc_node.destroy(tmp);
 						_alloc_node.deallocate(tmp, 1);
+					}
+					else {
+						DEBUG;
+						_size = 1;
+						tmp->parent = NULL;
+						tmp->left = NULL;
+						_root = _end;
 					}
 				}
 
@@ -649,24 +631,24 @@ namespace	ft {
 				}
 
 				node	*searchKey(key_type	const &key, node	*current) const {
-					std::cout << GRN "SearchKey Function" NC << std::endl;
-					//std::cout << current->value.first << std::endl;
+					/* std::cout << GRN "SearchKey Function" NC << std::endl; */
 					if (!current) {
-						std::cout << "No tree on the line, no match" << std::endl;
 						return NULL;
 					}
-					if (_comp(key, current->value.first) == true) { // if key < first -> go left
-						std::cout << "search Left" << std::endl;
+					if (current == _end && !current->left) {
+						return NULL;
+					}
+					if (current == _end || _comp(key, current->value.first) == true) { // if key < first -> go left
 						return searchKey(key, current->left);
 					}
 					else if (_comp(current->value.first, key) == true) { // if first < key -> go right
-						std::cout << "search Right" << std::endl;
 						return searchKey(key, current->right);
 					}
 					return current;
 				}
 
 				node	*newNode(value_type	const &value, node *parent) {
+					/* std::cout << GRN "Newnode Function" NC << std::endl; */
 					node *tmp = _alloc_node.allocate(1);
 					/* _alloc_node.construct(newNode, node(value, NULL, NULL, parent, false)); */
 					_alloc_node.construct(tmp, node());
@@ -676,7 +658,6 @@ namespace	ft {
 					tmp->right = NULL;
 					_size++;
 					tmp->color = RED;
-					std::cout << "Our new Node first value is :" << tmp->value.first << " end out second is:" << tmp->value.second << std::endl;
 					return tmp;
 				}
 				//if node and parent are red end the uncle is red as well then we push the blachness down form the grandparent
@@ -763,19 +744,25 @@ namespace	ft {
 				}
 
 				void	insertNode(value_type	const &value) {
-					std::cout << GRN "InsertNode Function" NC << std::endl;
+					/* std::cout << GRN "InsertNode Function" NC << " " << value.first << std::endl; */
 					if (!_root) {
 						_root = newNode(value, NULL);
 					}
 					else {
+						/* std::cout << YELLOW << _root << NC <<  std::endl; */
 						node *current = _root;
 						while (current) {
-							std::cout << "Lets find the right branch to our Tree" << std::endl;
-							if (value > current->value) {
-								if (!current->right) {
+								DEBUG;
+							if (current == _end)
+								DEBUG;
+							if (current != _end && value.first == current->value.first) {
+								DEBUG;
+								break ;
+							}
+							if (value > current->value && current != _end) {
+								if (!current->right && value.first != current->value.first) {
 									current->right = newNode(value, current);
 									insertFix(current->right);
-									/* std::cout << "here tmp = " << current->right->value.first << current->right << std::endl; */
 									break;
 								}
 								current = current->right;
@@ -784,38 +771,38 @@ namespace	ft {
 								if (!current->left) {
 									current->left = newNode(value,current);
 									insertFix(current->left);
-									/* std::cout << "here tmp = " << current->left->value.first << current->left << std::endl; */
 									break;
 								}
 								current = current->left;
 							}
 						}
 					}
+								DEBUG;
 				}
 		};
 
 	/*NON MEMBER FUNCTIONS */
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator==(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) {
+		bool operator==(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) {
 			if (lhs.size() != rhs.size())
 				return false;
-			return equal(lhs.begin(), lhs.end(), rhs.begin());
+			return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 		}
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator!=(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) {return !(lhs == rhs);}
+		bool operator!=(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) {return !(lhs == rhs);}
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator<(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) { 
-			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		bool operator<(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) { 
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator<=(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) {return lhs < rhs || lhs == rhs;}
+		bool operator<=(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) {return lhs < rhs || lhs == rhs;}
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator>(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) {return rhs < lhs;}
+		bool operator>(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) {return rhs < lhs;}
 	template <class Key, class T, class Compare, class Alloc>
-		bool operator>=(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc> const &rhs) {return lhs > rhs || lhs == rhs;}
+		bool operator>=(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc> const &rhs) {return lhs > rhs || lhs == rhs;}
 
 	template <class Key, class T, class Compare, class Alloc>
-		void	swap(map<Key,T,Compare,Alloc> const &lhs, map<Key,T,Compare,Alloc>const &rhs) {lhs.swap(rhs);}
+		void	swap(ft::map<Key,T,Compare,Alloc> const &lhs, ft::map<Key,T,Compare,Alloc>const &rhs) {lhs.swap(rhs);}
 }
 
 #endif
