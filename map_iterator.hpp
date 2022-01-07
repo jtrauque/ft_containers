@@ -49,11 +49,6 @@ namespace	ft {
 							_current = _current->parent;
 						if (_current->parent && _current->parent->left == _current) {
 							_current = _current->parent; // root became ++ si no right
-							/* if (_current->right) { */
-							/* 	_current = _current->right; */
-							/* 	while (_current->left) */
-							/* 		_current = _current->left; */	
-							/* } */
 						} 
 						else {
 							_current = NULL;
@@ -61,29 +56,6 @@ namespace	ft {
 					}
 					else 
 						_current = NULL;
-					/*
-					   if (_current && (_current->left || _current->right)) {
-					   if (_current && _current->right) {
-					   _current = _current->right;
-					   while (_current) // && _current->left) {
-					   std::cout << "operator++ :" <<  _current->value.first << std::endl;
-					   _current = _current->left;
-					   }
-					   }
-					   else {
-					   node *tmp = _current; // on preserve la valeur de depart
-					   _current = _current->parent; //on remonte d un crant 
-					   while (tmp && _current && _current->left != tmp) { // tant qu il n y a pas de droite on monte
-					   tmp = _current;
-					   _current = _current->parent;
-					   }
-					   node	*parent = _current->parent;
-					   while(parent && parent->right == _current) {
-					   _current = parent;
-					   parent = parent->parent;
-					   }
-
-					   }*/
 					return *this;
 }
 
