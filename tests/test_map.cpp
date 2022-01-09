@@ -782,7 +782,7 @@ void swap_non_member()
 
 */
 
-int main()
+int main3()
 {
 //	constructor();
    //     operator_equal(); // operator = 
@@ -817,6 +817,7 @@ int main()
 //	relationnal_ope();
 //	swap_non_member();
 
-//	 iterator_validity(); 
+//	 iterator_validity();
+	return 0; 
 
 }
