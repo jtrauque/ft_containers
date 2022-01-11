@@ -23,10 +23,11 @@ namespace	ft {
 
 				vector_iterator() : _ptr(NULL) {}
 				vector_iterator(value_type	*ptr) : _ptr(ptr) {}
-				vector_iterator(vector_iterator const & src) { *this = src; }
+				vector_iterator(vector_iterator const & src) { 
+					*this = src; }
 				virtual ~vector_iterator() {}
 				vector_iterator	&operator=(vector_iterator	const & rhs) {
-					_ptr = rhs._ptr; 
+					_ptr = rhs.getPtr(); 
 					return *this;
 				}
 				value_type	*getPtr(void) const {

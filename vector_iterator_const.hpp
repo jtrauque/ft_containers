@@ -25,11 +25,12 @@ namespace	ft {
 
 				vector_iterator_const() : _ptr(NULL) {}
 				vector_iterator_const(pointer ptr) : _ptr(ptr) {}
-				vector_iterator_const(vector_iterator_const const & src) { *this = src; }
+				vector_iterator_const(vector_iterator_const const & src) { 
+					*this = src; }
 				vector_iterator_const(vector_iterator<T> const & src) : _ptr(src.getPtr()) {}
 				virtual ~vector_iterator_const() {}
 				vector_iterator_const	&operator=(vector_iterator_const	const & rhs) {
-					_ptr = rhs._ptr; 
+					_ptr = rhs.getPtr(); 
 					return *this;
 				}
 				

@@ -39,9 +39,9 @@ void relationnal_ope() {
 	if (foo> bar) std::cout << "foo is greater than bar\n";
 	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
 	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-//foo and bar are not equal
-//foo is less than bar
-//foo is less than or equal to bar
+	//foo and bar are not equal
+	//foo is less than bar
+	//foo is less than or equal to bar
 }
 
 void get_allocator() {
@@ -62,7 +62,7 @@ void get_allocator() {
 	// destroy and deallocate:
 	for (i=0; i<5; i++) myvector.get_allocator().destroy(&p[i]);
 	myvector.get_allocator().deallocate(p,5);
-//The allocated array contains: 0 1 2 3 4
+	//The allocated array contains: 0 1 2 3 4
 }
 
 void clear() {
@@ -85,8 +85,8 @@ void clear() {
 	for (unsigned i=0; i<myvector.size(); i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
-//myvector contains: 100 200 300
-//myvector contains: 1101 2202
+	//myvector contains: 100 200 300
+	//myvector contains: 1101 2202
 }
 
 void swap() {
@@ -108,8 +108,8 @@ void swap() {
 	for (unsigned i=0; i<bar.size(); i++)
 		std::cout << ' ' << bar[i];
 	std::cout << '\n';
-//foo contains: 200 200 200 200 200 
-//bar contains: 100 100 100 
+	//foo contains: 200 200 200 200 200 
+	//bar contains: 100 100 100 
 }
 
 void erase() {
@@ -129,7 +129,7 @@ void erase() {
 	for (unsigned i=0; i<myvector.size(); ++i)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
-//myvector contains: 4 5 7 8 9 10
+	//myvector contains: 4 5 7 8 9 10
 }
 
 void insert() {
@@ -155,7 +155,7 @@ void insert() {
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
-//myvector contains: 501 502 503 300 300 400 400 200 100 100 100
+	//myvector contains: 501 502 503 300 300 400 400 200 100 100 100
 }
 
 void pop_back() {
@@ -173,7 +173,7 @@ void pop_back() {
 	}
 
 	std::cout << "The elements of myvector add up to " << sum << '\n';
-//The elements of myvector add up to 600
+	//The elements of myvector add up to 600
 }
 
 void push_back() {
@@ -204,9 +204,9 @@ void assign() {
 	std::cout << "Size of first: " << int (first.size()) << '\n';
 	std::cout << "Size of second: " << int (second.size()) << '\n';
 	std::cout << "Size of third: " << int (third.size()) << '\n';
-//Size of first: 7
-//Size of second: 5
-//Size of third: 3
+	//Size of first: 7
+	//Size of second: 5
+	//Size of third: 3
 }
 
 void back() {
@@ -224,7 +224,7 @@ void back() {
 	for (unsigned i=0; i<myvector.size() ; i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
-//myvector contains: 10 9 8 7 6 5 4 3 2 1 0
+	//myvector contains: 10 9 8 7 6 5 4 3 2 1 0
 }
 
 void front() {
@@ -239,7 +239,7 @@ void front() {
 	myvector.front() -= myvector.back();
 
 	std::cout << "myvector.front() is now " << myvector.front() << '\n';
-//myvector.front() is now 62
+	//myvector.front() is now 62
 }
 
 void at()
@@ -255,7 +255,7 @@ void at()
 	for (unsigned i=0; i<myvector.size(); i++)
 		std::cout << ' ' << myvector.at(i);
 	std::cout << '\n';
-//myvector contains: 0 1 2 3 4 5 6 7 8 9
+	//myvector contains: 0 1 2 3 4 5 6 7 8 9
 }
 
 void operator_hook()
@@ -281,7 +281,7 @@ void operator_hook()
 	for (unsigned i=0; i<sz; i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
-//myvector contains: 9 8 7 6 5 4 3 2 1 0
+	//myvector contains: 9 8 7 6 5 4 3 2 1 0
 
 }
 
@@ -312,17 +312,17 @@ void reserve()
 			std::cout << "capacity changed: " << sz << '\n';
 		}
 	}
-/* making foo grow: */
-/* capacity changed: 1 */
-/* capacity changed: 2 */
-/* capacity changed: 4 */
-/* capacity changed: 8 */
-/* capacity changed: 16 */
-/* capacity changed: 32 */
-/* capacity changed: 64 */
-/* capacity changed: 128 */
-/* making bar grow: */
-/* capacity changed: 100 */
+	/* making foo grow: */
+	/* capacity changed: 1 */
+	/* capacity changed: 2 */
+	/* capacity changed: 4 */
+	/* capacity changed: 8 */
+	/* capacity changed: 16 */
+	/* capacity changed: 32 */
+	/* capacity changed: 64 */
+	/* capacity changed: 128 */
+	/* making bar grow: */
+	/* capacity changed: 100 */
 }
 
 void empty()
@@ -340,7 +340,7 @@ void empty()
 	}
 
 	std::cout << "total: " << sum << '\n';
-//total: 55
+	//total: 55
 }
 
 void capacity() {
@@ -354,9 +354,9 @@ void capacity() {
 	std::cout << "size: " << (int) myvector.size() << '\n';
 	std::cout << "capacity: " << (int) myvector.capacity() << '\n';
 	std::cout << "max_size: " << (int) myvector.max_size() << '\n';
-/* size: 100 */
-/* capacity: 128 */
-/* max_size: 1073741823 */
+	/* size: 100 */
+	/* capacity: 128 */
+	/* max_size: 1073741823 */
 }
 
 void resize()
@@ -560,7 +560,7 @@ using namespace std;
 /* 	} */
 /* } */
 
-template <class T>
+	template <class T>
 void	print(NAMESPACE::vector<T>& lst)
 {
 	for (typename NAMESPACE::vector<T>::iterator it = lst.begin(); it != lst.end(); it++)
@@ -593,7 +593,7 @@ class Awesome {
 
 std::ostream & operator<<( std::ostream & o, Awesome const & rhs ) { o << rhs.get(); return o; }
 
-template <class T>
+	template <class T>
 void	print_vector(NAMESPACE::vector<T> &test)
 {
 	typename NAMESPACE::vector<T>::iterator		beg = test.begin();
@@ -608,7 +608,7 @@ void	print_vector(NAMESPACE::vector<T> &test)
 	std::cout << std::endl;
 }
 
-template <class T>
+	template <class T>
 void	push_pop_back_tests(void)
 {
 	std::cout << std::endl << "PUSH BACK & POP BACK TESTS" << std::endl;
@@ -630,7 +630,7 @@ void	push_pop_back_tests(void)
 	print_vector<T>(test);
 }
 
-template <class T>
+	template <class T>
 void	resize_tests(void)
 {
 	std::cout << std::endl << "RESIZE TESTS" << std::endl;
@@ -648,7 +648,7 @@ void	resize_tests(void)
 	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
 }
 
-template <class T>
+	template <class T>
 void	insert_tests()
 {
 	std::cout << std::endl << "INSERT TESTS" << std::endl;
@@ -657,9 +657,12 @@ void	insert_tests()
 
 	test.insert(test.begin(), 200, 12);
 	print_vector<T>(test);
+	/* std::cout << __LINE__ << std::endl; */
 	test.insert(test.begin() + 12, 200, 30);
+	/* std::cout << __LINE__ << std::endl; */
 	print_vector<T>(test);
 	test.insert(test.end(), 12, 50);
+	/* std::cout << __LINE__ << std::endl; */
 	print_vector<T>(test);
 	test.insert(test.end() - 1, 0, 60);
 	print_vector<T>(test);
@@ -673,7 +676,7 @@ void	insert_tests()
 	print_vector<T>(test);
 }
 
-template <class T>
+	template <class T>
 void	reserve_tests(void)
 {
 	std::cout << std::endl << "RESERVE TESTS" << std::endl;
@@ -704,18 +707,25 @@ void	reserve_tests(void)
 	print_vector<T>(test);
 }
 
-template <class T>
+	template <class T>
 void	copy_swap_tests(void)
 {
 	std::cout << std::endl << "COPY && SWAP TESTS" << std::endl;
 	NAMESPACE::vector<T> test;
-	for (size_t i = 0; i < 50; i++) { test.push_back(i); }
+	std::cout << "test capacity :" << test.capacity() << std::endl;
+	for (size_t i = 0; i < 50; i++) {
+		test.push_back(i); 
+		std::cout << "test capacity :" << test.capacity() << std::endl;
+	}
+	std::cout << __LINE__ << std::endl;
+	print_vector<T>(test);
 	NAMESPACE::vector<T> test_copy(test);
 	for (size_t i = 0; i < test_copy.size(); i++) { test_copy[i] += 100; }
 	print_vector<T>(test_copy);
 	NAMESPACE::vector<T> test_range(test.begin() + 20, test.begin() + 30);
 	print_vector<T>(test_range);
 	test_copy.swap(test);
+	std::cout << __LINE__ << std::endl;
 	print_vector<T>(test);
 	print_vector<T>(test_copy);
 	test_copy.swap(test_range);
@@ -726,7 +736,7 @@ void	copy_swap_tests(void)
 	print_vector<T>(test_copy);
 }
 
-template <class T>
+	template <class T>
 void	reverse_it_tests(void)
 {
 	std::cout << std::endl << "REVERSE IT TESTS" << std::endl;
@@ -753,7 +763,7 @@ void	reverse_it_tests(void)
 	std::cout << std::endl;
 }
 
-template <class T>
+	template <class T>
 void	erase_clear_tests(void)
 {
 	std::cout << std::endl << "ERASE && CLEAR TESTS" << std::endl;
@@ -805,24 +815,171 @@ void	awesome_tests(void)
 	print_vector<Awesome>(test);
 	std::cout << "end awesome test" << std::endl;
 }
+/* template <class T> */
+/* void	print(vector<vector<T> >& lst) */
+/* { */
+/* 	for (typename vector<vector<T> >::iterator it = lst.begin(); it != lst.end(); it++) */
+/* 	{ */
+/* 		for (typename vector<T>::iterator it2 = it->begin(); it2 != it->end(); it2++) */
+/* 			cout << *it2 << ' '; */
+/* 		cout << '\n'; */
+/* 	} */
+/* } */
 
-int main()
+/* template <class T> */
+/* void	print(vector<T>& lst) */
+/* { */
+/* 	for (typename vector<T>::iterator it = lst.begin(); it != lst.end(); it++) */
+/* 		cout << *it << ' '; */
+/* 	cout << '\n'; */
+/* } */
+
+int main ()
 {
-	push_pop_back_tests<int>();
-	resize_tests<int>();
-	insert_tests<int>();
-	reserve_tests<int>();
-	copy_swap_tests<int>();
-	reverse_it_tests<int>();
-	erase_clear_tests<int>();
-	max_size_tests();
-	awesome_tests();
-	push_pop_back_tests<Awesome>();
-	resize_tests<Awesome>();
-	insert_tests<Awesome>();
-	reserve_tests<Awesome>();
-	copy_swap_tests<Awesome>();
-	reverse_it_tests<Awesome>();
-	erase_clear_tests<Awesome>();
+	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
+	NAMESPACE::vector<int> bar (5,200);   // five ints with a value of 200
+
+	foo.swap(bar);
+
+	cout << "foo contains:";
+	for (unsigned i=0; i<foo.size(); i++)
+		cout << ' ' << foo[i];
+	cout << '\n';
+
+	cout << "bar contains:";
+	for (unsigned i=0; i<bar.size(); i++)
+		cout << ' ' << bar[i];
+	cout << '\n';
+
+	{
+		NAMESPACE::vector<int> foo,bar;
+
+		foo.push_back(100);
+		foo.push_back(200);
+
+		bar.push_back(11);
+		bar.push_back(22);
+		bar.push_back(33);
+
+
+		NAMESPACE::vector<int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+		NAMESPACE::vector<int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
+			std::cout << __LINE__ << std::endl;
+			cout << *tmp << '\n';
+
+		swap(bar, foo); //tmp iterates through bar ===> appelle quel swap ???
+			std::cout << __LINE__ << std::endl;
+			cout << *tmp << '\n';
+		//tmp2 iterates through foo
+
+
+		NAMESPACE::vector<int>	other;
+
+		other.push_back(73);
+		other.push_back(173);
+		other.push_back(763);
+		other.push_back(73854);
+		other.push_back(74683);
+		other.push_back(753);
+
+		NAMESPACE::vector<int>::const_iterator tmp3 = other.begin(); // tmp3 iterates through other
+
+		cout << "foo contains:\n";
+		for (NAMESPACE::vector<int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			cout << *it << '\n';
+
+		cout << "bar contains:\n";
+		for (NAMESPACE::vector<int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			cout << *it << '\n';
+
+		while(tmp != bar.end())
+		{
+			std::cout << __LINE__ << std::endl;
+			cout << *tmp << '\n';
+			tmp++;
+		}
+		tmp--;
+
+		while(tmp2 != foo.end())
+		{
+			cout << *tmp2 << '\n';
+			tmp2++;
+		}
+		tmp2--;
+
+		swap(other, foo); //tmp2 iterates through other
+		//tmp3 iterates throught foo
+		print(other);
+		print(foo);
+		print(bar);
+		while(tmp != bar.begin())
+		{
+			cout << *tmp << '\n';
+			tmp--;
+		}
+		cout << *tmp << '\n';
+
+		while(tmp2 != other.begin())
+		{
+			cout << *tmp2 << '\n';
+			tmp2--;
+		}
+		cout << *tmp2 << '\n';
+
+		while(tmp3 != foo.end())
+		{
+			cout << *tmp3 << '\n';
+			tmp3++;
+		}
+		tmp3--;
+
+		swap(bar, foo);
+		swap(foo, bar);
+		swap(bar, foo); //tmp3 iterates through bar
+		//tmp iterates through foo
+
+		print(other);
+		print(foo);
+		print(bar);
+
+		while(tmp != foo.end())
+		{
+			cout << *tmp << '\n';
+			tmp++;
+		}
+
+		while(tmp2 != other.end())
+		{
+			cout << *tmp2 << '\n';
+			tmp2++;
+		}
+
+		while(tmp3 != bar.begin())
+		{
+			cout << *tmp3 << '\n';
+			tmp3--;
+		}
+		cout << *tmp3 << '\n';
+		return 0;}
 }
+
+/* int main() */
+/* { */
+/* 	push_pop_back_tests<int>(); */
+/* 	resize_tests<int>(); */
+/* 	insert_tests<int>(); */
+/* 	reserve_tests<int>(); */
+/* 	copy_swap_tests<int>(); */
+/* 	reverse_it_tests<int>(); */
+/* 	erase_clear_tests<int>(); */
+/* 	max_size_tests(); */
+/* 	awesome_tests(); */
+/* 	push_pop_back_tests<Awesome>(); */
+/* 	resize_tests<Awesome>(); */
+/* 	insert_tests<Awesome>(); */
+/* 	reserve_tests<Awesome>(); */
+/* 	copy_swap_tests<Awesome>(); */
+/* 	reverse_it_tests<Awesome>(); */
+/* 	erase_clear_tests<Awesome>(); */
+/* } */
 

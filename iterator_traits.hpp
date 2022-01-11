@@ -73,16 +73,16 @@ namespace	ft {
 		return true;
 	}
 
-	/* template <class InputIterator1, class InputIterator2, class BinaryPredicate> */
-	/* bool	equal(InputIterator1 first1, InputIterator1 last, InputIterator2 first2, BinaryPredicate pred) { */
-	/* 	while (first1 != last) { */
-	/* 		if (pred(*first1, *first2) == false) */
-	/* 			return false; */
-	/* 		++first1; */
-	/* 		++first2; */
-	/* 	} */
-	/* 	return true; */
-	/* } */
+	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
+	bool	equal(InputIterator1 first1, InputIterator1 last, InputIterator2 first2, BinaryPredicate pred) {
+		while (first1 != last) {
+			if (pred(*first1, *first2) == false)
+				return false;
+			++first1;
+			++first2;
+		}
+		return true;
+	}
 
 	//https://cplusplus.com/reference/algorithm/lexicographical_compare/?kw=lexicographical_compare
 	template <class InputIterator1, class InputIterator2>

@@ -102,7 +102,7 @@ namespace	ft {
 				reference	operator*() const {
 					iterator_type it = _it;
 					/* it--; */
-					return *it;
+					return *(--it);
 				}
 		};
 

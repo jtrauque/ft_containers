@@ -10,7 +10,18 @@
 #include "iterator_traits.hpp"
 #include "enable_if.hpp"
 
-#define DEBUG // std::cout << REDC << __FILE__ << " " << CYN << __FUNCTION__  << " " << __LINE__ << NC << std::endl;
+/* #define RED	1 */
+/* #define BLACK 0 */
+/* #define NC "\e[0m" */
+/* #define REDC "\e[0;31m" */
+/* #define GRN "\e[0;32m" */
+/* #define YELLOW "\e[0;33m" */
+/* #define BLUE "\e[0;34m" */
+/* #define PINK "\e[0;35m" */
+/* #define CYN "\e[0;36m" */
+/* #define REDB "\e[41m" */
+
+#define DEBUG  std::cout << REDC << __FILE__ << " " << CYN << __FUNCTION__  << " " << __LINE__ << NC << std::endl;
 
 namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un identificateur
 	template<class T, class Alloc = std::allocator<T> > //generic template vector
@@ -93,10 +104,14 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				vector	&operator=(vector const &rhs) {
+					/* std::cout << __LINE__ << std::endl; */
 					this->clear();
-					_allocator.deallocate(_array, _capacity);
-					_capacity = rhs._capacity;
+					if (_capacity < rhs._size)
+						reserve(rhs._size);
 					_size = rhs._size;
+					if (_array)
+						_allocator.deallocate(_array, _size);
+					_capacity = rhs._capacity;
 					_array = _allocator.allocate(_capacity); //allocate uninitialized storage
 					for (size_type i = 0; i < _capacity; i++) {
 						_allocator.construct(_array + i, rhs._array[i]); //construct an object in allocated object
@@ -108,7 +123,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					void	assign(InputIterator first, InputIterator last, 
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type =true) {
 						size_type n = std::distance(first, last);
-						resize(n);
+						reserve(n);
 						_capacity = n;
 						_size = n;
 						for (size_type i = 0; i < n && first != last; i++, first++) {
@@ -219,8 +234,9 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				void	reserve(size_type new_cap) {
+					/* DEBUG; */
 					if (new_cap > max_size()) {
-						throw std::length_error("n greater than max_size()");
+						throw std::length_error("vector::reserve");
 					}
 					if (new_cap > _capacity) {
 						pointer	ptr = _allocator.allocate(new_cap);
@@ -230,6 +246,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						}
 						_allocator.deallocate(_array, _capacity);
 						_capacity = new_cap;
+						/* std::cout << "reserve capacity :" << _capacity << std::endl; */
 						_array = ptr;
 					}
 				}
@@ -255,14 +272,20 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				void	insert(iterator	pos, size_type count, const value_type &val) {
+					/* DEBUG; */
 					difference_type tmp = pos.getPtr() - _array;
 					if (count <= 0) 
 						return ;
+					/* std::cout << "insert capacity :" << _capacity << std::endl; */
 					if (_size + count > _capacity) {
-						if ( _size + count < _capacity * 2)
-							reserve(_capacity * 2);
-						else
+						if ( _size + count < _capacity * 2) {
+					/* DEBUG; */
+							reserve(_size * 2);
+						}
+						else {
+					/* DEBUG; */
 							reserve(_size + count);
+						}
 					}
 					pointer it = _array + _size + count - 1;
 					pointer ite = _array + tmp + count - 1;
@@ -313,8 +336,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				void	push_back(const value_type	&val) {
 					if (_capacity == 0)
 						reserve(1);
-					else if (_size == _capacity)
-						reserve(_capacity * 2);
+					else if  (_size == _capacity)
+						reserve(_size * 2);
 					_allocator.construct(_array + _size, val); // on construct a la fin de l array
 					_size++;
 				}
@@ -379,6 +402,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 
 				void	swap(vector	&src) {
+					/* std::cout << __LINE__ << std::endl; */
 					pointer	tmp_arr = _array;
 					size_type tmp_cap = _capacity;
 					size_type tmp_size = _size;
@@ -401,13 +425,13 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 		bool operator==(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {
 			if (lhs.size() != rhs.size())
 				return false;
-			return equal(lhs.begin(), lhs.end(), rhs.begin());
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 	template <class T, class Alloc>
 		bool operator!=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return !(lhs == rhs);}
 	template <class T, class Alloc>
 		bool operator<(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) { 
-			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 	template <class T, class Alloc>
 		bool operator<=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs < rhs || lhs == rhs;}
