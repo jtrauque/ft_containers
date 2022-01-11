@@ -10,8 +10,7 @@
 # define NAMESPACE ft
 #endif
 
-void swap_non_member()
-{
+void swap_non_member() {
 	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
 	NAMESPACE::vector<int> bar (5,200);   // five ints with a value of 200
 
@@ -26,9 +25,11 @@ void swap_non_member()
 	for (NAMESPACE::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
+	//foo contains: 200 200 200 200 200 
+	//bar contains: 100 100 100 
 }
-void relationnal_ope()
-{
+
+void relationnal_ope() {
 	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
 	NAMESPACE::vector<int> bar (2,200);   // two ints with a value of 200
 
@@ -38,9 +39,12 @@ void relationnal_ope()
 	if (foo> bar) std::cout << "foo is greater than bar\n";
 	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
 	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+//foo and bar are not equal
+//foo is less than bar
+//foo is less than or equal to bar
 }
-void get_allocator()
-{
+
+void get_allocator() {
 	NAMESPACE::vector<int> myvector;
 	int * p;
 	unsigned int i;
@@ -58,10 +62,10 @@ void get_allocator()
 	// destroy and deallocate:
 	for (i=0; i<5; i++) myvector.get_allocator().destroy(&p[i]);
 	myvector.get_allocator().deallocate(p,5);
+//The allocated array contains: 0 1 2 3 4
 }
 
-void clear()
-{
+void clear() {
 	std::cout << "CLEAR" << std::endl;
 	NAMESPACE::vector<int> myvector;
 	myvector.push_back (100);
@@ -81,10 +85,11 @@ void clear()
 	for (unsigned i=0; i<myvector.size(); i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
+//myvector contains: 100 200 300
+//myvector contains: 1101 2202
 }
 
-void swap()
-{
+void swap() {
 	std::cout << "SWAP" << std::endl;
 	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
 	NAMESPACE::vector<int> bar (5,200);   // five ints with a value of 200
@@ -93,12 +98,6 @@ void swap()
 	NAMESPACE::vector<int>::iterator it_bar = bar.begin();
 
 	foo.swap(bar);
-
-	if (foo.begin() == it_bar)
-		std::cout << "IT_BAR OK" << std::endl;
-	if (bar.begin() == it_foo)
-		std::cout << "IT_FOO OK" << std::endl;
-
 
 	std::cout << "foo contains:";
 	for (unsigned i=0; i<foo.size(); i++)
@@ -109,10 +108,11 @@ void swap()
 	for (unsigned i=0; i<bar.size(); i++)
 		std::cout << ' ' << bar[i];
 	std::cout << '\n';
+//foo contains: 200 200 200 200 200 
+//bar contains: 100 100 100 
 }
 
-void erase()
-{
+void erase() {
 	std::cout << "ERASE" << std::endl;
 	NAMESPACE::vector<int> myvector;
 
@@ -129,9 +129,10 @@ void erase()
 	for (unsigned i=0; i<myvector.size(); ++i)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
+//myvector contains: 4 5 7 8 9 10
 }
-void insert()
-{
+
+void insert() {
 	std::cout << "INSERT" << std::endl;
 	NAMESPACE::vector<int> myvector (3,100);
 	NAMESPACE::vector<int>::iterator it;
@@ -154,9 +155,10 @@ void insert()
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
+//myvector contains: 501 502 503 300 300 400 400 200 100 100 100
 }
-void pop_back()
-{
+
+void pop_back() {
 	std::cout << "POP" << std::endl;
 	NAMESPACE::vector<int> myvector;
 	int sum (0);
@@ -171,18 +173,19 @@ void pop_back()
 	}
 
 	std::cout << "The elements of myvector add up to " << sum << '\n';
+//The elements of myvector add up to 600
 }
-void push_back()
-{
+
+void push_back() {
 	std::cout << "PUSH" << std::endl;
 	NAMESPACE::vector<int> myvector;
-	for (int i = -100; i < 50; i++)
-		myvector.push_back((i*3) % 300);
+	for (int i = 0; i < 50; i++)
+		myvector.push_back((i) % 3);
 
 	std::cout << "myvector stores " << int(myvector.size()) << " numbers.\n";
 }
-void assign()
-{
+
+void assign() {
 	std::cout << "ASSIGN" << std::endl;
 	NAMESPACE::vector<int> first;
 	NAMESPACE::vector<int> second;
@@ -201,9 +204,12 @@ void assign()
 	std::cout << "Size of first: " << int (first.size()) << '\n';
 	std::cout << "Size of second: " << int (second.size()) << '\n';
 	std::cout << "Size of third: " << int (third.size()) << '\n';
+//Size of first: 7
+//Size of second: 5
+//Size of third: 3
 }
-void back()
-{
+
+void back() {
 	std::cout << "BACK" << std::endl;
 	NAMESPACE::vector<int> myvector;
 
@@ -218,10 +224,10 @@ void back()
 	for (unsigned i=0; i<myvector.size() ; i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
+//myvector contains: 10 9 8 7 6 5 4 3 2 1 0
 }
 
-void front()
-{
+void front() {
 	std::cout << "FRONT" << std::endl;
 	NAMESPACE::vector<int> myvector;
 
@@ -233,6 +239,7 @@ void front()
 	myvector.front() -= myvector.back();
 
 	std::cout << "myvector.front() is now " << myvector.front() << '\n';
+//myvector.front() is now 62
 }
 
 void at()
@@ -248,7 +255,7 @@ void at()
 	for (unsigned i=0; i<myvector.size(); i++)
 		std::cout << ' ' << myvector.at(i);
 	std::cout << '\n';
-
+//myvector contains: 0 1 2 3 4 5 6 7 8 9
 }
 
 void operator_hook()
@@ -274,6 +281,8 @@ void operator_hook()
 	for (unsigned i=0; i<sz; i++)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
+//myvector contains: 9 8 7 6 5 4 3 2 1 0
+
 }
 
 void reserve()
@@ -303,6 +312,17 @@ void reserve()
 			std::cout << "capacity changed: " << sz << '\n';
 		}
 	}
+/* making foo grow: */
+/* capacity changed: 1 */
+/* capacity changed: 2 */
+/* capacity changed: 4 */
+/* capacity changed: 8 */
+/* capacity changed: 16 */
+/* capacity changed: 32 */
+/* capacity changed: 64 */
+/* capacity changed: 128 */
+/* making bar grow: */
+/* capacity changed: 100 */
 }
 
 void empty()
@@ -320,19 +340,23 @@ void empty()
 	}
 
 	std::cout << "total: " << sum << '\n';
+//total: 55
 }
 
-void capacity()
-{
+void capacity() {
 	std::cout << "CAPACITY" << std::endl;
 	NAMESPACE::vector<int> myvector;
 
 	// set some content in the vector:
+	std::cout << "max_size: " << (int) myvector.max_size() << '\n';
 	for (int i=0; i<100; i++) myvector.push_back(i);
 
 	std::cout << "size: " << (int) myvector.size() << '\n';
 	std::cout << "capacity: " << (int) myvector.capacity() << '\n';
 	std::cout << "max_size: " << (int) myvector.max_size() << '\n';
+/* size: 100 */
+/* capacity: 128 */
+/* max_size: 1073741823 */
 }
 
 void resize()
@@ -485,39 +509,320 @@ void constructor()
 
 int main2()
 {
-	constructor();
-	operator_equal(); // operator=
+	/* constructor(); */
+	/* operator_equal(); // operator= */
 
-	begin();
-	end();
-	rbegin();
-	rend();
+	/* begin(); */
+	/* end(); */
+	/* rbegin(); */
+	/* rend(); */
 
-	size();
-	max_size();
-	resize();
+	/* size(); */
+	/* max_size(); */
+	/* resize(); */
 	capacity();
-	empty();
-	reserve();
+	/* empty(); */
+	/* reserve(); */
 
-	operator_hook(); // operator[]
-	at();
-	front();
-	back();
+	/* operator_hook(); // operator[] */
+	/* at(); */
+	/* front(); */
+	/* back(); */
 
-	assign();
-	push_back();
-	pop_back();
-	insert();
-	erase();
-	swap();
-	clear();
+	/* assign(); */
+	/* push_back(); */
+	/* pop_back(); */
+	/* insert(); */
+	/* erase(); */
+	/* swap(); */
+	/* clear(); */
 
-	get_allocator();
+	/* get_allocator(); */
 
-	relationnal_ope();
-	swap_non_member();
+	/* relationnal_ope(); */
+	/* swap_non_member(); */
 
 
 	return 0;
 }
+
+using namespace NAMESPACE;
+using namespace std;
+
+/* template <class T> */
+/* void	print(NAMESPACE::vector<T> & lst) */
+/* { */
+/* 	for (typename NAMESPACE::vector<T> ::iterator it = lst.begin(); it != lst.end(); it++) */
+/* 	{ */
+/* 		for (typename NAMESPACE::vector<T>::iterator it2 = it->begin(); it2 != it->end(); it2++) */
+/* 			cout << *it2 << ' '; */
+/* 		cout << '\n'; */
+/* 	} */
+/* } */
+
+template <class T>
+void	print(NAMESPACE::vector<T>& lst)
+{
+	for (typename NAMESPACE::vector<T>::iterator it = lst.begin(); it != lst.end(); it++)
+		cout << *it << ' ';
+	cout << '\n';
+}
+class Awesome {
+
+	public:
+
+		Awesome( void ) : _n( 42 ) { std::cout << "Default constructor" << std::endl; } //should not happen too often or else there is a wrong use of allocator (which calls the copy constructor)
+		Awesome( int n ) : _n( n ) { std::cout << "Int constructor" << std::endl; (void)n; }
+		Awesome( Awesome const &rhs ) : _n( 42 ) { *this = rhs;}
+		virtual ~Awesome(void) {}
+
+		Awesome &operator=( Awesome const & rhs ) { this->_n = rhs._n; return (*this); }
+		bool operator==( Awesome const & rhs ) const { return (this->_n == rhs._n); }
+		bool operator!=( Awesome const & rhs ) const { return (this->_n != rhs._n); }
+		bool operator>( Awesome const & rhs ) const { return (this->_n > rhs._n); }
+		bool operator<( Awesome const & rhs ) const { return (this->_n < rhs._n); }
+		bool operator>=( Awesome const & rhs ) const { return (this->_n >= rhs._n); }
+		bool operator<=( Awesome const & rhs ) const { return (this->_n <= rhs._n); }
+		void operator+=(int rhs){ _n += rhs; }
+		int get( void ) const { return this->_n; }
+
+	private:
+
+		int _n;
+};
+
+std::ostream & operator<<( std::ostream & o, Awesome const & rhs ) { o << rhs.get(); return o; }
+
+template <class T>
+void	print_vector(NAMESPACE::vector<T> &test)
+{
+	typename NAMESPACE::vector<T>::iterator		beg = test.begin();
+	typename NAMESPACE::vector<T>::iterator		end = test.end();
+	std::cout << "size : " << test.size() << ", capacity : " << test.capacity() << std::endl;
+	for (typename NAMESPACE::vector<T>::iterator it = beg; it != end; it++)
+	{
+		std::cout << *it << " ";
+		if (((it - beg) % 10 == 9) && it > beg)
+			std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+template <class T>
+void	push_pop_back_tests(void)
+{
+	std::cout << std::endl << "PUSH BACK & POP BACK TESTS" << std::endl;
+	NAMESPACE::vector<T> test;
+
+	std::cout << "Empty ? " << test.empty() << " / Capacity : " << test.capacity() << " / Size : " << test.size() << std::endl;
+	for (size_t i = 0; i < 51; i++)
+	{
+		test.push_back(i);
+		std::cout << test.size() << ": " << test.capacity() << " - ";
+		if (!(i % 10) && i != 0)
+			std::cout << std::endl;
+	}
+	print_vector<T>(test);
+	test.pop_back();
+	test.pop_back();
+	test.pop_back();
+	test.pop_back();
+	print_vector<T>(test);
+}
+
+template <class T>
+void	resize_tests(void)
+{
+	std::cout << std::endl << "RESIZE TESTS" << std::endl;
+	NAMESPACE::vector<T> test(12, 12);
+
+	test.resize(72);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.resize(100);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.resize(4170);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.resize(171, 12);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.resize(62);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+}
+
+template <class T>
+void	insert_tests()
+{
+	std::cout << std::endl << "INSERT TESTS" << std::endl;
+	NAMESPACE::vector<T> test(1, 1);
+	NAMESPACE::vector<T> test2(5, 5);
+
+	test.insert(test.begin(), 200, 12);
+	print_vector<T>(test);
+	test.insert(test.begin() + 12, 200, 30);
+	print_vector<T>(test);
+	test.insert(test.end(), 12, 50);
+	print_vector<T>(test);
+	test.insert(test.end() - 1, 0, 60);
+	print_vector<T>(test);
+	test.insert(test.end() - 1, 1, 70);
+	print_vector<T>(test);
+	test.insert(test.begin() + 412, test2.begin(), test2.end());
+	print_vector<T>(test);
+	test.insert(test.begin() + 6, test2.begin(), test2.end());
+	print_vector<T>(test);
+	test.insert(test.end(), test2.begin(), test2.end());
+	print_vector<T>(test);
+}
+
+template <class T>
+void	reserve_tests(void)
+{
+	std::cout << std::endl << "RESERVE TESTS" << std::endl;
+	NAMESPACE::vector<T> test(65, 7);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.reserve(12);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.reserve(66);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.reserve(128);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.reserve(1023);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	test.reserve(10252);
+	std::cout << "s: " << test.size() << ", c: " << test.capacity() << std::endl;
+	try
+	{
+		test.reserve(test.max_size() + 1);
+	}
+	catch(std::length_error &le)
+	{
+		std::cout << "length error" << std::endl;
+	}
+	catch(std::exception &e)
+	{
+		std::cout << "error : " << e.what() << std::endl;
+	}
+	print_vector<T>(test);
+}
+
+template <class T>
+void	copy_swap_tests(void)
+{
+	std::cout << std::endl << "COPY && SWAP TESTS" << std::endl;
+	NAMESPACE::vector<T> test;
+	for (size_t i = 0; i < 50; i++) { test.push_back(i); }
+	NAMESPACE::vector<T> test_copy(test);
+	for (size_t i = 0; i < test_copy.size(); i++) { test_copy[i] += 100; }
+	print_vector<T>(test_copy);
+	NAMESPACE::vector<T> test_range(test.begin() + 20, test.begin() + 30);
+	print_vector<T>(test_range);
+	test_copy.swap(test);
+	print_vector<T>(test);
+	print_vector<T>(test_copy);
+	test_copy.swap(test_range);
+	print_vector<T>(test_range);
+	print_vector<T>(test_copy);
+	test.swap(test_copy);
+	print_vector<T>(test);
+	print_vector<T>(test_copy);
+}
+
+template <class T>
+void	reverse_it_tests(void)
+{
+	std::cout << std::endl << "REVERSE IT TESTS" << std::endl;
+	NAMESPACE::vector<T> test;
+	for (size_t i = 0; i < 12; i++) { test.push_back(i); }
+	typename NAMESPACE::vector<T>::reverse_iterator		revbeg = test.rbegin();
+	for (typename NAMESPACE::vector<T>::reverse_iterator it = revbeg; it != test.rend(); it++)
+	{
+		std::cout << *it << " ";
+		if (!((revbeg - it) % 10) && it != revbeg)
+			std::cout << std::endl;
+	}
+	std::cout << *(test.rbegin() + 2) << std::endl;
+	std::cout << *(test.rend() - 8) << std::endl;
+	std::cout << (test.rbegin() == revbeg) << std::endl;
+	revbeg++;
+	std::cout << *revbeg << std::endl;
+	std::cout << (test.rbegin() == test.rend()) << std::endl;
+	std::cout << (test.rbegin() <= test.rbegin()) << std::endl;
+	std::cout << (test.rbegin() < test.rend()) << std::endl;
+	std::cout << (test.rbegin() >= test.rend()) << std::endl;
+	revbeg += 3;
+	std::cout << *revbeg << std::endl;
+	std::cout << std::endl;
+}
+
+template <class T>
+void	erase_clear_tests(void)
+{
+	std::cout << std::endl << "ERASE && CLEAR TESTS" << std::endl;
+	NAMESPACE::vector<T> test(31, 12);
+	test.erase(test.begin(), test.begin() + 5);
+	print_vector<T>(test);
+	test.erase(test.begin() + 12, test.begin() + 16);
+	print_vector<T>(test);
+	test.clear();
+	print_vector<T>(test);
+}
+
+void	max_size_tests(void)
+{
+	std::cout << std::endl << "MAX SIZE TESTS" << std::endl;
+	NAMESPACE::vector<int> test(31, 12);
+	NAMESPACE::vector<std::string> test2;
+	NAMESPACE::vector<long long int> test3;
+	NAMESPACE::vector<Awesome> test4;
+	NAMESPACE::vector<unsigned int> test5(12, 340);
+	std::cout << test.max_size() << std::endl;
+	std::cout << test2.max_size() << std::endl;
+	std::cout << test3.max_size() << std::endl;
+	std::cout << test4.max_size() << std::endl;
+	std::cout << test5.max_size() << std::endl;
+}
+
+void	awesome_tests(void)
+{
+	std::cout << std::endl << "AWESOME TESTS" << std::endl;
+	NAMESPACE::vector<Awesome> test(21, 12);
+	print_vector<Awesome>(test);
+	NAMESPACE::vector<Awesome> test2;
+	print_vector<Awesome>(test2);
+	test2.push_back(12);
+	test2.push_back(8);
+	test2.push_back(16);
+	print_vector<Awesome>(test2);
+	std::cout << "SAME ?" << (test.begin() + 1 == test2.begin() + 1) << std::endl;
+	test.assign(test2.begin(), test2.end());
+	print_vector<Awesome>(test);
+	test = test2;
+	print_vector<Awesome>(test);
+	std::cout << "SAME ?" << (test.begin() + 1 == test2.begin() + 1) << std::endl;
+	test.insert(test.end(), test2.begin(), test2.end());
+	print_vector<Awesome>(test);
+	test.insert(test.begin(), test2.begin(), test2.end());
+	test2 = test;
+	print_vector<Awesome>(test);
+	std::cout << "end awesome test" << std::endl;
+}
+
+int main()
+{
+	push_pop_back_tests<int>();
+	resize_tests<int>();
+	insert_tests<int>();
+	reserve_tests<int>();
+	copy_swap_tests<int>();
+	reverse_it_tests<int>();
+	erase_clear_tests<int>();
+	max_size_tests();
+	awesome_tests();
+	push_pop_back_tests<Awesome>();
+	resize_tests<Awesome>();
+	insert_tests<Awesome>();
+	reserve_tests<Awesome>();
+	copy_swap_tests<Awesome>();
+	reverse_it_tests<Awesome>();
+	erase_clear_tests<Awesome>();
+}
+

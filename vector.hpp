@@ -10,6 +10,8 @@
 #include "iterator_traits.hpp"
 #include "enable_if.hpp"
 
+#define DEBUG // std::cout << REDC << __FILE__ << " " << CYN << __FUNCTION__  << " " << __LINE__ << NC << std::endl;
+
 namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un identificateur
 	template<class T, class Alloc = std::allocator<T> > //generic template vector
 
@@ -62,19 +64,19 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				//constructor with range
 				template <class InputIterator>
-				vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, 
-						const allocator_type &alloc = allocator_type()) :
-					_array(NULL), _capacity(0), _size(0), _allocator(alloc) {
-						size_type n = std::distance(first, last);
-						_array = _allocator.allocate(n); //allocate uninitialized storage
-						for (size_type i = 0; i < n; i++) {
-							_allocator.construct(_array + i, *first); //construct an object in allocated object
-							first++;
+					vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, 
+							const allocator_type &alloc = allocator_type()) :
+						_array(NULL), _capacity(0), _size(0), _allocator(alloc) {
+							size_type n = std::distance(first, last);
+							_array = _allocator.allocate(n); //allocate uninitialized storage
+							for (size_type i = 0; i < n; i++) {
+								_allocator.construct(_array + i, *first); //construct an object in allocated object
+								first++;
+							}
+							_capacity = n;
+							_size = n;
+							return ;
 						}
-						_capacity = n;
-						_size = n;
-						return ;
-				}
 
 				//copy constructor
 				vector(vector const &src) :
@@ -256,8 +258,12 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					difference_type tmp = pos.getPtr() - _array;
 					if (count <= 0) 
 						return ;
-					if (_size + count > _capacity)
-						reserve(_size + count);
+					if (_size + count > _capacity) {
+						if ( _size + count < _capacity * 2)
+							reserve(_capacity * 2);
+						else
+							reserve(_size + count);
+					}
 					pointer it = _array + _size + count - 1;
 					pointer ite = _array + tmp + count - 1;
 					while (it != ite) {
@@ -280,8 +286,12 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 						size_type n = std::distance(first, last);
 						if (n == 0)
 							return ;
-						if (_size + n > _capacity)
-							reserve(_size + n);
+						if (_size + n > _capacity) {
+							if ( _size + n < _capacity * 2)
+								reserve(_capacity * 2);
+							else
+								reserve(_size + n);
+						}
 						pointer it = _array + _size + n - 1;
 						pointer ite = _array + tmp + n - 1;
 						while (it != ite) {
@@ -310,21 +320,28 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 				}
 
 				void	pop_back(void) {
-					_allocator.destroy(_array + _size); // on construct a la fin de l array
 					_size--;
+					_allocator.destroy(_array + _size); // on construct a la fin de l array
 				}
 
 				void	resize(size_type count, value_type val = value_type()) {
-					if (count > _capacity)
+					if (count > _capacity && count < _capacity * 2)
+						reserve(_capacity * 2);
+					else 
 						reserve(count);
-					for (size_type n = _size; n < count; n++) {
-						_allocator.construct(_array + n, val);
+					if (count > _size) {
+						while (_size < count) {
+							_allocator.construct(_array + _size, val);
+							_size++;
+						}
 					}
-					for (size_type n = count; n < _size; n++) {
-						_allocator.destroy(_array + n);
+					else {
+						for (size_type n = count; n < _size; n++) {
+							_allocator.destroy(_array + n);
 
+						}
+						_size = count;
 					}
-					_size = count;
 				}
 
 				iterator	erase(iterator pos) {
@@ -391,14 +408,14 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 	template <class T, class Alloc>
 		bool operator<(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) { 
 			return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
-			}
+		}
 	template <class T, class Alloc>
 		bool operator<=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs < rhs || lhs == rhs;}
 	template <class T, class Alloc>
 		bool operator>(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return rhs < lhs;}
 	template <class T, class Alloc>
 		bool operator>=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs > rhs || lhs == rhs;}
-	
+
 	template <class T, class Alloc>
 		void	swap(vector<T, Alloc> const &lhs, vector<T, Alloc>const &rhs) {lhs.swap(rhs);}
 }

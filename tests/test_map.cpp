@@ -18,7 +18,7 @@
 #define PINK "\e[0;35m"
 #define CYN "\e[0;36m"
 #define REDB "\e[41m"
-////////////////////////////////////////////////////////////////////////////////
+	
 	template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
 {
@@ -49,7 +49,7 @@ struct ft_more {
 		return (first > second);
 	}
 };
-////////////////////////////////////////////////////////////////////////////////
+
 #include <string>
 /*
 void constructor()
@@ -985,7 +985,8 @@ void toto() {
 	std::cout << "map 2" << std::endl;
 	print(map2);
 }
-int main()
+
+int main3()
 {
 	toto();
 	testOfHell();
@@ -1022,6 +1023,7 @@ int main()
 //	relationnal_ope();
 //	swap_non_member();
 
-//	 iterator_validity(); 
+//	 iterator_validity();
+	return 0; 
 
 }

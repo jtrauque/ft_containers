@@ -28,21 +28,27 @@ namespace	ft {
 				void	pop(void) { _container.pop_back(); }
 
 				//operator non membre
-				template	<class U, class Cont>
-				friend bool operator==(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container == rhs._container; }
-				template	<class U, class Cont>
-				friend bool operator!=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container != rhs._container; }
-				template	<class U, class Cont>
-				friend bool operator<(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container < rhs._container; }
-				template	<class U, class Cont>
-				friend bool operator<=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container <= rhs._container; }
-				template	<class U, class Cont>
-				friend bool operator>(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container > rhs._container; }
-				template	<class U, class Cont>
-				friend bool operator>=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container >= rhs._container; }
+				friend bool operator==(stack<T,Container> const &lhs, stack<T,Container> const &rhs) { return lhs._container == rhs._container; }
+				friend bool operator!=(stack<T,Container> const &lhs, stack<T,Container>const &rhs) { return lhs._container != rhs._container; }
+				friend bool operator<(stack<T,Container> const &lhs, stack<T,Container>const &rhs) { return lhs._container < rhs._container; }
+				friend bool operator<=(stack<T,Container> const &lhs, stack<T,Container> const &rhs) { return lhs._container <= rhs._container; }
+				friend bool operator>(stack<T,Container> const &lhs, stack<T,Container> const &rhs) { return lhs._container > rhs._container; }
+				friend bool operator>=(stack<T,Container> const &lhs, stack<T,Container>const &rhs) { return lhs._container >= rhs._container; }
 				//Compares the contents of the underlying containers of two container adaptors. The comparison is done by applying the corresponding operator to the underlying containers.
 				//https://en.cppreference.com/w/cpp/container/stack/operator_cmp
 		};
+				template	<class U, class Cont>
+				bool operator==(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container == rhs._container; }
+				template	<class U, class Cont>
+				bool operator!=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container != rhs._container; }
+				template	<class U, class Cont>
+				bool operator<(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container < rhs._container; }
+				template	<class U, class Cont>
+				bool operator<=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container <= rhs._container; }
+				template	<class U, class Cont>
+				bool operator>(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container > rhs._container; }
+				template	<class U, class Cont>
+				bool operator>=(stack<U,Cont> const &lhs, stack<U,Cont> const &rhs) { return lhs._container >= rhs._container; }
 }
 
 #endif
