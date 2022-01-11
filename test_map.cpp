@@ -1,5 +1,6 @@
 # include <map>
 # include <iostream>
+# include <iomanip>
 # include <cstdlib>
 # include <list>
 #include "map.hpp"
@@ -7,7 +8,16 @@
 #ifndef NAMESPACE
 # define NAMESPACE ft
 #endif
-
+#define RED	1
+#define BLACK 0
+#define NC "\e[0m"
+#define REDC "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YELLOW "\e[0;33m"
+#define BLUE "\e[0;34m"
+#define PINK "\e[0;35m"
+#define CYN "\e[0;36m"
+#define REDB "\e[41m"
 ////////////////////////////////////////////////////////////////////////////////
 	template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
@@ -373,12 +383,14 @@ b => 300
  	for (it=mymap.begin(); it!=mymap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n'; 
  } 
+*/
 template <class Key, class T>
 void	print(NAMESPACE::map<Key, T>& lst)
 {
 	for (typename NAMESPACE::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
 		std::cout << it->first << " => " << it->second << '\n';
 }
+
  void swap() 
  { 
  	NAMESPACE::map<char,int> foo,bar; 
@@ -408,13 +420,13 @@ void	print(NAMESPACE::map<Key, T>& lst)
  	std::cout << "bar contains:\n"; 
  	for (NAMESPACE::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n';
-	foo contains:
-a => 11
-b => 22
-c => 33
-bar contains:
-x => 100
-y => 200
+	/* foo contains: */
+/* a => 11 */
+/* b => 22 */
+/* c => 33 */
+/* bar contains: */
+/* x => 100 */
+/* y => 200 */
 	NAMESPACE::map<char, int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
 	NAMESPACE::map<char, int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
 
@@ -504,7 +516,7 @@ y => 200
 	std::cout << tmp3->first << " => " << tmp3->second << '\n';
 
  } 
-*/
+/*
  void clear() 
  { 
  	NAMESPACE::map<std::string,int> mymap; 
@@ -523,16 +535,16 @@ y => 200
  	std::cout << "mymap contains:\n"; 
  	for (NAMESPACE::map<std::string,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it) 
  		std::cout << it->first << " => " << it->second << '\n';
-	/* mymap contains: */
-/* x => 100 */
-/* y => 200 */
-/* z => 300 */
-/* mymap contains: */
-/* a => 1101 */
-/* b => 2202 */
+	mymap contains:
+x => 100
+y => 200
+z => 300
+mymap contains:
+a => 1101
+b => 2202
  } 
 
-/*
+
  void key_comp() 
  { 
  	NAMESPACE::map<char,int> mymap; 
@@ -750,7 +762,7 @@ std::map<char,int> foo,bar;
 //foo is greater than bar
 //foo is greater than or equal to bar
 }
-
+*/
 void swap_non_member()
 {
 	NAMESPACE::map<char,int> foo,bar;
@@ -780,10 +792,203 @@ void swap_non_member()
 //y => 200
 }
 
-*/
+void	testOfHell() {
+	  std::cout << YELLOW << "# test_map" << NC << std::endl;
+std::cout << YELLOW <<  "/* ********************************************************************** */" << std::endl;
+std::cout << "/*                          "<< YELLOW << "BASIC TESTS" << YELLOW << "                                   */" << std::endl;
+std::cout << "/* ********************************************************************** */" << NC << std::endl;
+std::cout << std::endl;
 
+
+NAMESPACE::map<std::string, int> mymap;
+	print(mymap);
+
+
+/* std::cout << "mymap<" << PINK << "string" << NC << ", " << PINK << "int" << NC <<"> mymap;" << std::endl; */
+
+/* std::cout << std::endl; */
+/* std::cout << "mymap.max_size(): " << (mymap.max_size() > 10000) << std::endl; */
+/* 	print(mymap); */
+/* std::cout << std::endl; */
+
+
+/* 	print(mymap); */
+/* 	mymap.insert(NAMESPACE::pair<std::string, int>("ft", 42)); */
+
+/* 	print(mymap); */
+/* 	mymap.insert(NAMESPACE::pair<std::string, int>("one", 1)); */
+
+
+/* std::cout << YELLOW << "# testing upper/lower_bound" << NC << std::endl; */
+/* 	NAMESPACE::map<std::string, int>::iterator mit; */
+/* 	NAMESPACE::map<std::string, int>::iterator it; */
+/* 	print(mymap); */
+/* 	it = mymap.lower_bound("aaa"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.lower_bound(\"aaa\"): " << it->first << ":" << it->second << std::endl; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.lower_bound("one"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.lower_bound(\"one\"): " << it->first << ":" << it->second << std::endl; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.lower_bound("oae"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.lower_bound(\"oae\"): " << it->first << ":" << it->second << std::endl; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.lower_bound("ft"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.lower_bound(\"ft\"): " << it->first << ":" << it->second << std::endl; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.lower_bound("zzz"); */
+/* 	print(mymap); */
+	
+/* 	if (it == mymap.end()) */
+/* 	std::cout << std::setw(40) << "mymap.lower_bound(\"zzz\"): mymap.end()" << std::endl; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.upper_bound("aaa"); */
+	
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.upper_bound(\"aaa\"): " << it->first << ":" << it->second << std::endl;; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.upper_bound("oae"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.upper_bound(\"oae\"): " << it->first << ":" << it->second << std::endl;; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.upper_bound("one"); */
+	
+/* 	if (it == mymap.end()) */
+/* 	std::cout << std::setw(40) << "mymap.upper_bound(\"one\"): mymap.end()" << std::endl; */
+/* 	print(mymap); */
+/* std::cout << std::endl; */
+/* 	it = mymap.upper_bound("ft"); */
+/* 	print(mymap); */
+/* std::cout << std::setw(40) << "mymap.upper_bound(\"ft\"): " << it->first << ":" << it->second << std::endl;; */
+/* std::cout << std::endl; */
+/* 	print(mymap); */
+/* 	it = mymap.upper_bound("zzz"); */
+	
+/* 	if (it == mymap.end()) */
+/* 	std::cout << std::setw(40) << "mymap.upper_bound(\"zzz\"): mymap.end()" << std::endl; */
+/* 	print(mymap); */
+/* std::cout << std::endl; */
+
+/* 	print(mymap); */
+/* 	mymap.erase("undefined"); */
+/* 	print(mymap); */
+/* 	mymap.erase("ft"); */
+/* 	print(mymap); */
+/* std::cout << YELLOW << "# double clear" << NC << std::endl; */
+/* 	mymap.clear(); */
+/* 	print(mymap); */
+/* 	mymap.clear(); */
+/* 	print(mymap); */
+/* 	mymap["lol"]; */
+/* 	print(mymap); */
+	mymap.insert(NAMESPACE::pair<std::string, int>("xD", 123));
+/* 	print(mymap); */
+	mymap.insert(mymap.end(), NAMESPACE::pair<std::string, int>("uch", 442));
+/* 	print(mymap); */
+/* 	mymap.insert(mymap.begin(), NAMESPACE::pair<std::string, int>("uch", 22)); */
+/* 	print(mymap); */
+/* 	mymap.insert(mymap.end(), NAMESPACE::pair<std::string, int>("uch", 23)); */
+/* 	print(mymap); */
+/* 	mymap.insert(NAMESPACE::pair<std::string, int>("uch", 23)); */
+/* 	print(mymap); */
+	mymap["lol"] = 8;
+
+
+	print(mymap);
+	NAMESPACE::map<std::string, int> map2;
+
+std::cout << REDC << __LINE__ << NC << std::endl;
+	print(mymap);
+std::cout << REDC << __LINE__ << NC << std::endl;
+	print(map2);
+std::cout << "mymap<" << PINK << "string" << NC << ", " << PINK << "int" << NC <<"> mymap2;" << std::endl;
+	print(mymap);
+std::cout << "empty line\n";
+	print(map2);
+std::cout << "empty line2\n";
+
+	swap(mymap, map2);
+std::cout << "empty line3\n";
+	print(mymap);
+std::cout << "empty line4\n";
+	print(map2);
+std::cout << "empty line5\n";
+std::cout << REDC << __LINE__ << NC << std::endl;
+	mymap = map2;
+std::cout << __LINE__ << std::endl;
+	print(mymap);
+std::cout << __LINE__ << std::endl;
+	print(map2);
+std::cout << __LINE__ << std::endl;
+
+std::cout << std::setw(40) << "map == map2: " << (mymap == map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+
+	mymap.clear();
+	print(mymap);
+	print(map2);
+
+std::cout << REDC << __LINE__ << NC << std::endl;
+	mymap["satan"] = 666;
+std::cout << REDC << __LINE__ << NC << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::setw(40) << "mymap == map2: " << (mymap == map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+std::cout << std::setw(40) << "mymap <= map2: " << (mymap <= map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+std::cout << std::setw(40) << "mymap >= map2: " << (mymap >= map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+std::cout << std::setw(40) << "mymap > map2: " << (mymap > map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+std::cout << std::setw(40) << "mymap < map2: " << (mymap > map2) << std::endl;
+	print(mymap);
+	print(map2);
+std::cout << std::endl;
+}
+
+void toto() {
+	NAMESPACE::map<std::string, int> map1;
+	map1["a"] = 45;
+	map1["b"] = 46;
+	map1["c"] = 47;
+	map1["d"] = 48;
+	NAMESPACE::map<std::string, int> map2;
+	std::cout << "map 1" << std::endl;
+	print(map1);
+	std::cout << "map 2" << std::endl;
+	print(map2);
+	std::cout << "------" << std::endl;
+	map2 = map1;
+	std::cout << "map 1" << std::endl;
+	print(map1);
+	std::cout << "map 2" << std::endl;
+	print(map2);
+}
 int main()
 {
+	toto();
+	testOfHell();
 //	constructor();
    //     operator_equal(); // operator = 
 
@@ -800,7 +1005,7 @@ int main()
 //
 //	 insert(); 
 //	swap(); 
-	 clear(); 
+//	 clear(); 
 
 //	key_comp(); 
 //	value_comp();
