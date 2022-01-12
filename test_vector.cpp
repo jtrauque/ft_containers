@@ -14,7 +14,7 @@ void swap_non_member() {
 	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
 	NAMESPACE::vector<int> bar (5,200);   // five ints with a value of 200
 
-	NAMESAPCE::swap(bar, foo);
+	NAMESPACE::swap(bar, foo);
 
 	std::cout << "foo contains:";
 	for (NAMESPACE::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
