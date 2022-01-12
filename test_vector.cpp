@@ -14,7 +14,7 @@ void swap_non_member() {
 	NAMESPACE::vector<int> foo (3,100);   // three ints with a value of 100
 	NAMESPACE::vector<int> bar (5,200);   // five ints with a value of 200
 
-	swap(bar, foo);
+	NAMESAPCE::swap(bar, foo);
 
 	std::cout << "foo contains:";
 	for (NAMESPACE::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
@@ -1141,7 +1141,7 @@ int main()
 
 	//NON MEMBER Functions
 	cout << "\nNON MEMBER functions\n";
-	swap(BOB, MIKE);
+	NAMESPACE::swap(BOB, MIKE);
 	cout << "Size of JOHN " << JOHN.size() << std::endl;
 	if (JOHN.capacity() >= JOHN.size())
 		cout << "Capacity of JOHN is sufficient\n";
