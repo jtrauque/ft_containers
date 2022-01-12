@@ -441,7 +441,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 		bool operator>=(vector<T, Alloc> const &lhs, vector<T, Alloc> const &rhs) {return lhs > rhs || lhs == rhs;}
 
 	template <class T, class Alloc>
-		void	swap(vector<T, Alloc> const &lhs, vector<T, Alloc>const &rhs) {lhs.swap(rhs);}
+		void	swap(vector<T, Alloc>  &lhs, vector<T, Alloc> &rhs) { lhs.swap(rhs);}
 }
 
 #endif
