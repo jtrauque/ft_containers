@@ -75,8 +75,8 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				//constructor with range
 				template <class InputIterator>
-					vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, 
-							const allocator_type &alloc = allocator_type()) :
+					vector(InputIterator first, InputIterator last, 
+					const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type=true) :
 						_array(NULL), _capacity(0), _size(0), _allocator(alloc) {
 							size_type n = std::distance(first, last);
 							_array = _allocator.allocate(n); //allocate uninitialized storage
@@ -91,7 +91,7 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				//copy constructor
 				vector(vector const &src) :
-					_array(NULL), _capacity(src._capacity), _size(src._size), _allocator(src._allocator) {
+					_array(NULL), _capacity(src._size), _size(src._size), _allocator(src._allocator) {
 						_array = _allocator.allocate(_capacity); //allocate uninitialized storage
 						for (size_type i = 0; i < _size; i++) {
 							_allocator.construct(_array + i, src._array[i]); //construct an object in allocated object
@@ -105,16 +105,18 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 
 				vector	&operator=(vector const &rhs) {
 					/* std::cout << __LINE__ << std::endl; */
-					this->clear();
-					if (_capacity < rhs._size)
-						reserve(rhs._size);
-					_size = rhs._size;
-					if (_array)
-						_allocator.deallocate(_array, _size);
-					_capacity = rhs._capacity;
-					_array = _allocator.allocate(_capacity); //allocate uninitialized storage
-					for (size_type i = 0; i < _capacity; i++) {
-						_allocator.construct(_array + i, rhs._array[i]); //construct an object in allocated object
+					if (this != &rhs) {
+						this->clear();
+						if (_capacity < rhs._size)
+							reserve(rhs._size);
+						_size = rhs._size;
+						if (_array)
+							_allocator.deallocate(_array, _size);
+						_capacity = rhs._capacity;
+						_array = _allocator.allocate(_capacity); //allocate uninitialized storage
+						for (size_type i = 0; i < _capacity; i++) {
+							_allocator.construct(_array + i, rhs._array[i]); //construct an object in allocated object
+						}
 					}
 					return *this;
 				}
@@ -124,7 +126,10 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 							typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type =true) {
 						size_type n = std::distance(first, last);
 						reserve(n);
-						_capacity = n;
+						resize(n);
+						if (n > _size) {
+							_capacity = n;
+						}
 						_size = n;
 						for (size_type i = 0; i < n && first != last; i++, first++) {
 							_allocator.construct(_array + i, *first);
@@ -279,11 +284,11 @@ namespace	ft {  //ft:: est comme le std:: - c est la reference de librairie - un
 					/* std::cout << "insert capacity :" << _capacity << std::endl; */
 					if (_size + count > _capacity) {
 						if ( _size + count < _capacity * 2) {
-					/* DEBUG; */
+							/* DEBUG; */
 							reserve(_size * 2);
 						}
 						else {
-					/* DEBUG; */
+							/* DEBUG; */
 							reserve(_size + count);
 						}
 					}
