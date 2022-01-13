@@ -2,7 +2,6 @@
 #define TREE_HPP
 #include <stdio.h>
 /* #include "tree/tree.h" */
-
 /*
 typedef struct s_tree_display {
 	int		block_width;
@@ -156,8 +155,8 @@ int	buffer_connect_leaf(t_buf *b, int is_l, int len, int *cumul)
 	return (buffer_append(b, E_JUNCTION_HIG_R)
 		|| buffer_append_mul(b, E_JUNCTION, len - 2)
 		|| buffer_append(b, E_JUNCTION_LOW_R));
-}
-*/
+} */
+
 namespace	ft {
 	template<typename T>
 		class	node {
@@ -202,14 +201,13 @@ namespace	ft {
 					return getSibling(P);
 				}
 
+/*
 				void printTree() {
 					_print_tree(this, 1, 1);
 				}
 
 
 
-
-/*
 
 
 
@@ -259,13 +257,14 @@ static int	print_label(node *tree, t_buf *b, int *printed)
 	ret = buffer_append_mul(b, E_PAD, tree->dsp.label_delta)
 		|| buffer_append(b, E_PREFIX)
 		|| buffer_append_raw(b, tree->color == 1 ? "\033[31m" : "\033[34m", sizeof("\033[31m") - 1)
-		|| buffer_append_raw(b, (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),//"TOTO",
+		//|| buffer_append_raw(b, (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),//"TOTO",
+		|| buffer_append_raw(b, (tree->value.first + ":" + tree->value.second)  .c_str(),//"TOTO",
 			tree->dsp.label_width - WORD_ADDED_WIDTH - tree->dsp.trunc)
 		;
-	dprintf(2, " [%s] %d \n", (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),
-			tree->dsp.label_width - WORD_ADDED_WIDTH - tree->dsp.trunc);
-	dprintf(2, "second: %d\n", tree->value.second);
-	dprintf(2, "second str: %s\n", std::to_string(tree->value.second).c_str());
+	//dprintf(2, " [%s] %d \n", (tree->value.first + ":" + std::to_string(tree->value.second))  .c_str(),
+//			tree->dsp.label_width - WORD_ADDED_WIDTH - tree->dsp.trunc);
+//	dprintf(2, "second: %d\n", tree->value.second);
+//	dprintf(2, "second str: %s\n", std::to_string(tree->value.second).c_str());
 	if (!ret && tree->dsp.trunc)
 		ret = buffer_append(b, E_TRUNC);
 	if (!ret)
@@ -359,7 +358,6 @@ int	_print_tree(node *tree, int pretty, int fd)
 }
 
 
-
 */
 
 
@@ -443,7 +441,8 @@ static void	init_calc(node *tree, t_tree_display *me, t_tree_display *l,
 	me->depth = 1;
 		me->label_width = tree->value.first.size() + //strlen(value.size()"TOTO");
 	
-	std::to_string(tree->value.second).size() + 1;
+//	std::to_string(tree->value.second).size() + 1;
+	tree->value.second.size() + 1;
 	if (me->label_width > MAX_WORD_WIDTH)
 		me->trunc = 1;
 	me->label_width = min(me->label_width, MAX_WORD_WIDTH) + WORD_ADDED_WIDTH;
@@ -472,7 +471,6 @@ int	_calc_depth(node *tree, int depth, t_tree_display *me)
 
 
 */
-
 
 
 

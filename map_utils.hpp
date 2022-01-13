@@ -9,7 +9,8 @@ namespace	ft {
 			typedef	T	first_argument_type;
 			typedef	T	second_argument_type;
 
-			bool	operator() (const T& lhs, const T& rhs) const { return lhs < rhs; }
+			bool	operator() (const T& lhs, const T& rhs) const { 
+				return lhs < rhs; }
 		};
 
 	//https://en.cppreference.com/w/cpp/utility/pair
