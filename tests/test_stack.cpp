@@ -1,93 +1,97 @@
 #include "stack.hpp"
+#include "vector.hpp"
 #include <stack>
+#include <vector>
 #include <iostream>
 #include <string>
 
-#ifndef TESTED_NAMESPACE
-# define TESTED_NAMESPACE ft
+#ifndef NAMESPACE
+# define NAMESPACE ft
 #endif
 
-template <typename T_STACK>
-void	printSize(T_STACK &stck, bool print_content = 1)
-{
-	std::cout << "size: " << stck.size() << std::endl;
-	if (print_content)
-	{
-		std::cout << std::endl << "Content was:" << std::endl;
-		while (stck.size() != 0) {
-			std::cout << "- " << stck.top() << std::endl;
-			stck.pop();
-		}
+#define NC "\e[0m"
+#define REDC "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YELLOW "\e[0;33m"
+#define BLUE "\e[0;34m"
+#define PINK "\e[0;35m"
+
+static void constructor() {
+	std::cout << BLUE << __func__ << NC << std::endl;
+	std::vector<int> myvector (2,200);        // vector with 2 elements
+
+	NAMESPACE::stack<int> first;                    // empty stack
+	NAMESPACE::stack<int,std::vector<int> > second (myvector);
+
+	NAMESPACE::stack<int,std::vector<int> > third;  // empty stack using vector
+
+	std::cout << "size of first: " << first.size() << '\n';
+	std::cout << "size of second: " << second.size() << '\n';
+	std::cout << "size of third: " << third.size() << '\n';
+}
+
+static void	empty() {
+	std::cout << BLUE << __func__ << NC << std::endl;
+	NAMESPACE::stack<int> mystack;
+	int sum (0);
+
+	for (int i=1;i<=10;i++) mystack.push(i);
+
+	while (!mystack.empty()) {
+		sum += mystack.top();
+		mystack.pop();
 	}
-	std::cout << "###############################################" << std::endl;
+
+	std::cout << "total: " << sum << '\n';
+	//total: 55
 }
 
-template <typename T>
-class foo {
-	public:
-		typedef T	value_type;
+static void	push_and_pop() {
+	std::cout << BLUE << __func__ << NC << std::endl;
+	NAMESPACE::stack<int> mystack;
 
-		foo(void) : value(), _verbose(false) { };
-		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
-		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
-		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-		foo &operator=(value_type src) { this->value = src; return *this; };
-		foo &operator=(foo const &src) {
-			if (this->_verbose || src._verbose)
-				std::cout << "foo::operator=(foo) CALLED" << std::endl;
-			this->value = src.value;
-			return *this;
-		};
-		value_type	getValue(void) const { return this->value; };
-		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
+	for (int i=0; i<5; ++i) mystack.push(i);
 
-		operator value_type(void) const {
-			return value_type(this->value);
-		}
-	private:
-		value_type	value;
-		bool		_verbose;
-};
-
-template <typename T>
-std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
-	o << bar.getValue();
-	return o;
+	std::cout << "Popping out elements...";
+	while (!mystack.empty()) {
+		std::cout << ' ' << mystack.top();
+		mystack.pop();
+	}
+	std::cout << '\n';
+	//Popping out elements... 4 3 2 1 0
 }
 
-#define TESTED_TYPE foo<int>
-#define t_stack_ TESTED_NAMESPACE::stack<TESTED_TYPE>
-typedef t_stack_::container_type container_type;
+static void	size() {
+	std::cout << BLUE << __func__ << NC << std::endl;
+	NAMESPACE::stack<int> myints;
+	std::cout << "0. size: " << myints.size() << '\n';
 
-int		main(void)
-{
-	container_type	ctnr;
+	for (int i=0; i<5; i++) myints.push(i);
+	std::cout << "1. size: " << myints.size() << '\n';
 
-	ctnr.push_back(21);
-	ctnr.push_back(42);
-	ctnr.push_back(1337);
-	ctnr.push_back(19);
-	ctnr.push_back(0);
-	ctnr.push_back(183792);
+	myints.pop();
+	std::cout << "2. size: " << myints.size() << '\n';
+	//0. size: 0
+	//1. size: 5
+	//2. size: 4
+}
 
-	t_stack_		stck(ctnr);
+static void	top() {
+	std::cout << BLUE << __func__ << NC << std::endl;
+	NAMESPACE::stack<int> mystack;
 
-	std::cout << "empty: " << stck.empty() << std::endl;
-	std::cout << "size: " << stck.size() << std::endl;
+	mystack.push(10);
+	mystack.push(20);
 
-	stck.push(1);
-	stck.push(2);
-	stck.push(3);
-	stck.push(4);
-	stck.push(5);
-	stck.push(6);
+	mystack.top() -= 5;
 
-	std::cout << "Added some elements" << std::endl;
+	std::cout << "mystack.top() is now " << mystack.top() << '\n';
+}
 
-	std::cout << "empty: " << stck.empty() << std::endl;
-	printSize(stck);
-
-	return (0);
+void		test_stack(void) {
+	constructor();
+	empty();
+	push_and_pop();
+	size();
+	top();
 }
