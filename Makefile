@@ -3,8 +3,8 @@ NAME			=	launch
 SRCS			=	main.cpp									\
 					tests/test_vector.cpp					\
 					tests/test_stack.cpp					\
-					tests/test_map.cpp					
-				#	tests/test_set.c					
+					tests/test_map.cpp					 \
+					tests/test_set.cpp					
 SRC_DIR			=  
 
 OBJ_DIR			= objs/
@@ -18,7 +18,7 @@ DEP				= ${OBJS:.o=.d}
 
 CC				= clang++
 
-CFLAGS			= -Imap -Ivector -Istack -Iiterators -Itests -fsanitize=address -g3 -Wall -Wextra -Werror -MMD
+CFLAGS			= -Imap -Ivector -Istack -Iiterators -Iset -Itests -fsanitize=address -g3 -Wall -Wextra -Werror -MMD
 
 RM				= rm -rf
 
@@ -26,7 +26,6 @@ MAKE			+= --no-print-directory
 
 all:
 				@${MAKE} -j ${NAME}
-
 
 $(NAME):		${OBJS}
 				@${CC} -o $@ ${OBJS} ${CFLAGS}
@@ -48,6 +47,7 @@ clean:
 fclean:			clean
 				@echo "Cleaning the rest..."
 				@${RM} ${NAME}
+				@${RM} ft_output std_output launch_std
 				@printf "\033[32mFClean done !\033[0m\n"
 
 re:				fclean 
