@@ -412,36 +412,6 @@ namespace	ft {
 							tmp->right->parent = next;
 						}
 						next->parent = tmp->parent;
-
-						//
-						//
-						/* node 	*x = next->right; */
-						/* node	*xParent = NULL; */
-						/* if (next->parent != tmp) */
-						/* 	xParent = next->parent; */
-						/* if (xParent && xParent->left == next) { */
-						/* 	xParent->left = x; */
-						/* } else { */
-						/* 	xParent->right = x; */
-						/* } */
-						/* if (x) { */
-						/* 	x->parent = xParent; */
-						/* } */
-						/* next->parent = next->left = next->right = NULL; */
-
-						/* /1* DEBUG; *1/ */
-						/* printTree(); */
-						/* /1* DEBUG; *1/ */
-						/* next->left = tmp->left; */
-						/* if (next->left) { */
-						/* 	next->left->parent = next; */
-						/* } */
-						/* next->right = tmp->right; */
-						/* if (next->right) { */
-						/* 	next->right->parent = next; */
-						/* } */
-						/* next->parent = tmp->parent; */
-						/* printTree(); */
 						deleteFix(tmp, next, x, xParent);
 					}
 					_alloc_node.destroy(tmp);
@@ -488,11 +458,6 @@ namespace	ft {
 						//if tmp has both children the 
 						node	*next = findNextNode(tmp);
 						/* std::cout << "NEXT IS: " << next->value.first << std::endl; */
-
-
-
-
-
 						node 	*x = next->right;
 						node	*xParent = next->parent;
 						if (xParent->left == next) {
@@ -505,9 +470,6 @@ namespace	ft {
 						}
 						next->parent = next->left = next->right = NULL;
 
-						/* DEBUG; */
-						/* printTree(); */
-						/* DEBUG; */
 						next->left = tmp->left;
 						if (next->left) {
 							next->left->parent = next;
@@ -518,64 +480,6 @@ namespace	ft {
 						}
 						next->parent = tmp->parent;
 						*childOf = next;
-						/* if (next->parent) { */
-						/* } */
-
-
-
-
-
-
-
-
-
-
-						/* std::cout << __LINE__ << " " << next->value.first << std::endl; */
-						/* *childOf = next; */
-						/* printTree(); */
-						/* node	*childR = next->right; */
-						/* node	*parent = next->parent; */
-						/* /1* if (parent) { *1/ */
-						/* /1* 	parent->left = childR; *1/ */
-						/* /1* } *1/ */
-						/* std::cout << __LINE__ << " " << next->right << std::endl; */
-						/* std::cout << __LINE__ << " " << parent->value.first << std::endl; */
-						/* //next cannot have left children as it has to be the most lefty to be the closest to tmp */
-						/* next->left = tmp->left; */
-						/* if (next->left) { */
-						/* 	//if tmp->left != NULL tmp->left take tmp */
-						/* 	next->left->parent = next; // */
-						/* } */
-						/* DEBUG; */
-						/* printTree(); */
-						/* DEBUG; */
-						/* if (next->right && next->parent != tmp) { */
-						/* 	DEBUG; */
-						/* 	next->right->parent = next->parent; */
-						/* 	next->parent->left = next->right; */
-						/* } */
-						/* else if (next->parent) { */
-						/* 	if (next->parent->left == next) { */
-						/* 		next->parent->left = NULL; */
-						/* 	} else { */
-						/* 		next->parent->right = NULL; */
-						/* 	} */
-						/* } */
-						/* DEBUG; */
-						/* if (tmp->right != next) { */
-						/* 	next->right = tmp->right; */
-						/* DEBUG; */
-						/* 	tmp->right->parent = next; */
-						/* } */
-						/* DEBUG; */
-						/* printTree(); */
-						/* next->parent = tmp->parent; */
-						/* DEBUG; */
-						/* checktree(_root, NULL, _root); */
-						/* DEBUG; */
-						/* std::cout << "BEFORE RECOLOR" << std::endl; */
-						/* printTree(); */
-						/* DEBUG; */
 						if (xParent == tmp)
 							xParent = next;
 						deleteFix(tmp, next, x, xParent);
@@ -717,144 +621,9 @@ namespace	ft {
 					}
 					/* checktree(_root, NULL, _root); */
 					return;
-					/* node * w; */
-					/* if ((!x || x->color == BLACK) && w && w->color == RED) { // case 1 */
-					/* 	std::cout << "CASE 1" << std::endl; */
-					/* 	w->color = BLACK; */
-					/* 	x.colorParent(RED); */
-					/* 	if (w == w->parent->right) { */
-					/* 		leftRotate(w->parent); */
-					/* 		w = w->parent->right; */
-					/* 	} */
-					/* 	else { */
-					/* 		rightRotate(w->parent); */
-					/* 		w = w->parent->left; */
-					/* 	} */
-					/* } */
-					/* if ((!x || x->color == BLACK) && (w && w->color == BLACK */
-					/* 			&& (!w->left || w->left->color == BLACK) */
-					/* 			&& (!w->right || w->right->color == BLACK))) { // case 2 */
-					/* 	std::cout << "CASE 2" << std::endl; */
-					/* 	if (w) */
-					/* 		w->color = RED; */
-					/* 	if (x) */
-					/* 		x = x->parent; */
-					/* 	if (x && x->color == RED) */
-					/* 		x->color = BLACK; */
-					/* 	else if ((x && x->color == BLACK) || !x) { */
-					/* 		fixCases(x, xP, w); */
-					/* 	} */
-					/* 	else if ((!x || x->color == BLACK) && !x->parent) */
-					/* 		return ; */
-					/* } */
-					/* if ((!x || x->color == BLACK) && (!w || w->color == BLACK)) { */
-					/* 	if ((!x || (x && x == x->parent->left)) && w && w == w->parent->right */ 
-					/* 			&& w->left && w->left->color == RED */
-					/* 			&& (!w->right || w->right->color == BLACK)) { // case 3 */
-					/* 	std::cout << "CASE 3" << std::endl; */
-					/* 		w->left->color = BLACK; */
-					/* 		w->color = RED; */
-					/* 		rightRotate(w); */
-					/* 		w = xP->right; */
-					/* 	} */
-					/* 	else if ((!x || x == x->parent->right) && w && w == w->parent->left */
-					/* 			&& w->right && w->right->color == RED */
-					/* 			&& (!w->left || w->left->color == BLACK)) { */
-					/* 	std::cout << "CASE 3 bis" << std::endl; */
-					/* 		w->right->color = BLACK; */
-					/* 		w->color = RED; */
-					/* 		leftRotate(w); */
-					/* 		w = xP->left; */
-					/* 	} */
-
-					/* 	if ((!x || x == x->parent->left) && w && w->right && w->right->color == RED) { // case 4 */
-					/* 	std::cout << "CASE 4" << std::endl; */
-					/* 		w->color = w->parent->color; */
-					/* 		w->parent->color = BLACK; */
-					/* 		w->right->color = BLACK; */
-					/* 		leftRotate(w->parent); */
-					/* 	} */
-					/* 	else if ((!x || x == x->parent->right) && w && w->left && w->left->color == RED) { */ 
-					/* 	std::cout << "CASE 4 bis" << std::endl; */
-					/* 		w->color = w->parent->color; */
-					/* 		w->parent->color = BLACK; */
-					/* 		w->left->color = BLACK; */
-					/* 		rightRotate(w->parent); */
-					/* 	} */
-					/* } */
 				}
-				/* void	fixCases(node *x, node *xP, node *w) { */
-				/* 	/1* std::cout << REDC "Delete FIX CASES Function :" << NC << std::endl; *1/ */
-				/* 	if (x && x->color == RED) { // case 0 */
-				/* 		std::cout << "CASE 0" << std::endl; */
-				/* 		x->color = BLACK; */
-				/* 		return ; */
-				/* 	} */
-				/* 	if ((!x || x->color == BLACK) && w && w->color == RED) { // case 1 */
-				/* 		std::cout << "CASE 1" << std::endl; */
-				/* 		w->color = BLACK; */
-				/* 		w->parent->color = RED; */
-				/* 		if (w == w->parent->right) { */
-				/* 			leftRotate(w->parent); */
-				/* 			w = w->parent->right; */
-				/* 		} */
-				/* 		else { */
-				/* 			rightRotate(w->parent); */
-				/* 			w = w->parent->left; */
-				/* 		} */
-				/* 	} */
-				/* 	if ((!x || x->color == BLACK) && (w && w->color == BLACK */
-				/* 				&& (!w->left || w->left->color == BLACK) */
-				/* 				&& (!w->right || w->right->color == BLACK))) { // case 2 */
-				/* 		std::cout << "CASE 2" << std::endl; */
-				/* 		if (w) */
-				/* 			w->color = RED; */
-				/* 		if (x) */
-				/* 			x = x->parent; */
-				/* 		if (x && x->color == RED) */
-				/* 			x->color = BLACK; */
-				/* 		else if ((x && x->color == BLACK) || !x) { */
-				/* 			fixCases(x, xP, w); */
-				/* 		} */
-				/* 		else if ((!x || x->color == BLACK) && !x->parent) */
-				/* 			return ; */
-				/* 	} */
-				/* 	if ((!x || x->color == BLACK) && (!w || w->color == BLACK)) { */
-				/* 		if ((!x || (x && x == x->parent->left)) && w && w == w->parent->right */ 
-				/* 				&& w->left && w->left->color == RED */
-				/* 				&& (!w->right || w->right->color == BLACK)) { // case 3 */
-				/* 		std::cout << "CASE 3" << std::endl; */
-				/* 			w->left->color = BLACK; */
-				/* 			w->color = RED; */
-				/* 			rightRotate(w); */
-				/* 			w = xP->right; */
-				/* 		} */
-				/* 		else if ((!x || x == x->parent->right) && w && w == w->parent->left */
-				/* 				&& w->right && w->right->color == RED */
-				/* 				&& (!w->left || w->left->color == BLACK)) { */
-				/* 		std::cout << "CASE 3 bis" << std::endl; */
-				/* 			w->right->color = BLACK; */
-				/* 			w->color = RED; */
-				/* 			leftRotate(w); */
-				/* 			w = xP->left; */
-				/* 		} */
-
-				/* 		if ((!x || x == x->parent->left) && w && w->right && w->right->color == RED) { // case 4 */
-				/* 		std::cout << "CASE 4" << std::endl; */
-				/* 			w->color = w->parent->color; */
-				/* 			w->parent->color = BLACK; */
-				/* 			w->right->color = BLACK; */
-				/* 			leftRotate(w->parent); */
-				/* 		} */
-				/* 		else if ((!x || x == x->parent->right) && w && w->left && w->left->color == RED) { */ 
-				/* 		std::cout << "CASE 4 bis" << std::endl; */
-				/* 			w->color = w->parent->color; */
-				/* 			w->parent->color = BLACK; */
-				/* 			w->left->color = BLACK; */
-				/* 			rightRotate(w->parent); */
-				/* 		} */
-				/* 	} */
-				/* } */
+	
+		
 
 				void	deleteFix(node* delNode, node* nextNode, node* x, node* xP) {
 					/* std::cout << REDC "Delete FIX Function :" << x << std::endl; */
@@ -879,12 +648,7 @@ namespace	ft {
 						/* printTree(); */
 						return ;
 					}
-					/* printTree(); */
-					/* node	*w; */
-					/* if (xP == NULL) */
-					/* 	w = NULL; */
-					/* else */	
-					/* 	w = x->getSibling(xP); */
+	
 					fixCases(x, xP);//, w);
 					/* printTree(); */
 
